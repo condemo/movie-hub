@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/condemo/movie-hub/services/rest/api/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -33,6 +34,10 @@ func (s *ApiServer) Run() {
 		WriteTimeout: time.Second * 10,
 		ReadTimeout:  time.Second * 5,
 	}
+
+	movieHandler := handlers.NewMovieHandler()
+
+	r.Mount("/movie", movieHandler.RegisterRoutes())
 
 	go func() {
 		log.Fatal(server.ListenAndServe())
