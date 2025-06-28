@@ -1,0 +1,18 @@
+syntax="proto3";
+package data_handler;
+option go_package = "github.com/condemo/movie-hub/common/services/pb";
+
+service DataHandler {
+  rpc GetLastUpdates(LastUpdatesRequest) returns (MediaResponse) {}
+}
+
+enum MediaType {
+  Movie = 0;
+  Serie = 1;
+  Both = 2;
+}
+
+message LastUpdatesRequest {
+  MediaType type = 1;
+}
+message MediaResponse {}
