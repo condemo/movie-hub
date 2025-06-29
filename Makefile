@@ -1,4 +1,5 @@
 binary-name=movie-hub
+data-service=data-service
 
 build:
 	@GOOS=windows GOARCH=amd64 go build -o ./bin/${binary-name}-win.exe ./cmd/main.go
@@ -27,3 +28,9 @@ test:
 clean:
 	@rm -rf ./bin/*
 	@go clean
+
+data-build:
+	@GOOS=linux GOARCH=amd64 go build -o ./bin/${data-service}-linux_64 ./services/data_handler/cmd/main.go
+
+data-run: data-build
+	@./bin/${data-service}-linux_64
