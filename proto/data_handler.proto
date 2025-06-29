@@ -15,4 +15,6 @@ enum MediaType {
 message LastUpdatesRequest {
   MediaType type = 1;
 }
-message MediaResponse {}
+message MediaResponse {
+  string msg = 1;
+}

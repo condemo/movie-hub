@@ -116,6 +116,7 @@ func (x *LastUpdatesRequest) GetType() MediaType {
 
 type MediaResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -150,14 +151,22 @@ func (*MediaResponse) Descriptor() ([]byte, []int) {
 	return file_data_handler_proto_rawDescGZIP(), []int{1}
 }
 
+func (x *MediaResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
 var File_data_handler_proto protoreflect.FileDescriptor
 
 const file_data_handler_proto_rawDesc = "" +
 	"\n" +
 	"\x12data_handler.proto\x12\fdata_handler\"A\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
-	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\"\x0f\n" +
-	"\rMediaResponse*+\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\"!\n" +
+	"\rMediaResponse\x12\x10\n" +
+	"\x03msg\x18\x01 \x01(\tR\x03msg*+\n" +
 	"\tMediaType\x12\t\n" +
 	"\x05Movie\x10\x00\x12\t\n" +
 	"\x05Serie\x10\x01\x12\b\n" +
