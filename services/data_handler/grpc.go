@@ -1,6 +1,7 @@
 package datahandler
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -29,6 +30,7 @@ func (s *grpcServer) Run() {
 	handlers.NewDataHandler(gServer)
 
 	go func() {
+		fmt.Println("DataGrpc Running on port", s.addr)
 		log.Fatal(gServer.Serve(listener))
 	}()
 

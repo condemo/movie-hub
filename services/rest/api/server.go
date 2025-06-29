@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/condemo/movie-hub/services/common/config"
 	"github.com/condemo/movie-hub/services/common/utils"
 	"github.com/condemo/movie-hub/services/rest/api/handlers"
 	"github.com/go-chi/chi/v5"
@@ -37,7 +38,7 @@ func (s *ApiServer) Run() {
 	}
 
 	// GRPC
-	dataGrpc := utils.NewGrpcClient(":5100")
+	dataGrpc := utils.NewGrpcClient(config.EnvConfig.DataGrpcPort)
 
 	movieHandler := handlers.NewMovieHandler(dataGrpc)
 	r.Mount("/movie", movieHandler.RegisterRoutes())
