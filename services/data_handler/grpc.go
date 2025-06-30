@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/condemo/movie-hub/services/data_handler/handlers"
+	"github.com/condemo/movie-hub/services/data_handler/service"
 	"google.golang.org/grpc"
 )
 
@@ -26,8 +27,12 @@ func (s *grpcServer) Run() {
 		log.Fatal(err)
 	}
 
+	//SERVICE
+	dt := service.NewDataService()
+
+	// GRPC
 	gServer := grpc.NewServer()
-	handlers.NewDataHandler(gServer)
+	handlers.NewDataHandler(gServer, dt)
 
 	go func() {
 		fmt.Println("DataGrpc Running on port", s.addr)
