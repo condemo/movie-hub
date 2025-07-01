@@ -40,8 +40,8 @@ func (s *ApiServer) Run() {
 	// GRPC
 	dataGrpc := utils.NewGrpcClient(config.EnvConfig.DataGrpcPort)
 
-	movieHandler := handlers.NewMovieHandler(dataGrpc)
-	r.Mount("/movie", movieHandler.RegisterRoutes())
+	mediaHandler := handlers.NewMediaHandler(dataGrpc)
+	r.Mount("/movie", mediaHandler.RegisterRoutes())
 
 	go func() {
 		log.Fatal(server.ListenAndServe())

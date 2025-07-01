@@ -11,24 +11,24 @@ import (
 	"google.golang.org/grpc"
 )
 
-type MovieHandler struct {
+type MediaHandler struct {
 	dataConn pb.DataHandlerClient
 }
 
-func NewMovieHandler(dataConn *grpc.ClientConn) *MovieHandler {
+func NewMediaHandler(dataConn *grpc.ClientConn) *MediaHandler {
 	dc := pb.NewDataHandlerClient(dataConn)
-	return &MovieHandler{
+	return &MediaHandler{
 		dataConn: dc,
 	}
 }
 
-func (h *MovieHandler) RegisterRoutes() http.Handler {
+func (h *MediaHandler) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
 	r.Get("/", h.GetMovies)
 	return r
 }
 
-func (h *MovieHandler) GetMovies(w http.ResponseWriter, r *http.Request) {
+func (h *MediaHandler) GetMovies(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
 
