@@ -3,18 +3,19 @@ package store
 import "github.com/jmoiron/sqlx"
 
 var tables = `
-CREATE TABLE media (
+CREATE TABLE IF NOT EXISTS media (
 	id integer PRIMARY KEY,
 	title varchar(30) NOT NULL,
 	year smallint NOT NULL,
-	genres text,
+	genres text NOT NULL,
 	seasons smallint NULL,
 	caps smallint NULL,
-	description text,
-	rating smallint,
+	description text NOT NULL,
+	rating smallint NOT NULL,
 	image text,
-	fav boolean,
-	viewed boolean
+	fav boolean DEFAULT false,
+	viewed boolean DEFAULT false,
+	UNIQUE(title)
 	);
 `
 
