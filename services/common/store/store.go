@@ -5,6 +5,7 @@ import "github.com/jmoiron/sqlx"
 var tables = `
 CREATE TABLE IF NOT EXISTS media (
 	id integer PRIMARY KEY,
+	type varchar(15) NOT NULL,
 	title varchar(30) NOT NULL,
 	year smallint NOT NULL,
 	genres text NOT NULL,
