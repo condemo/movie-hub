@@ -8,17 +8,19 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/condemo/movie-hub/services/common/store"
 	"github.com/condemo/movie-hub/services/data_handler/handlers"
 	"github.com/condemo/movie-hub/services/data_handler/service"
 	"google.golang.org/grpc"
 )
 
 type grpcServer struct {
-	addr string
+	addr  string
+	store store.Store
 }
 
-func NewGrpcServer(addr string) *grpcServer {
-	return &grpcServer{addr: addr}
+func NewGrpcServer(addr string, s store.Store) *grpcServer {
+	return &grpcServer{addr: addr, store: s}
 }
 
 func (s *grpcServer) Run() {
@@ -28,7 +30,7 @@ func (s *grpcServer) Run() {
 	}
 
 	//SERVICE
-	dt := service.NewDataService()
+	dt := service.NewDataService(s.store)
 
 	// GRPC
 	gServer := grpc.NewServer()

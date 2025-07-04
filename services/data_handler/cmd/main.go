@@ -8,8 +8,8 @@ import (
 
 func main() {
 	pqDB := store.NewPostgresqlStorage()
-	// TODO:
-	_ = store.NewStorage(pqDB)
-	grpcServer := datahandler.NewGrpcServer(config.EnvConfig.DataGrpcPort)
+	db := store.NewStorage(pqDB)
+
+	grpcServer := datahandler.NewGrpcServer(config.EnvConfig.DataGrpcPort, db)
 	grpcServer.Run()
 }
