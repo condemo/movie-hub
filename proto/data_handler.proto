@@ -3,7 +3,10 @@ package data_handler;
 option go_package = "github.com/condemo/movie-hub/common/services/pb";
 
 service DataHandler {
-  rpc GetLastUpdates(LastUpdatesRequest) returns (MediaResponse) {}
+  rpc GetLastUpdates(LastUpdatesRequest) returns (MediaListResponse) {}
+  rpc GetMovie(MovieRequest) returns (MediaResponse) {}
+  rpc GetSerie(SerieRequest) returns (MediaResponse) {}
+// TODO: GetFavs/GetViewed o GetSelection(fav/viewed)
 }
 
 enum MediaType {
@@ -12,9 +15,48 @@ enum MediaType {
   Both = 2;
 }
 
+message Media {
+  int64 id = 1;
+  string type = 2;
+  string title = 3;
+  int32 year = 4;
+  string genres = 5;
+  int32 seasons = 6;
+  int32 caps = 7;
+  string description = 8;
+  int32 rating = 9;
+  string image = 10;
+  bool fav = 11;
+  bool viewed = 12;
+}
+
+message MediaResume {
+  int64 id = 1;
+  string type = 2;
+  string title = 3;
+  string genres = 4;
+  string description = 5;
+  string image = 6;
+  bool fav = 7;
+  bool viewed = 8;
+}
+
 message LastUpdatesRequest {
   MediaType type = 1;
 }
+
+message MovieRequest {
+  int64 id = 1;
+}
+
+message SerieRequest {
+  int64 id = 1;
+}
+
 message MediaResponse {
+  string msg = 1;
+}
+
+message MediaListResponse {
   string msg = 1;
 }
