@@ -20,8 +20,5 @@ func NewPostgresqlStorage() *sqlx.DB {
 		log.Fatal(err)
 	}
 
-	// TABLE INIT
-	db.MustExec(tables)
-
 	return db
 }
