@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -37,5 +37,6 @@ func (h *MediaHandler) GetMovies(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	fmt.Fprint(w, data.GetMsg())
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data.GetMediaList())
 }
