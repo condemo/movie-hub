@@ -18,8 +18,18 @@ func NewDataHandler(grpc *grpc.Server, s types.ServiceDataHandler) {
 	pb.RegisterDataHandlerServer(grpc, grpcHandler)
 }
 
-func (h *DataHandler) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest) (*pb.MediaResponse, error) {
+func (h *DataHandler) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest) (*pb.MediaListResponse, error) {
 	// TODO: implementar de verdad
 	mr := h.dataService.GetLastMovies(ctx)
 	return mr, nil
+}
+
+func (h *DataHandler) GetMovie(ctx context.Context, mr *pb.MovieRequest) (*pb.MediaResponse, error) {
+	// TODO:
+	return nil, nil
+}
+
+func (h *DataHandler) GetSerie(ctx context.Context, sr *pb.SerieRequest) (*pb.MediaResponse, error) {
+	// TODO:
+	return nil, nil
 }
