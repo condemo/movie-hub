@@ -24,12 +24,12 @@ func (h *DataHandler) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequ
 	return mr, nil
 }
 
-func (h *DataHandler) GetMovie(ctx context.Context, mr *pb.MovieRequest) (*pb.MediaResponse, error) {
+func (h *DataHandler) GetMovie(ctx context.Context, mr *pb.MovieRequest) (*pb.Media, error) {
 	// TODO:
 	return nil, nil
 }
 
-func (h *DataHandler) GetSerie(ctx context.Context, sr *pb.SerieRequest) (*pb.MediaResponse, error) {
+func (h *DataHandler) GetSerie(ctx context.Context, sr *pb.SerieRequest) (*pb.Media, error) {
 	// TODO:
 	return nil, nil
 }
