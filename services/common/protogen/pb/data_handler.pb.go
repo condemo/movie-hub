@@ -70,6 +70,238 @@ func (MediaType) EnumDescriptor() ([]byte, []int) {
 	return file_data_handler_proto_rawDescGZIP(), []int{0}
 }
 
+type Media struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Year          int32                  `protobuf:"varint,4,opt,name=year,proto3" json:"year,omitempty"`
+	Genres        string                 `protobuf:"bytes,5,opt,name=genres,proto3" json:"genres,omitempty"`
+	Seasons       int32                  `protobuf:"varint,6,opt,name=seasons,proto3" json:"seasons,omitempty"`
+	Caps          int32                  `protobuf:"varint,7,opt,name=caps,proto3" json:"caps,omitempty"`
+	Description   string                 `protobuf:"bytes,8,opt,name=description,proto3" json:"description,omitempty"`
+	Rating        int32                  `protobuf:"varint,9,opt,name=rating,proto3" json:"rating,omitempty"`
+	Image         string                 `protobuf:"bytes,10,opt,name=image,proto3" json:"image,omitempty"`
+	Fav           bool                   `protobuf:"varint,11,opt,name=fav,proto3" json:"fav,omitempty"`
+	Viewed        bool                   `protobuf:"varint,12,opt,name=viewed,proto3" json:"viewed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Media) Reset() {
+	*x = Media{}
+	mi := &file_data_handler_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Media) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Media) ProtoMessage() {}
+
+func (x *Media) ProtoReflect() protoreflect.Message {
+	mi := &file_data_handler_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Media.ProtoReflect.Descriptor instead.
+func (*Media) Descriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Media) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Media) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *Media) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *Media) GetYear() int32 {
+	if x != nil {
+		return x.Year
+	}
+	return 0
+}
+
+func (x *Media) GetGenres() string {
+	if x != nil {
+		return x.Genres
+	}
+	return ""
+}
+
+func (x *Media) GetSeasons() int32 {
+	if x != nil {
+		return x.Seasons
+	}
+	return 0
+}
+
+func (x *Media) GetCaps() int32 {
+	if x != nil {
+		return x.Caps
+	}
+	return 0
+}
+
+func (x *Media) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Media) GetRating() int32 {
+	if x != nil {
+		return x.Rating
+	}
+	return 0
+}
+
+func (x *Media) GetImage() string {
+	if x != nil {
+		return x.Image
+	}
+	return ""
+}
+
+func (x *Media) GetFav() bool {
+	if x != nil {
+		return x.Fav
+	}
+	return false
+}
+
+func (x *Media) GetViewed() bool {
+	if x != nil {
+		return x.Viewed
+	}
+	return false
+}
+
+type MediaResume struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Genres        string                 `protobuf:"bytes,4,opt,name=genres,proto3" json:"genres,omitempty"`
+	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	Image         string                 `protobuf:"bytes,6,opt,name=image,proto3" json:"image,omitempty"`
+	Fav           bool                   `protobuf:"varint,7,opt,name=fav,proto3" json:"fav,omitempty"`
+	Viewed        bool                   `protobuf:"varint,8,opt,name=viewed,proto3" json:"viewed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MediaResume) Reset() {
+	*x = MediaResume{}
+	mi := &file_data_handler_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MediaResume) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MediaResume) ProtoMessage() {}
+
+func (x *MediaResume) ProtoReflect() protoreflect.Message {
+	mi := &file_data_handler_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MediaResume.ProtoReflect.Descriptor instead.
+func (*MediaResume) Descriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *MediaResume) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *MediaResume) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *MediaResume) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *MediaResume) GetGenres() string {
+	if x != nil {
+		return x.Genres
+	}
+	return ""
+}
+
+func (x *MediaResume) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *MediaResume) GetImage() string {
+	if x != nil {
+		return x.Image
+	}
+	return ""
+}
+
+func (x *MediaResume) GetFav() bool {
+	if x != nil {
+		return x.Fav
+	}
+	return false
+}
+
+func (x *MediaResume) GetViewed() bool {
+	if x != nil {
+		return x.Viewed
+	}
+	return false
+}
+
 type LastUpdatesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Type          MediaType              `protobuf:"varint,1,opt,name=type,proto3,enum=data_handler.MediaType" json:"type,omitempty"`
@@ -79,7 +311,7 @@ type LastUpdatesRequest struct {
 
 func (x *LastUpdatesRequest) Reset() {
 	*x = LastUpdatesRequest{}
-	mi := &file_data_handler_proto_msgTypes[0]
+	mi := &file_data_handler_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -91,7 +323,7 @@ func (x *LastUpdatesRequest) String() string {
 func (*LastUpdatesRequest) ProtoMessage() {}
 
 func (x *LastUpdatesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_data_handler_proto_msgTypes[0]
+	mi := &file_data_handler_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -104,7 +336,7 @@ func (x *LastUpdatesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LastUpdatesRequest.ProtoReflect.Descriptor instead.
 func (*LastUpdatesRequest) Descriptor() ([]byte, []int) {
-	return file_data_handler_proto_rawDescGZIP(), []int{0}
+	return file_data_handler_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *LastUpdatesRequest) GetType() MediaType {
@@ -112,6 +344,94 @@ func (x *LastUpdatesRequest) GetType() MediaType {
 		return x.Type
 	}
 	return MediaType_Movie
+}
+
+type MovieRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MovieRequest) Reset() {
+	*x = MovieRequest{}
+	mi := &file_data_handler_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MovieRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MovieRequest) ProtoMessage() {}
+
+func (x *MovieRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_data_handler_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MovieRequest.ProtoReflect.Descriptor instead.
+func (*MovieRequest) Descriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *MovieRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type SerieRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SerieRequest) Reset() {
+	*x = SerieRequest{}
+	mi := &file_data_handler_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SerieRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SerieRequest) ProtoMessage() {}
+
+func (x *SerieRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_data_handler_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SerieRequest.ProtoReflect.Descriptor instead.
+func (*SerieRequest) Descriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SerieRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
 }
 
 type MediaResponse struct {
@@ -123,7 +443,7 @@ type MediaResponse struct {
 
 func (x *MediaResponse) Reset() {
 	*x = MediaResponse{}
-	mi := &file_data_handler_proto_msgTypes[1]
+	mi := &file_data_handler_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -135,7 +455,7 @@ func (x *MediaResponse) String() string {
 func (*MediaResponse) ProtoMessage() {}
 
 func (x *MediaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_data_handler_proto_msgTypes[1]
+	mi := &file_data_handler_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -148,10 +468,54 @@ func (x *MediaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MediaResponse.ProtoReflect.Descriptor instead.
 func (*MediaResponse) Descriptor() ([]byte, []int) {
-	return file_data_handler_proto_rawDescGZIP(), []int{1}
+	return file_data_handler_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *MediaResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+type MediaListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MediaListResponse) Reset() {
+	*x = MediaListResponse{}
+	mi := &file_data_handler_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MediaListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MediaListResponse) ProtoMessage() {}
+
+func (x *MediaListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_data_handler_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MediaListResponse.ProtoReflect.Descriptor instead.
+func (*MediaListResponse) Descriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *MediaListResponse) GetMsg() string {
 	if x != nil {
 		return x.Msg
 	}
@@ -162,17 +526,48 @@ var File_data_handler_proto protoreflect.FileDescriptor
 
 const file_data_handler_proto_rawDesc = "" +
 	"\n" +
-	"\x12data_handler.proto\x12\fdata_handler\"A\n" +
+	"\x12data_handler.proto\x12\fdata_handler\"\x95\x02\n" +
+	"\x05Media\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
+	"\x05title\x18\x03 \x01(\tR\x05title\x12\x12\n" +
+	"\x04year\x18\x04 \x01(\x05R\x04year\x12\x16\n" +
+	"\x06genres\x18\x05 \x01(\tR\x06genres\x12\x18\n" +
+	"\aseasons\x18\x06 \x01(\x05R\aseasons\x12\x12\n" +
+	"\x04caps\x18\a \x01(\x05R\x04caps\x12 \n" +
+	"\vdescription\x18\b \x01(\tR\vdescription\x12\x16\n" +
+	"\x06rating\x18\t \x01(\x05R\x06rating\x12\x14\n" +
+	"\x05image\x18\n" +
+	" \x01(\tR\x05image\x12\x10\n" +
+	"\x03fav\x18\v \x01(\bR\x03fav\x12\x16\n" +
+	"\x06viewed\x18\f \x01(\bR\x06viewed\"\xc1\x01\n" +
+	"\vMediaResume\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
+	"\x05title\x18\x03 \x01(\tR\x05title\x12\x16\n" +
+	"\x06genres\x18\x04 \x01(\tR\x06genres\x12 \n" +
+	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x14\n" +
+	"\x05image\x18\x06 \x01(\tR\x05image\x12\x10\n" +
+	"\x03fav\x18\a \x01(\bR\x03fav\x12\x16\n" +
+	"\x06viewed\x18\b \x01(\bR\x06viewed\"A\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
-	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\"!\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\"\x1e\n" +
+	"\fMovieRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1e\n" +
+	"\fSerieRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"!\n" +
 	"\rMediaResponse\x12\x10\n" +
+	"\x03msg\x18\x01 \x01(\tR\x03msg\"%\n" +
+	"\x11MediaListResponse\x12\x10\n" +
 	"\x03msg\x18\x01 \x01(\tR\x03msg*+\n" +
 	"\tMediaType\x12\t\n" +
 	"\x05Movie\x10\x00\x12\t\n" +
 	"\x05Serie\x10\x01\x12\b\n" +
-	"\x04Both\x10\x022`\n" +
-	"\vDataHandler\x12Q\n" +
-	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1b.data_handler.MediaResponse\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
+	"\x04Both\x10\x022\xf2\x01\n" +
+	"\vDataHandler\x12U\n" +
+	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12E\n" +
+	"\bGetMovie\x12\x1a.data_handler.MovieRequest\x1a\x1b.data_handler.MediaResponse\"\x00\x12E\n" +
+	"\bGetSerie\x12\x1a.data_handler.SerieRequest\x1a\x1b.data_handler.MediaResponse\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
 
 var (
 	file_data_handler_proto_rawDescOnce sync.Once
@@ -187,18 +582,27 @@ func file_data_handler_proto_rawDescGZIP() []byte {
 }
 
 var file_data_handler_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_data_handler_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_data_handler_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_data_handler_proto_goTypes = []any{
 	(MediaType)(0),             // 0: data_handler.MediaType
-	(*LastUpdatesRequest)(nil), // 1: data_handler.LastUpdatesRequest
-	(*MediaResponse)(nil),      // 2: data_handler.MediaResponse
+	(*Media)(nil),              // 1: data_handler.Media
+	(*MediaResume)(nil),        // 2: data_handler.MediaResume
+	(*LastUpdatesRequest)(nil), // 3: data_handler.LastUpdatesRequest
+	(*MovieRequest)(nil),       // 4: data_handler.MovieRequest
+	(*SerieRequest)(nil),       // 5: data_handler.SerieRequest
+	(*MediaResponse)(nil),      // 6: data_handler.MediaResponse
+	(*MediaListResponse)(nil),  // 7: data_handler.MediaListResponse
 }
 var file_data_handler_proto_depIdxs = []int32{
 	0, // 0: data_handler.LastUpdatesRequest.type:type_name -> data_handler.MediaType
-	1, // 1: data_handler.DataHandler.GetLastUpdates:input_type -> data_handler.LastUpdatesRequest
-	2, // 2: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
+	3, // 1: data_handler.DataHandler.GetLastUpdates:input_type -> data_handler.LastUpdatesRequest
+	4, // 2: data_handler.DataHandler.GetMovie:input_type -> data_handler.MovieRequest
+	5, // 3: data_handler.DataHandler.GetSerie:input_type -> data_handler.SerieRequest
+	7, // 4: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
+	6, // 5: data_handler.DataHandler.GetMovie:output_type -> data_handler.MediaResponse
+	6, // 6: data_handler.DataHandler.GetSerie:output_type -> data_handler.MediaResponse
+	4, // [4:7] is the sub-list for method output_type
+	1, // [1:4] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -215,7 +619,7 @@ func file_data_handler_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_data_handler_proto_rawDesc), len(file_data_handler_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   2,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -20,13 +20,17 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	DataHandler_GetLastUpdates_FullMethodName = "/data_handler.DataHandler/GetLastUpdates"
+	DataHandler_GetMovie_FullMethodName       = "/data_handler.DataHandler/GetMovie"
+	DataHandler_GetSerie_FullMethodName       = "/data_handler.DataHandler/GetSerie"
 )
 
 // DataHandlerClient is the client API for DataHandler service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DataHandlerClient interface {
-	GetLastUpdates(ctx context.Context, in *LastUpdatesRequest, opts ...grpc.CallOption) (*MediaResponse, error)
+	GetLastUpdates(ctx context.Context, in *LastUpdatesRequest, opts ...grpc.CallOption) (*MediaListResponse, error)
+	GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*MediaResponse, error)
+	GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*MediaResponse, error)
 }
 
 type dataHandlerClient struct {
@@ -37,10 +41,30 @@ func NewDataHandlerClient(cc grpc.ClientConnInterface) DataHandlerClient {
 	return &dataHandlerClient{cc}
 }
 
-func (c *dataHandlerClient) GetLastUpdates(ctx context.Context, in *LastUpdatesRequest, opts ...grpc.CallOption) (*MediaResponse, error) {
+func (c *dataHandlerClient) GetLastUpdates(ctx context.Context, in *LastUpdatesRequest, opts ...grpc.CallOption) (*MediaListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MediaListResponse)
+	err := c.cc.Invoke(ctx, DataHandler_GetLastUpdates_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataHandlerClient) GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*MediaResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(MediaResponse)
-	err := c.cc.Invoke(ctx, DataHandler_GetLastUpdates_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, DataHandler_GetMovie_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataHandlerClient) GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*MediaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MediaResponse)
+	err := c.cc.Invoke(ctx, DataHandler_GetSerie_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +75,9 @@ func (c *dataHandlerClient) GetLastUpdates(ctx context.Context, in *LastUpdatesR
 // All implementations must embed UnimplementedDataHandlerServer
 // for forward compatibility.
 type DataHandlerServer interface {
-	GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaResponse, error)
+	GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaListResponse, error)
+	GetMovie(context.Context, *MovieRequest) (*MediaResponse, error)
+	GetSerie(context.Context, *SerieRequest) (*MediaResponse, error)
 	mustEmbedUnimplementedDataHandlerServer()
 }
 
@@ -62,8 +88,14 @@ type DataHandlerServer interface {
 // pointer dereference when methods are called.
 type UnimplementedDataHandlerServer struct{}
 
-func (UnimplementedDataHandlerServer) GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaResponse, error) {
+func (UnimplementedDataHandlerServer) GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLastUpdates not implemented")
+}
+func (UnimplementedDataHandlerServer) GetMovie(context.Context, *MovieRequest) (*MediaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMovie not implemented")
+}
+func (UnimplementedDataHandlerServer) GetSerie(context.Context, *SerieRequest) (*MediaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSerie not implemented")
 }
 func (UnimplementedDataHandlerServer) mustEmbedUnimplementedDataHandlerServer() {}
 func (UnimplementedDataHandlerServer) testEmbeddedByValue()                     {}
@@ -104,6 +136,42 @@ func _DataHandler_GetLastUpdates_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DataHandler_GetMovie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MovieRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataHandlerServer).GetMovie(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataHandler_GetMovie_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataHandlerServer).GetMovie(ctx, req.(*MovieRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataHandler_GetSerie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SerieRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataHandlerServer).GetSerie(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataHandler_GetSerie_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataHandlerServer).GetSerie(ctx, req.(*SerieRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DataHandler_ServiceDesc is the grpc.ServiceDesc for DataHandler service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +182,14 @@ var DataHandler_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLastUpdates",
 			Handler:    _DataHandler_GetLastUpdates_Handler,
+		},
+		{
+			MethodName: "GetMovie",
+			Handler:    _DataHandler_GetMovie_Handler,
+		},
+		{
+			MethodName: "GetSerie",
+			Handler:    _DataHandler_GetSerie_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
