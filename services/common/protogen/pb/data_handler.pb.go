@@ -436,7 +436,7 @@ func (x *SerieRequest) GetId() int64 {
 
 type MediaResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	Media         *Media                 `protobuf:"bytes,1,opt,name=media,proto3" json:"media,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -471,16 +471,16 @@ func (*MediaResponse) Descriptor() ([]byte, []int) {
 	return file_data_handler_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *MediaResponse) GetMsg() string {
+func (x *MediaResponse) GetMedia() *Media {
 	if x != nil {
-		return x.Msg
+		return x.Media
 	}
-	return ""
+	return nil
 }
 
 type MediaListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	MediaList     []*MediaResume         `protobuf:"bytes,1,rep,name=mediaList,proto3" json:"mediaList,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -515,11 +515,11 @@ func (*MediaListResponse) Descriptor() ([]byte, []int) {
 	return file_data_handler_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *MediaListResponse) GetMsg() string {
+func (x *MediaListResponse) GetMediaList() []*MediaResume {
 	if x != nil {
-		return x.Msg
+		return x.MediaList
 	}
-	return ""
+	return nil
 }
 
 var File_data_handler_proto protoreflect.FileDescriptor
@@ -555,19 +555,19 @@ const file_data_handler_proto_rawDesc = "" +
 	"\fMovieRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1e\n" +
 	"\fSerieRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"!\n" +
-	"\rMediaResponse\x12\x10\n" +
-	"\x03msg\x18\x01 \x01(\tR\x03msg\"%\n" +
-	"\x11MediaListResponse\x12\x10\n" +
-	"\x03msg\x18\x01 \x01(\tR\x03msg*+\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\":\n" +
+	"\rMediaResponse\x12)\n" +
+	"\x05media\x18\x01 \x01(\v2\x13.data_handler.MediaR\x05media\"L\n" +
+	"\x11MediaListResponse\x127\n" +
+	"\tmediaList\x18\x01 \x03(\v2\x19.data_handler.MediaResumeR\tmediaList*+\n" +
 	"\tMediaType\x12\t\n" +
 	"\x05Movie\x10\x00\x12\t\n" +
 	"\x05Serie\x10\x01\x12\b\n" +
-	"\x04Both\x10\x022\xf2\x01\n" +
+	"\x04Both\x10\x022\xe2\x01\n" +
 	"\vDataHandler\x12U\n" +
-	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12E\n" +
-	"\bGetMovie\x12\x1a.data_handler.MovieRequest\x1a\x1b.data_handler.MediaResponse\"\x00\x12E\n" +
-	"\bGetSerie\x12\x1a.data_handler.SerieRequest\x1a\x1b.data_handler.MediaResponse\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
+	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12=\n" +
+	"\bGetMovie\x12\x1a.data_handler.MovieRequest\x1a\x13.data_handler.Media\"\x00\x12=\n" +
+	"\bGetSerie\x12\x1a.data_handler.SerieRequest\x1a\x13.data_handler.Media\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
 
 var (
 	file_data_handler_proto_rawDescOnce sync.Once
@@ -595,17 +595,19 @@ var file_data_handler_proto_goTypes = []any{
 }
 var file_data_handler_proto_depIdxs = []int32{
 	0, // 0: data_handler.LastUpdatesRequest.type:type_name -> data_handler.MediaType
-	3, // 1: data_handler.DataHandler.GetLastUpdates:input_type -> data_handler.LastUpdatesRequest
-	4, // 2: data_handler.DataHandler.GetMovie:input_type -> data_handler.MovieRequest
-	5, // 3: data_handler.DataHandler.GetSerie:input_type -> data_handler.SerieRequest
-	7, // 4: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
-	6, // 5: data_handler.DataHandler.GetMovie:output_type -> data_handler.MediaResponse
-	6, // 6: data_handler.DataHandler.GetSerie:output_type -> data_handler.MediaResponse
-	4, // [4:7] is the sub-list for method output_type
-	1, // [1:4] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	1, // 1: data_handler.MediaResponse.media:type_name -> data_handler.Media
+	2, // 2: data_handler.MediaListResponse.mediaList:type_name -> data_handler.MediaResume
+	3, // 3: data_handler.DataHandler.GetLastUpdates:input_type -> data_handler.LastUpdatesRequest
+	4, // 4: data_handler.DataHandler.GetMovie:input_type -> data_handler.MovieRequest
+	5, // 5: data_handler.DataHandler.GetSerie:input_type -> data_handler.SerieRequest
+	7, // 6: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
+	1, // 7: data_handler.DataHandler.GetMovie:output_type -> data_handler.Media
+	1, // 8: data_handler.DataHandler.GetSerie:output_type -> data_handler.Media
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_data_handler_proto_init() }

@@ -29,8 +29,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DataHandlerClient interface {
 	GetLastUpdates(ctx context.Context, in *LastUpdatesRequest, opts ...grpc.CallOption) (*MediaListResponse, error)
-	GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*MediaResponse, error)
-	GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*MediaResponse, error)
+	GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*Media, error)
+	GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*Media, error)
 }
 
 type dataHandlerClient struct {
@@ -51,9 +51,9 @@ func (c *dataHandlerClient) GetLastUpdates(ctx context.Context, in *LastUpdatesR
 	return out, nil
 }
 
-func (c *dataHandlerClient) GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*MediaResponse, error) {
+func (c *dataHandlerClient) GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*Media, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MediaResponse)
+	out := new(Media)
 	err := c.cc.Invoke(ctx, DataHandler_GetMovie_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -61,9 +61,9 @@ func (c *dataHandlerClient) GetMovie(ctx context.Context, in *MovieRequest, opts
 	return out, nil
 }
 
-func (c *dataHandlerClient) GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*MediaResponse, error) {
+func (c *dataHandlerClient) GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*Media, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MediaResponse)
+	out := new(Media)
 	err := c.cc.Invoke(ctx, DataHandler_GetSerie_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -76,8 +76,8 @@ func (c *dataHandlerClient) GetSerie(ctx context.Context, in *SerieRequest, opts
 // for forward compatibility.
 type DataHandlerServer interface {
 	GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaListResponse, error)
-	GetMovie(context.Context, *MovieRequest) (*MediaResponse, error)
-	GetSerie(context.Context, *SerieRequest) (*MediaResponse, error)
+	GetMovie(context.Context, *MovieRequest) (*Media, error)
+	GetSerie(context.Context, *SerieRequest) (*Media, error)
 	mustEmbedUnimplementedDataHandlerServer()
 }
 
@@ -91,10 +91,10 @@ type UnimplementedDataHandlerServer struct{}
 func (UnimplementedDataHandlerServer) GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLastUpdates not implemented")
 }
-func (UnimplementedDataHandlerServer) GetMovie(context.Context, *MovieRequest) (*MediaResponse, error) {
+func (UnimplementedDataHandlerServer) GetMovie(context.Context, *MovieRequest) (*Media, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMovie not implemented")
 }
-func (UnimplementedDataHandlerServer) GetSerie(context.Context, *SerieRequest) (*MediaResponse, error) {
+func (UnimplementedDataHandlerServer) GetSerie(context.Context, *SerieRequest) (*Media, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSerie not implemented")
 }
 func (UnimplementedDataHandlerServer) mustEmbedUnimplementedDataHandlerServer() {}

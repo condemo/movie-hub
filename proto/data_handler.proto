@@ -4,8 +4,8 @@ option go_package = "github.com/condemo/movie-hub/common/services/pb";
 
 service DataHandler {
   rpc GetLastUpdates(LastUpdatesRequest) returns (MediaListResponse) {}
-  rpc GetMovie(MovieRequest) returns (MediaResponse) {}
-  rpc GetSerie(SerieRequest) returns (MediaResponse) {}
+  rpc GetMovie(MovieRequest) returns (Media) {}
+  rpc GetSerie(SerieRequest) returns (Media) {}
 // TODO: GetFavs/GetViewed o GetSelection(fav/viewed)
 }
 
@@ -54,9 +54,9 @@ message SerieRequest {
 }
 
 message MediaResponse {
-  string msg = 1;
+  Media media = 1;
 }
 
 message MediaListResponse {
-  string msg = 1;
+  repeated MediaResume mediaList = 1;
 }
