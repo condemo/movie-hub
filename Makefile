@@ -23,7 +23,7 @@ protogen:
 		--go-grpc_opt=paths=source_relative
 
 test:
-	@go test ./cmd/main.go
+	@godotenv -f .env go test ./...
 
 clean:
 	@rm -rf ./bin/*
