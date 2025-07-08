@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"log"
 
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/store"
@@ -17,9 +18,21 @@ func NewDataService(s store.Store) *DataService {
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context) *pb.MediaListResponse {
-	// TODO: Esto debería devolver una lista de pelis
+	// TODO: recibir desde el cliente un count como parametro de esta funcion y pasarlo
+	// a `GetLastUpdates` para usarlo de limit en la DB
+	data, err := s.store.GetLastUpdates()
+	if err != nil {
+		// TODO: El servicio debería devolver errores en métodos que se utilicen en el handler grpc
+		log.Fatal(err)
+	}
+
+	res := make([]*pb.MediaResume, len(data))
+	for i, d := range data {
+		res[i] = d.GetProtoData()
+	}
+
 	return &pb.MediaListResponse{
-		MediaList: []*pb.MediaResume{},
+		MediaList: res,
 	}
 }
 

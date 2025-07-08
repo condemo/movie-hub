@@ -10,8 +10,7 @@ import (
 // TODO:
 type Store interface {
 	GetLastUpdates() ([]*types.MediaResume, error)
-	GetMovie(ctx context.Context, id int64) (*types.Media, error)
-	GetSerie(ctx context.Context, id int64) (*types.Media, error)
+	GetOneMedia(ctx context.Context, id int64) (*types.Media, error)
 	InsertBulkMedia([]types.Media) error
 }
 
@@ -25,7 +24,9 @@ func NewStorage(db *sqlx.DB) *Storage {
 
 func (s *Storage) GetLastUpdates() ([]*types.MediaResume, error) {
 	mr := []*types.MediaResume{}
-	err := s.db.Select(&mr, "SELECT * FROM media ORDER BY id DESC")
+	err := s.db.Select(&mr, `SELECT 
+		id, type, title,genres,description, image, fav, viewed
+		FROM media ORDER BY id DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -33,19 +34,14 @@ func (s *Storage) GetLastUpdates() ([]*types.MediaResume, error) {
 	return mr, nil
 }
 
-func (s *Storage) GetMovie(ctx context.Context, id int64) (*types.Media, error) {
+func (s *Storage) GetOneMedia(ctx context.Context, id int64) (*types.Media, error) {
 	movie := new(types.Media)
-	err := s.db.Get(movie, "SELECT * FROM media WHERE id=$1 AND type='movie'", id)
+	err := s.db.Get(movie, "SELECT * FROM media WHERE id=$1", id)
 	if err != nil {
 		return nil, err
 	}
 
 	return movie, nil
-}
-
-func (s *Storage) GetSerie(ctx context.Context, id int64) (*types.Media, error) {
-	// TODO:
-	return nil, nil
 }
 
 func (s *Storage) InsertBulkMedia(m []types.Media) error {

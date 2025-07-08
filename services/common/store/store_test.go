@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	_ "github.com/condemo/movie-hub/services/common/config"
-	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -19,7 +18,6 @@ var mockupDB *Storage
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 var mockupMovie types.Media = types.Media{
-	// Id:          1,
 	Type:        "movie",
 	Title:       "Fake Movie",
 	Year:        1953,
@@ -34,7 +32,6 @@ var mockupMovie types.Media = types.Media{
 }
 
 var mockupMovie2 types.Media = types.Media{
-	// Id:          1,
 	Type:        "movie",
 	Title:       "Fake Movie 2",
 	Year:        1955,
@@ -48,8 +45,7 @@ var mockupMovie2 types.Media = types.Media{
 	Viewed:      false,
 }
 
-var mockupSerie pb.Media = pb.Media{
-	// Id:          2,
+var mockupSerie types.Media = types.Media{
 	Type:        "serie",
 	Title:       "Fake Serie",
 	Year:        1993,
@@ -83,10 +79,10 @@ func TestMain(m *testing.M) {
 
 func TestInsertBulkMedia(t *testing.T) {
 	mockupMovie.Title = randomString()
-	mockupMovie2.Title = randomString()
+	mockupSerie.Title = randomString()
 	err := mockupDB.InsertBulkMedia([]types.Media{
 		mockupMovie,
-		mockupMovie2,
+		mockupSerie,
 	})
 
 	require.NoError(t, err)
@@ -94,8 +90,8 @@ func TestInsertBulkMedia(t *testing.T) {
 	assert.NotZero(t, mockupMovie)
 }
 
-func TestGetMovie(t *testing.T) {
-	data, err := mockupDB.GetMovie(context.Background(), 6)
+func TestGetMedia(t *testing.T) {
+	data, err := mockupDB.GetOneMedia(context.Background(), 6)
 
 	require.NoError(t, err)
 	assert.Equal(t, &types.Media{
