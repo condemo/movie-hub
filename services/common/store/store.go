@@ -35,7 +35,7 @@ func (s *Storage) GetLastUpdates() ([]*types.MediaResume, error) {
 
 func (s *Storage) GetMovie(ctx context.Context, id int64) (*types.Media, error) {
 	movie := new(types.Media)
-	err := s.db.Get(movie, "SELECT * FROM media WHERE id=$1", id)
+	err := s.db.Get(movie, "SELECT * FROM media WHERE id=$1 AND type='movie'", id)
 	if err != nil {
 		return nil, err
 	}
