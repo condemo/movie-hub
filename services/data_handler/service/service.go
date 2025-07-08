@@ -36,12 +36,7 @@ func (s *DataService) GetLastUpdates(ctx context.Context) *pb.MediaListResponse 
 	}
 }
 
-func (s *DataService) GetMovie(ctx context.Context, id int64) *pb.Media {
-	// TODO:
-	return nil
-}
-
-func (s *DataService) GetSerie(ctx context.Context, id int64) *pb.Media {
+func (s *DataService) GetOneMedia(ctx context.Context, id int64) *pb.Media {
 	// TODO:
 	return nil
 }

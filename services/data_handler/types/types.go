@@ -9,6 +9,5 @@ import (
 type ServiceDataHandler interface {
 	// TODO: debería devolver una lista de películas
 	GetLastUpdates(ctx context.Context) *pb.MediaListResponse
-	GetMovie(ctx context.Context, id int64) *pb.Media
-	GetSerie(ctx context.Context, id int64) *pb.Media
+	GetOneMedia(ctx context.Context, id int64) *pb.Media
 }
