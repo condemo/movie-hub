@@ -1,6 +1,7 @@
 package store
 
 import (
+	"context"
 	"math/rand/v2"
 	"os"
 	"strings"
@@ -91,6 +92,26 @@ func TestInsertBulkMedia(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.NotZero(t, mockupMovie)
+}
+
+func TestGetMovie(t *testing.T) {
+	data, err := mockupDB.GetMovie(context.Background(), 6)
+
+	require.NoError(t, err)
+	assert.Equal(t, &types.Media{
+		Id:          6,
+		Type:        "movie",
+		Title:       "zvXGONADMf",
+		Year:        1953,
+		Genres:      "acción,fantasía",
+		Seasons:     0,
+		Caps:        0,
+		Description: "Some desc",
+		Rating:      78,
+		Image:       "image.jpg",
+		Fav:         true,
+		Viewed:      false,
+	}, data)
 }
 
 func randomString() string {
