@@ -1,7 +1,9 @@
 package store
 
 import (
+	"math/rand/v2"
 	"os"
+	"strings"
 	"testing"
 
 	_ "github.com/condemo/movie-hub/services/common/config"
@@ -12,6 +14,8 @@ import (
 )
 
 var mockupDB *Storage
+
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 var mockupMovie types.Media = types.Media{
 	// Id:          1,
@@ -77,6 +81,8 @@ func TestMain(m *testing.M) {
 }
 
 func TestInsertBulkMedia(t *testing.T) {
+	mockupMovie.Title = randomString()
+	mockupMovie2.Title = randomString()
 	err := mockupDB.InsertBulkMedia([]types.Media{
 		mockupMovie,
 		mockupMovie2,
@@ -85,4 +91,15 @@ func TestInsertBulkMedia(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.NotZero(t, mockupMovie)
+}
+
+func randomString() string {
+	var sb strings.Builder
+	sb.Grow(10)
+
+	for range 10 {
+		sb.WriteByte(charset[rand.IntN(len(charset))])
+	}
+
+	return sb.String()
 }
