@@ -7,11 +7,12 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// TODO:
 type Store interface {
 	GetLastUpdates() ([]*types.MediaResume, error)
-	GetOneMedia(ctx context.Context, id int64) (*types.Media, error)
-	InsertBulkMedia([]types.Media) error
+	GetOneMedia(context.Context, int64) (*types.Media, error)
+	InsertMedia(context.Context, *types.Media) error
+	InsertBulkMedia(context.Context, []types.Media) error
+	DeleteMedia(context.Context, int64) error
 }
 
 type Storage struct {
@@ -44,12 +45,44 @@ func (s *Storage) GetOneMedia(ctx context.Context, id int64) (*types.Media, erro
 	return movie, nil
 }
 
-func (s *Storage) InsertBulkMedia(m []types.Media) error {
+func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
+	rows, err := s.db.NamedQueryContext(ctx, `INSERT INTO media
+		(type, title, year,
+		genres, seasons, caps, description, rating, image, fav, viewed)
+		VALUES (:type, :title, :year,:genres, :seasons,:caps,:description,:rating,
+		:image,:fav,:viewed) RETURNING *;`, m)
+	if err != nil {
+		return err
+	}
+
+	for rows.Next() {
+		if err := rows.StructScan(m); err != nil {
+			return err
+		}
+	}
+
+	if err := rows.Close(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
 	// TODO: recibir las rows de `NamedQuery`
-	_, err := s.db.NamedExec(`INSERT INTO media (type, title, year,
+	_, err := s.db.NamedExecContext(ctx, `INSERT INTO media (type, title, year,
 		genres, seasons, caps, description, rating, image, fav, viewed)
 		VALUES (:type, :title, :year,:genres, :seasons,:caps,:description,:rating,
 		:image,:fav,:viewed)`, m)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Storage) DeleteMedia(ctx context.Context, id int64) error {
+	_, err := s.db.ExecContext(ctx, `DELETE FROM media WHERE id=$1`, id)
 	if err != nil {
 		return err
 	}
