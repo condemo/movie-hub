@@ -20,7 +20,7 @@ func NewDataService(s store.Store) *DataService {
 func (s *DataService) GetLastUpdates(ctx context.Context) *pb.MediaListResponse {
 	// TODO: recibir desde el cliente un count como parametro de esta funcion y pasarlo
 	// a `GetLastUpdates` para usarlo de limit en la DB
-	data, err := s.store.GetLastUpdates()
+	data, err := s.store.GetLastUpdates(ctx)
 	if err != nil {
 		// TODO: El servicio debería devolver errores en métodos que se utilicen en el handler grpc
 		log.Fatal(err)
