@@ -2,9 +2,7 @@ package store
 
 import (
 	"context"
-	"math/rand/v2"
 	"os"
-	"strings"
 	"testing"
 
 	_ "github.com/condemo/movie-hub/services/common/config"
@@ -19,7 +17,7 @@ const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 var mockupMovie types.Media = types.Media{
 	Type:        "movie",
-	Title:       "Fake Movie",
+	Title:       "Test Movie",
 	Year:        1953,
 	Genres:      "acción,fantasía",
 	Seasons:     0,
@@ -33,7 +31,7 @@ var mockupMovie types.Media = types.Media{
 
 var mockupMovie2 types.Media = types.Media{
 	Type:        "movie",
-	Title:       "Fake Movie 2",
+	Title:       "Test Movie 2",
 	Year:        1955,
 	Genres:      "acción,fantasía",
 	Seasons:     0,
@@ -47,7 +45,7 @@ var mockupMovie2 types.Media = types.Media{
 
 var mockupSerie types.Media = types.Media{
 	Type:        "serie",
-	Title:       "Fake Serie",
+	Title:       "Test Serie",
 	Year:        1993,
 	Genres:      "acción,fantasía",
 	Seasons:     2,
@@ -60,7 +58,6 @@ var mockupSerie types.Media = types.Media{
 }
 
 var mockupResume types.MediaResume = types.MediaResume{
-	// Id:          1,
 	Type:        "movie",
 	Title:       "Fake Movie",
 	Genres:      "acción,fantasía",
@@ -77,46 +74,62 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestInsertBulkMedia(t *testing.T) {
-	mockupMovie.Title = randomString()
-	mockupSerie.Title = randomString()
-	err := mockupDB.InsertBulkMedia([]types.Media{
-		mockupMovie,
-		mockupSerie,
-	})
-
+func TestInsertMedia(t *testing.T) {
+	err := mockupDB.InsertMedia(context.Background(), &mockupMovie)
 	require.NoError(t, err)
-
-	assert.NotZero(t, mockupMovie)
 }
 
-func TestGetMedia(t *testing.T) {
-	data, err := mockupDB.GetOneMedia(context.Background(), 6)
-
+func TestGetOneMedia(t *testing.T) {
+	data, err := mockupDB.GetOneMedia(context.Background(), mockupMovie.Id)
 	require.NoError(t, err)
-	assert.Equal(t, &types.Media{
-		Id:          6,
-		Type:        "movie",
-		Title:       "zvXGONADMf",
-		Year:        1953,
-		Genres:      "acción,fantasía",
-		Seasons:     0,
-		Caps:        0,
-		Description: "Some desc",
-		Rating:      78,
-		Image:       "image.jpg",
-		Fav:         true,
-		Viewed:      false,
-	}, data)
+	assert.Equal(t, &mockupMovie, data)
 }
 
-func randomString() string {
-	var sb strings.Builder
-	sb.Grow(10)
-
-	for range 10 {
-		sb.WriteByte(charset[rand.IntN(len(charset))])
-	}
-
-	return sb.String()
+func TestDeleteMedia(t *testing.T) {
+	err := mockupDB.DeleteMedia(context.Background(), mockupMovie.Id)
+	require.NoError(t, err)
 }
+
+// func TestInsertBulkMedia(t *testing.T) {
+// 	mockupMovie.Title = randomString()
+// 	mockupSerie.Title = randomString()
+// 	err := mockupDB.InsertBulkMedia([]types.Media{
+// 		mockupMovie,
+// 		mockupSerie,
+// 	})
+//
+// 	require.NoError(t, err)
+//
+// 	assert.NotZero(t, mockupMovie)
+// }
+//
+// func TestGetMedia(t *testing.T) {
+// 	data, err := mockupDB.GetOneMedia(context.Background(), 6)
+//
+// 	require.NoError(t, err)
+// 	assert.Equal(t, &types.Media{
+// 		Id:          6,
+// 		Type:        "movie",
+// 		Title:       "zvXGONADMf",
+// 		Year:        1953,
+// 		Genres:      "acción,fantasía",
+// 		Seasons:     0,
+// 		Caps:        0,
+// 		Description: "Some desc",
+// 		Rating:      78,
+// 		Image:       "image.jpg",
+// 		Fav:         true,
+// 		Viewed:      false,
+// 	}, data)
+// }
+//
+// func randomString() string {
+// 	var sb strings.Builder
+// 	sb.Grow(10)
+//
+// 	for range 10 {
+// 		sb.WriteByte(charset[rand.IntN(len(charset))])
+// 	}
+//
+// 	return sb.String()
+// }
