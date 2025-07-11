@@ -85,6 +85,12 @@ func TestGetOneMedia(t *testing.T) {
 	assert.Equal(t, &mockupMovie, data)
 }
 
+func TestUpdateMedia(t *testing.T) {
+	mockupMovie.Title = "Updated Title"
+	err := mockupDB.UpdateMedia(context.Background(), &mockupMovie)
+	require.NoError(t, err)
+}
+
 func TestDeleteMedia(t *testing.T) {
 	err := mockupDB.DeleteMedia(context.Background(), mockupMovie.Id)
 	require.NoError(t, err)

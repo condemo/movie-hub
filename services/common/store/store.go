@@ -13,6 +13,7 @@ type Store interface {
 	InsertMedia(context.Context, *types.Media) error
 	InsertBulkMedia(context.Context, []types.Media) error
 	DeleteMedia(context.Context, int64) error
+	UpdateMedia(context.Context, *types.Media) error
 }
 
 type Storage struct {
@@ -75,6 +76,22 @@ func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
 		VALUES (:type, :title, :year,:genres, :seasons,:caps,:description,:rating,
 		:image,:fav,:viewed)`, m)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Storage) UpdateMedia(ctx context.Context, m *types.Media) error {
+	rows, err := s.db.NamedQueryContext(ctx, `UPDATE media SET 
+		type=:type, title=:title, year=:year, genres=:genres, seasons=:seasons,
+		caps=:caps, description=:description, rating=:rating, image=:image,
+		fav=:fav, viewed=:viewed WHERE id=:id RETURNING *`, m)
+	if err != nil {
+		return err
+	}
+
+	if err := rows.Close(); err != nil {
 		return err
 	}
 
