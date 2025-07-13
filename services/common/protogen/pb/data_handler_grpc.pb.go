@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	DataHandler_GetLastUpdates_FullMethodName = "/data_handler.DataHandler/GetLastUpdates"
-	DataHandler_GetMovie_FullMethodName       = "/data_handler.DataHandler/GetMovie"
-	DataHandler_GetSerie_FullMethodName       = "/data_handler.DataHandler/GetSerie"
+	DataHandler_GetLastUpdates_FullMethodName   = "/data_handler.DataHandler/GetLastUpdates"
+	DataHandler_GetOneMedia_FullMethodName      = "/data_handler.DataHandler/GetOneMedia"
+	DataHandler_GetMediaFiltered_FullMethodName = "/data_handler.DataHandler/GetMediaFiltered"
 )
 
 // DataHandlerClient is the client API for DataHandler service.
@@ -29,8 +29,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DataHandlerClient interface {
 	GetLastUpdates(ctx context.Context, in *LastUpdatesRequest, opts ...grpc.CallOption) (*MediaListResponse, error)
-	GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*Media, error)
-	GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*Media, error)
+	GetOneMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*Media, error)
+	GetMediaFiltered(ctx context.Context, in *MediaFilteredRequest, opts ...grpc.CallOption) (*MediaListResponse, error)
 }
 
 type dataHandlerClient struct {
@@ -51,20 +51,20 @@ func (c *dataHandlerClient) GetLastUpdates(ctx context.Context, in *LastUpdatesR
 	return out, nil
 }
 
-func (c *dataHandlerClient) GetMovie(ctx context.Context, in *MovieRequest, opts ...grpc.CallOption) (*Media, error) {
+func (c *dataHandlerClient) GetOneMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*Media, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Media)
-	err := c.cc.Invoke(ctx, DataHandler_GetMovie_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, DataHandler_GetOneMedia_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *dataHandlerClient) GetSerie(ctx context.Context, in *SerieRequest, opts ...grpc.CallOption) (*Media, error) {
+func (c *dataHandlerClient) GetMediaFiltered(ctx context.Context, in *MediaFilteredRequest, opts ...grpc.CallOption) (*MediaListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Media)
-	err := c.cc.Invoke(ctx, DataHandler_GetSerie_FullMethodName, in, out, cOpts...)
+	out := new(MediaListResponse)
+	err := c.cc.Invoke(ctx, DataHandler_GetMediaFiltered_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,8 +76,8 @@ func (c *dataHandlerClient) GetSerie(ctx context.Context, in *SerieRequest, opts
 // for forward compatibility.
 type DataHandlerServer interface {
 	GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaListResponse, error)
-	GetMovie(context.Context, *MovieRequest) (*Media, error)
-	GetSerie(context.Context, *SerieRequest) (*Media, error)
+	GetOneMedia(context.Context, *MediaRequest) (*Media, error)
+	GetMediaFiltered(context.Context, *MediaFilteredRequest) (*MediaListResponse, error)
 	mustEmbedUnimplementedDataHandlerServer()
 }
 
@@ -91,11 +91,11 @@ type UnimplementedDataHandlerServer struct{}
 func (UnimplementedDataHandlerServer) GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLastUpdates not implemented")
 }
-func (UnimplementedDataHandlerServer) GetMovie(context.Context, *MovieRequest) (*Media, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMovie not implemented")
+func (UnimplementedDataHandlerServer) GetOneMedia(context.Context, *MediaRequest) (*Media, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOneMedia not implemented")
 }
-func (UnimplementedDataHandlerServer) GetSerie(context.Context, *SerieRequest) (*Media, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSerie not implemented")
+func (UnimplementedDataHandlerServer) GetMediaFiltered(context.Context, *MediaFilteredRequest) (*MediaListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMediaFiltered not implemented")
 }
 func (UnimplementedDataHandlerServer) mustEmbedUnimplementedDataHandlerServer() {}
 func (UnimplementedDataHandlerServer) testEmbeddedByValue()                     {}
@@ -136,38 +136,38 @@ func _DataHandler_GetLastUpdates_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DataHandler_GetMovie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MovieRequest)
+func _DataHandler_GetOneMedia_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MediaRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DataHandlerServer).GetMovie(ctx, in)
+		return srv.(DataHandlerServer).GetOneMedia(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DataHandler_GetMovie_FullMethodName,
+		FullMethod: DataHandler_GetOneMedia_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DataHandlerServer).GetMovie(ctx, req.(*MovieRequest))
+		return srv.(DataHandlerServer).GetOneMedia(ctx, req.(*MediaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DataHandler_GetSerie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SerieRequest)
+func _DataHandler_GetMediaFiltered_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MediaFilteredRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DataHandlerServer).GetSerie(ctx, in)
+		return srv.(DataHandlerServer).GetMediaFiltered(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DataHandler_GetSerie_FullMethodName,
+		FullMethod: DataHandler_GetMediaFiltered_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DataHandlerServer).GetSerie(ctx, req.(*SerieRequest))
+		return srv.(DataHandlerServer).GetMediaFiltered(ctx, req.(*MediaFilteredRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -184,12 +184,12 @@ var DataHandler_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DataHandler_GetLastUpdates_Handler,
 		},
 		{
-			MethodName: "GetMovie",
-			Handler:    _DataHandler_GetMovie_Handler,
+			MethodName: "GetOneMedia",
+			Handler:    _DataHandler_GetOneMedia_Handler,
 		},
 		{
-			MethodName: "GetSerie",
-			Handler:    _DataHandler_GetSerie_Handler,
+			MethodName: "GetMediaFiltered",
+			Handler:    _DataHandler_GetMediaFiltered_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

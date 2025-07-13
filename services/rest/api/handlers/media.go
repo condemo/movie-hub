@@ -24,11 +24,11 @@ func NewMediaHandler(dataConn *grpc.ClientConn) *MediaHandler {
 
 func (h *MediaHandler) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
-	r.Get("/", h.GetMovies)
+	r.Get("/", h.GetLastUpdates)
 	return r
 }
 
-func (h *MediaHandler) GetMovies(w http.ResponseWriter, r *http.Request) {
+func (h *MediaHandler) GetLastUpdates(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
 
@@ -39,4 +39,8 @@ func (h *MediaHandler) GetMovies(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(data.GetMediaList())
+}
+
+func (h *MediaHandler) GetOneMedia(w http.ResponseWriter, r *http.Request) {
+	// TODO:
 }

@@ -70,6 +70,52 @@ func (MediaType) EnumDescriptor() ([]byte, []int) {
 	return file_data_handler_proto_rawDescGZIP(), []int{0}
 }
 
+type FilterBy int32
+
+const (
+	FilterBy_fav    FilterBy = 0
+	FilterBy_viewed FilterBy = 1
+)
+
+// Enum value maps for FilterBy.
+var (
+	FilterBy_name = map[int32]string{
+		0: "fav",
+		1: "viewed",
+	}
+	FilterBy_value = map[string]int32{
+		"fav":    0,
+		"viewed": 1,
+	}
+)
+
+func (x FilterBy) Enum() *FilterBy {
+	p := new(FilterBy)
+	*p = x
+	return p
+}
+
+func (x FilterBy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FilterBy) Descriptor() protoreflect.EnumDescriptor {
+	return file_data_handler_proto_enumTypes[1].Descriptor()
+}
+
+func (FilterBy) Type() protoreflect.EnumType {
+	return &file_data_handler_proto_enumTypes[1]
+}
+
+func (x FilterBy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FilterBy.Descriptor instead.
+func (FilterBy) EnumDescriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{1}
+}
+
 type Media struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -346,27 +392,27 @@ func (x *LastUpdatesRequest) GetType() MediaType {
 	return MediaType_Movie
 }
 
-type MovieRequest struct {
+type MediaRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *MovieRequest) Reset() {
-	*x = MovieRequest{}
+func (x *MediaRequest) Reset() {
+	*x = MediaRequest{}
 	mi := &file_data_handler_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *MovieRequest) String() string {
+func (x *MediaRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MovieRequest) ProtoMessage() {}
+func (*MediaRequest) ProtoMessage() {}
 
-func (x *MovieRequest) ProtoReflect() protoreflect.Message {
+func (x *MediaRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_data_handler_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -378,39 +424,39 @@ func (x *MovieRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MovieRequest.ProtoReflect.Descriptor instead.
-func (*MovieRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use MediaRequest.ProtoReflect.Descriptor instead.
+func (*MediaRequest) Descriptor() ([]byte, []int) {
 	return file_data_handler_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *MovieRequest) GetId() int64 {
+func (x *MediaRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type SerieRequest struct {
+type MediaFilteredRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Filter        FilterBy               `protobuf:"varint,1,opt,name=filter,proto3,enum=data_handler.FilterBy" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SerieRequest) Reset() {
-	*x = SerieRequest{}
+func (x *MediaFilteredRequest) Reset() {
+	*x = MediaFilteredRequest{}
 	mi := &file_data_handler_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SerieRequest) String() string {
+func (x *MediaFilteredRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SerieRequest) ProtoMessage() {}
+func (*MediaFilteredRequest) ProtoMessage() {}
 
-func (x *SerieRequest) ProtoReflect() protoreflect.Message {
+func (x *MediaFilteredRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_data_handler_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -422,16 +468,16 @@ func (x *SerieRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SerieRequest.ProtoReflect.Descriptor instead.
-func (*SerieRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use MediaFilteredRequest.ProtoReflect.Descriptor instead.
+func (*MediaFilteredRequest) Descriptor() ([]byte, []int) {
 	return file_data_handler_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *SerieRequest) GetId() int64 {
+func (x *MediaFilteredRequest) GetFilter() FilterBy {
 	if x != nil {
-		return x.Id
+		return x.Filter
 	}
-	return 0
+	return FilterBy_fav
 }
 
 type MediaResponse struct {
@@ -552,10 +598,10 @@ const file_data_handler_proto_rawDesc = "" +
 	"\x06viewed\x18\b \x01(\bR\x06viewed\"A\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\"\x1e\n" +
-	"\fMovieRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1e\n" +
-	"\fSerieRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\":\n" +
+	"\fMediaRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"F\n" +
+	"\x14MediaFilteredRequest\x12.\n" +
+	"\x06filter\x18\x01 \x01(\x0e2\x16.data_handler.FilterByR\x06filter\":\n" +
 	"\rMediaResponse\x12)\n" +
 	"\x05media\x18\x01 \x01(\v2\x13.data_handler.MediaR\x05media\"L\n" +
 	"\x11MediaListResponse\x127\n" +
@@ -563,11 +609,15 @@ const file_data_handler_proto_rawDesc = "" +
 	"\tMediaType\x12\t\n" +
 	"\x05Movie\x10\x00\x12\t\n" +
 	"\x05Serie\x10\x01\x12\b\n" +
-	"\x04Both\x10\x022\xe2\x01\n" +
+	"\x04Both\x10\x02*\x1f\n" +
+	"\bFilterBy\x12\a\n" +
+	"\x03fav\x10\x00\x12\n" +
+	"\n" +
+	"\x06viewed\x10\x012\x81\x02\n" +
 	"\vDataHandler\x12U\n" +
-	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12=\n" +
-	"\bGetMovie\x12\x1a.data_handler.MovieRequest\x1a\x13.data_handler.Media\"\x00\x12=\n" +
-	"\bGetSerie\x12\x1a.data_handler.SerieRequest\x1a\x13.data_handler.Media\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
+	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12@\n" +
+	"\vGetOneMedia\x12\x1a.data_handler.MediaRequest\x1a\x13.data_handler.Media\"\x00\x12Y\n" +
+	"\x10GetMediaFiltered\x12\".data_handler.MediaFilteredRequest\x1a\x1f.data_handler.MediaListResponse\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
 
 var (
 	file_data_handler_proto_rawDescOnce sync.Once
@@ -581,33 +631,35 @@ func file_data_handler_proto_rawDescGZIP() []byte {
 	return file_data_handler_proto_rawDescData
 }
 
-var file_data_handler_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_data_handler_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_data_handler_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_data_handler_proto_goTypes = []any{
-	(MediaType)(0),             // 0: data_handler.MediaType
-	(*Media)(nil),              // 1: data_handler.Media
-	(*MediaResume)(nil),        // 2: data_handler.MediaResume
-	(*LastUpdatesRequest)(nil), // 3: data_handler.LastUpdatesRequest
-	(*MovieRequest)(nil),       // 4: data_handler.MovieRequest
-	(*SerieRequest)(nil),       // 5: data_handler.SerieRequest
-	(*MediaResponse)(nil),      // 6: data_handler.MediaResponse
-	(*MediaListResponse)(nil),  // 7: data_handler.MediaListResponse
+	(MediaType)(0),               // 0: data_handler.MediaType
+	(FilterBy)(0),                // 1: data_handler.FilterBy
+	(*Media)(nil),                // 2: data_handler.Media
+	(*MediaResume)(nil),          // 3: data_handler.MediaResume
+	(*LastUpdatesRequest)(nil),   // 4: data_handler.LastUpdatesRequest
+	(*MediaRequest)(nil),         // 5: data_handler.MediaRequest
+	(*MediaFilteredRequest)(nil), // 6: data_handler.MediaFilteredRequest
+	(*MediaResponse)(nil),        // 7: data_handler.MediaResponse
+	(*MediaListResponse)(nil),    // 8: data_handler.MediaListResponse
 }
 var file_data_handler_proto_depIdxs = []int32{
 	0, // 0: data_handler.LastUpdatesRequest.type:type_name -> data_handler.MediaType
-	1, // 1: data_handler.MediaResponse.media:type_name -> data_handler.Media
-	2, // 2: data_handler.MediaListResponse.mediaList:type_name -> data_handler.MediaResume
-	3, // 3: data_handler.DataHandler.GetLastUpdates:input_type -> data_handler.LastUpdatesRequest
-	4, // 4: data_handler.DataHandler.GetMovie:input_type -> data_handler.MovieRequest
-	5, // 5: data_handler.DataHandler.GetSerie:input_type -> data_handler.SerieRequest
-	7, // 6: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
-	1, // 7: data_handler.DataHandler.GetMovie:output_type -> data_handler.Media
-	1, // 8: data_handler.DataHandler.GetSerie:output_type -> data_handler.Media
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1, // 1: data_handler.MediaFilteredRequest.filter:type_name -> data_handler.FilterBy
+	2, // 2: data_handler.MediaResponse.media:type_name -> data_handler.Media
+	3, // 3: data_handler.MediaListResponse.mediaList:type_name -> data_handler.MediaResume
+	4, // 4: data_handler.DataHandler.GetLastUpdates:input_type -> data_handler.LastUpdatesRequest
+	5, // 5: data_handler.DataHandler.GetOneMedia:input_type -> data_handler.MediaRequest
+	6, // 6: data_handler.DataHandler.GetMediaFiltered:input_type -> data_handler.MediaFilteredRequest
+	8, // 7: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
+	2, // 8: data_handler.DataHandler.GetOneMedia:output_type -> data_handler.Media
+	8, // 9: data_handler.DataHandler.GetMediaFiltered:output_type -> data_handler.MediaListResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_data_handler_proto_init() }
@@ -620,7 +672,7 @@ func file_data_handler_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_data_handler_proto_rawDesc), len(file_data_handler_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,

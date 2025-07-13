@@ -40,3 +40,8 @@ func (s *DataService) GetOneMedia(ctx context.Context, id int64) *pb.Media {
 	// TODO:
 	return nil
 }
+
+func (s *DataService) GetMediaFiltered(ctx context.Context, fb *pb.FilterBy) *pb.MediaListResponse {
+	// TODO:
+	return nil
+}
