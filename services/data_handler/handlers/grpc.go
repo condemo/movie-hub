@@ -20,7 +20,10 @@ func NewDataHandler(grpc *grpc.Server, s types.ServiceDataHandler) {
 
 func (h *DataHandler) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest) (*pb.MediaListResponse, error) {
 	// TODO: implementar de verdad
-	mr := h.dataService.GetLastUpdates(ctx)
+	mr, err := h.dataService.GetLastUpdates(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return mr, nil
 }
 

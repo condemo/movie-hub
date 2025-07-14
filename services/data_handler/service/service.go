@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/store"
@@ -17,13 +16,12 @@ func NewDataService(s store.Store) *DataService {
 	return &DataService{store: s}
 }
 
-func (s *DataService) GetLastUpdates(ctx context.Context) *pb.MediaListResponse {
+func (s *DataService) GetLastUpdates(ctx context.Context) (*pb.MediaListResponse, error) {
 	// TODO: recibir desde el cliente un count como parametro de esta funcion y pasarlo
 	// a `GetLastUpdates` para usarlo de limit en la DB
 	data, err := s.store.GetLastUpdates(ctx)
 	if err != nil {
-		// TODO: El servicio debería devolver errores en métodos que se utilicen en el handler grpc
-		log.Fatal(err)
+		return nil, err
 	}
 
 	res := make([]*pb.MediaResume, len(data))
@@ -33,15 +31,15 @@ func (s *DataService) GetLastUpdates(ctx context.Context) *pb.MediaListResponse 
 
 	return &pb.MediaListResponse{
 		MediaList: res,
-	}
+	}, nil
 }
 
-func (s *DataService) GetOneMedia(ctx context.Context, id int64) *pb.Media {
+func (s *DataService) GetOneMedia(ctx context.Context, id int64) (*pb.Media, error) {
 	// TODO:
-	return nil
+	return nil, nil
 }
 
-func (s *DataService) GetMediaFiltered(ctx context.Context, fb *pb.FilterBy) *pb.MediaListResponse {
+func (s *DataService) GetMediaFiltered(ctx context.Context, fb *pb.FilterBy) (*pb.MediaListResponse, error) {
 	// TODO:
-	return nil
+	return nil, nil
 }
