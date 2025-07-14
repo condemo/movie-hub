@@ -34,3 +34,6 @@ data-build:
 
 data-run: data-build
 	@./bin/${data-service}-linux_64
+
+kill-services:
+	@lsof -t -i:5000 | xargs -r kill
