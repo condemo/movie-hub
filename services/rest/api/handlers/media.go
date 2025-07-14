@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/go-chi/chi/v5"
@@ -32,7 +33,16 @@ func (h *MediaHandler) GetLastUpdates(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
 
-	data, err := h.dataConn.GetLastUpdates(ctx, &pb.LastUpdatesRequest{Type: pb.MediaType_Movie})
+	var limit int32
+	l, err := strconv.ParseInt(r.URL.Query().Get("limit"), 10, 32)
+	if err == nil {
+		limit = int32(l)
+	}
+
+	data, err := h.dataConn.GetLastUpdates(ctx, &pb.LastUpdatesRequest{
+		Type:  pb.MediaType_Both,
+		Limit: limit,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}

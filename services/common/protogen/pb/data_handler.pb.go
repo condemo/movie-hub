@@ -351,6 +351,7 @@ func (x *MediaResume) GetViewed() bool {
 type LastUpdatesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Type          MediaType              `protobuf:"varint,1,opt,name=type,proto3,enum=data_handler.MediaType" json:"type,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -390,6 +391,13 @@ func (x *LastUpdatesRequest) GetType() MediaType {
 		return x.Type
 	}
 	return MediaType_Movie
+}
+
+func (x *LastUpdatesRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
 }
 
 type MediaRequest struct {
@@ -595,9 +603,10 @@ const file_data_handler_proto_rawDesc = "" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x14\n" +
 	"\x05image\x18\x06 \x01(\tR\x05image\x12\x10\n" +
 	"\x03fav\x18\a \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\b \x01(\bR\x06viewed\"A\n" +
+	"\x06viewed\x18\b \x01(\bR\x06viewed\"W\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
-	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\"\x1e\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\x1e\n" +
 	"\fMediaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"F\n" +
 	"\x14MediaFilteredRequest\x12.\n" +

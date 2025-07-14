@@ -16,10 +16,8 @@ func NewDataService(s store.Store) *DataService {
 	return &DataService{store: s}
 }
 
-func (s *DataService) GetLastUpdates(ctx context.Context) (*pb.MediaListResponse, error) {
-	// TODO: recibir desde el cliente un count como parametro de esta funcion y pasarlo
-	// a `GetLastUpdates` para usarlo de limit en la DB
-	data, err := s.store.GetLastUpdates(ctx)
+func (s *DataService) GetLastUpdates(ctx context.Context, limit int32) (*pb.MediaListResponse, error) {
+	data, err := s.store.GetLastUpdates(ctx, limit)
 	if err != nil {
 		return nil, err
 	}

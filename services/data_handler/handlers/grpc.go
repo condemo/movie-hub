@@ -19,8 +19,7 @@ func NewDataHandler(grpc *grpc.Server, s types.ServiceDataHandler) {
 }
 
 func (h *DataHandler) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest) (*pb.MediaListResponse, error) {
-	// TODO: implementar de verdad
-	mr, err := h.dataService.GetLastUpdates(ctx)
+	mr, err := h.dataService.GetLastUpdates(ctx, lu.GetLimit())
 	if err != nil {
 		return nil, err
 	}
