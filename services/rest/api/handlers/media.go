@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/condemo/movie-hub/services/common/errs"
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
-	"github.com/condemo/movie-hub/services/rest/api/errs"
 	"github.com/go-chi/chi/v5"
 	"google.golang.org/grpc"
 )
@@ -64,10 +64,6 @@ func (h *MediaHandler) GetOneMedia(w http.ResponseWriter, r *http.Request) error
 
 	res, err := h.dataConn.GetOneMedia(ctx, &pb.MediaRequest{Id: id})
 	if err != nil {
-		// TODO: Crear un sistema propio de errores en `DataHandler` para poder filtrar desde
-		// aquí y poder enviar una respuesta acorde al cliente, aquí por ejemplo informar de
-		// que ese `media id` no corresponde con nada en la db y por tanto seria un 404 con su
-		// correspondiente mensaje
 		return err
 	}
 

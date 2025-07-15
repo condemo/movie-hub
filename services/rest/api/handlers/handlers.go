@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/condemo/movie-hub/services/rest/api/errs"
+	"github.com/condemo/movie-hub/services/common/errs"
 )
 
 type customHandler func(http.ResponseWriter, *http.Request) error
