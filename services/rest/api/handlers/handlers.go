@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
+	"log/slog"
 	"net/http"
+
+	"github.com/condemo/movie-hub/services/rest/api/errs"
 )
 
 type customHandler func(http.ResponseWriter, *http.Request) error
@@ -11,11 +13,13 @@ type customHandler func(http.ResponseWriter, *http.Request) error
 func MakeHandler(f customHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := f(w, r); err != nil {
-			// TODO: crear un error filter usando un switch err := err.(type)
-
-			// FIX: Borrar, crear sistema centralizado de errores
-			fmt.Println(err)
-			JsonResponse(w, http.StatusInternalServerError, err.Error())
+			switch err := err.(type) {
+			case errs.ApiError:
+				JsonResponse(w, err.Status, err.Msg)
+			default:
+				JsonResponse(w, http.StatusInternalServerError, errs.InternalServerError)
+			}
+			slog.Error(err.Error(), "path", r.URL.Path)
 		}
 	}
 }
