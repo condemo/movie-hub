@@ -15,7 +15,7 @@ func MakeHandler(f customHandler) http.HandlerFunc {
 		if err := f(w, r); err != nil {
 			switch err := err.(type) {
 			case errs.ApiError:
-				JsonResponse(w, err.Status, err.Msg)
+				JsonResponse(w, err.Status, err)
 			default:
 				JsonResponse(w, http.StatusInternalServerError, errs.InternalServerError)
 			}
