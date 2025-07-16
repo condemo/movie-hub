@@ -33,8 +33,12 @@ func (s *DataService) GetLastUpdates(ctx context.Context, limit int32) (*pb.Medi
 }
 
 func (s *DataService) GetOneMedia(ctx context.Context, id int64) (*pb.Media, error) {
-	// TODO:
-	return nil, nil
+	media, err := s.store.GetOneMedia(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return media.GetProtoData(), nil
 }
 
 func (s *DataService) GetMediaFiltered(ctx context.Context, fb *pb.FilterBy) (*pb.MediaListResponse, error) {

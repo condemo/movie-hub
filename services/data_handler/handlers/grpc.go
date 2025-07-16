@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"context"
+	"net/http"
 
+	"github.com/condemo/movie-hub/services/common/errs"
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/data_handler/types"
 	"google.golang.org/grpc"
@@ -27,8 +29,12 @@ func (h *DataHandler) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequ
 }
 
 func (h *DataHandler) GetOneMedia(ctx context.Context, sr *pb.MediaRequest) (*pb.Media, error) {
-	// TODO:
-	return nil, nil
+	resp, err := h.dataService.GetOneMedia(ctx, sr.GetId())
+	if err != nil {
+		return nil, errs.NewApiError(err, http.StatusNotFound, "media not found")
+	}
+
+	return resp, nil
 }
 
 func (h *DataHandler) GetMediaFiltered(ctx context.Context, mr *pb.MediaFilteredRequest) (*pb.MediaListResponse, error) {
