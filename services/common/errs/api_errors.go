@@ -3,18 +3,18 @@ package errs
 import "net/http"
 
 type ApiError struct {
-	Err    error
-	Status int
-	Msg    string
+	err    error  `json:"-"`
+	Status int    `json:"status"`
+	Msg    string `json:"msg"`
 }
 
 func (e ApiError) Error() string {
-	return e.Error()
+	return e.err.Error()
 }
 
 func NewApiError(err error, status int, msg string) ApiError {
 	return ApiError{
-		Err:    err,
+		err:    err,
 		Status: status,
 		Msg:    msg,
 	}
