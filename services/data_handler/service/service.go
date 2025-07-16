@@ -41,7 +41,15 @@ func (s *DataService) GetOneMedia(ctx context.Context, id int64) (*pb.Media, err
 	return media.GetProtoData(), nil
 }
 
-func (s *DataService) GetMediaFiltered(ctx context.Context, fb *pb.FilterBy) (*pb.MediaListResponse, error) {
-	// TODO:
-	return nil, nil
+func (s *DataService) GetMediaFiltered(ctx context.Context, fb pb.FilterBy) (*pb.MediaListResponse, error) {
+	mediaFiltered, err := s.store.GetMediaFiltered(ctx, fb)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]*pb.MediaResume, len(mediaFiltered))
+	for i, d := range mediaFiltered {
+		res[i] = d.GetProtoData()
+	}
+
+	return &pb.MediaListResponse{MediaList: res}, nil
 }

@@ -38,6 +38,10 @@ func (h *DataHandler) GetOneMedia(ctx context.Context, sr *pb.MediaRequest) (*pb
 }
 
 func (h *DataHandler) GetMediaFiltered(ctx context.Context, mr *pb.MediaFilteredRequest) (*pb.MediaListResponse, error) {
-	// TODO:
-	return nil, nil
+	res, err := h.dataService.GetMediaFiltered(ctx, mr.GetFilter())
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

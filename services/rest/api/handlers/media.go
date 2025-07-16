@@ -40,6 +40,22 @@ func (h *MediaHandler) GetLastUpdates(w http.ResponseWriter, r *http.Request) er
 		limit = int32(l)
 	}
 
+	filter := r.URL.Query().Get("filter")
+	if filter != "" {
+		media, err := h.dataConn.GetMediaFiltered(ctx, &pb.MediaFilteredRequest{
+			Filter: pb.FilterBy(pb.FilterBy_value[filter]),
+		})
+		if err != nil {
+			return err
+		}
+		if media.GetMediaList() == nil {
+			JsonResponse(w, http.StatusNotFound, "media not found")
+			return nil
+		}
+		JsonResponse(w, http.StatusOK, media.GetMediaList())
+		return nil
+	}
+
 	data, err := h.dataConn.GetLastUpdates(ctx, &pb.LastUpdatesRequest{
 		Type:  pb.MediaType_Both,
 		Limit: limit,

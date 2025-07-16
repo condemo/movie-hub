@@ -2,7 +2,9 @@ package store
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/types"
 	"github.com/jmoiron/sqlx"
 )
@@ -10,6 +12,7 @@ import (
 type Store interface {
 	GetLastUpdates(context.Context, int32) ([]*types.MediaResume, error)
 	GetOneMedia(context.Context, int64) (*types.Media, error)
+	GetMediaFiltered(context.Context, pb.FilterBy) ([]*types.MediaResume, error)
 	InsertMedia(context.Context, *types.Media) error
 	InsertBulkMedia(context.Context, []types.Media) error
 	DeleteMedia(context.Context, int64) error
@@ -44,6 +47,18 @@ func (s *Storage) GetOneMedia(ctx context.Context, id int64) (*types.Media, erro
 	}
 
 	return movie, nil
+}
+
+func (s *Storage) GetMediaFiltered(ctx context.Context, fb pb.FilterBy) ([]*types.MediaResume, error) {
+	mr := []*types.MediaResume{}
+	q := fmt.Sprintf(`SELECT
+		id, type, title, genres, description, image, fav,
+		viewed FROM media WHERE %s=true`, fb.String())
+	err := s.db.SelectContext(ctx, &mr, q)
+	if err != nil {
+		return nil, err
+	}
+	return mr, nil
 }
 
 func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
