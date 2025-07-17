@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	_ "github.com/condemo/movie-hub/services/common/config"
+	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -54,7 +55,7 @@ var mockupSerie types.Media = types.Media{
 	Rating:      91,
 	Image:       "image.jpg",
 	Fav:         false,
-	Viewed:      false,
+	Viewed:      true,
 }
 
 var mockupResume types.MediaResume = types.MediaResume{
@@ -77,6 +78,9 @@ func TestMain(m *testing.M) {
 func TestInsertMedia(t *testing.T) {
 	err := mockupDB.InsertMedia(context.Background(), &mockupMovie)
 	require.NoError(t, err)
+
+	err = mockupDB.InsertMedia(context.Background(), &mockupSerie)
+	require.NoError(t, err)
 }
 
 func TestGetOneMedia(t *testing.T) {
@@ -91,7 +95,20 @@ func TestUpdateMedia(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestMediaFiltered(t *testing.T) {
+	media, err := mockupDB.GetMediaFiltered(context.Background(), pb.FilterBy_fav)
+	require.NoError(t, err)
+	assert.Equal(t, mockupMovie.Fav, media[0].Fav)
+
+	media, err = mockupDB.GetMediaFiltered(context.Background(), pb.FilterBy_viewed)
+	require.NoError(t, err)
+	assert.Equal(t, mockupSerie.Viewed, media[0].Viewed)
+}
+
 func TestDeleteMedia(t *testing.T) {
 	err := mockupDB.DeleteMedia(context.Background(), mockupMovie.Id)
+	require.NoError(t, err)
+
+	err = mockupDB.DeleteMedia(context.Background(), mockupSerie.Id)
 	require.NoError(t, err)
 }
