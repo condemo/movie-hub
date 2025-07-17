@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/types"
@@ -12,7 +13,7 @@ import (
 type Store interface {
 	GetLastUpdates(context.Context, int32) ([]*types.MediaResume, error)
 	GetOneMedia(context.Context, int64) (*types.Media, error)
-	GetMediaFiltered(context.Context, pb.FilterBy) ([]*types.MediaResume, error)
+	GetMediaFiltered(context.Context, *pb.MediaFilteredRequest) ([]*types.MediaResume, error)
 	InsertMedia(context.Context, *types.Media) error
 	InsertBulkMedia(context.Context, []types.Media) error
 	DeleteMedia(context.Context, int64) error
@@ -49,12 +50,17 @@ func (s *Storage) GetOneMedia(ctx context.Context, id int64) (*types.Media, erro
 	return movie, nil
 }
 
-func (s *Storage) GetMediaFiltered(ctx context.Context, fb pb.FilterBy) ([]*types.MediaResume, error) {
+func (s *Storage) GetMediaFiltered(ctx context.Context, fb *pb.MediaFilteredRequest) ([]*types.MediaResume, error) {
+	var sb strings.Builder
 	mr := []*types.MediaResume{}
-	q := fmt.Sprintf(`SELECT
+	sb.WriteString(fmt.Sprintf(`SELECT
 		id, type, title, genres, description, image, fav,
-		viewed FROM media WHERE %s=true`, fb.String())
-	err := s.db.SelectContext(ctx, &mr, q)
+		viewed FROM media WHERE %s=true`, fb.GetFilter().String()))
+	if fb.GetLimit() > 0 {
+		sb.WriteString(fmt.Sprintf(" LIMIT %d", fb.GetLimit()))
+	}
+
+	err := s.db.SelectContext(ctx, &mr, sb.String())
 	if err != nil {
 		return nil, err
 	}

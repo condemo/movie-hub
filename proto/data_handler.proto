@@ -57,6 +57,7 @@ message MediaRequest {
 
 message MediaFilteredRequest {
   FilterBy filter = 1;
+  optional int32 limit = 2;
 }
 
 message MediaResponse {

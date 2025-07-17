@@ -96,11 +96,15 @@ func TestUpdateMedia(t *testing.T) {
 }
 
 func TestMediaFiltered(t *testing.T) {
-	media, err := mockupDB.GetMediaFiltered(context.Background(), pb.FilterBy_fav)
+	media, err := mockupDB.GetMediaFiltered(context.Background(), &pb.MediaFilteredRequest{
+		Filter: pb.FilterBy_fav,
+	})
 	require.NoError(t, err)
 	assert.Equal(t, mockupMovie.Fav, media[0].Fav)
 
-	media, err = mockupDB.GetMediaFiltered(context.Background(), pb.FilterBy_viewed)
+	media, err = mockupDB.GetMediaFiltered(context.Background(), &pb.MediaFilteredRequest{
+		Filter: pb.FilterBy_viewed,
+	})
 	require.NoError(t, err)
 	assert.Equal(t, mockupSerie.Viewed, media[0].Viewed)
 }

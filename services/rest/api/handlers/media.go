@@ -34,16 +34,17 @@ func (h *MediaHandler) GetLastUpdates(w http.ResponseWriter, r *http.Request) er
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*10)
 	defer cancel()
 
-	var limit int32
+	limit := new(int32)
 	l, err := strconv.ParseInt(r.URL.Query().Get("limit"), 10, 32)
 	if err == nil {
-		limit = int32(l)
+		*limit = int32(l)
 	}
 
 	filter := r.URL.Query().Get("filter")
 	if filter != "" {
 		media, err := h.dataConn.GetMediaFiltered(ctx, &pb.MediaFilteredRequest{
 			Filter: pb.FilterBy(pb.FilterBy_value[filter]),
+			Limit:  limit,
 		})
 		if err != nil {
 			return err

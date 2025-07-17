@@ -351,7 +351,7 @@ func (x *MediaResume) GetViewed() bool {
 type LastUpdatesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Type          MediaType              `protobuf:"varint,1,opt,name=type,proto3,enum=data_handler.MediaType" json:"type,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Limit         *int32                 `protobuf:"varint,2,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -394,8 +394,8 @@ func (x *LastUpdatesRequest) GetType() MediaType {
 }
 
 func (x *LastUpdatesRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
+	if x != nil && x.Limit != nil {
+		return *x.Limit
 	}
 	return 0
 }
@@ -447,6 +447,7 @@ func (x *MediaRequest) GetId() int64 {
 type MediaFilteredRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        FilterBy               `protobuf:"varint,1,opt,name=filter,proto3,enum=data_handler.FilterBy" json:"filter,omitempty"`
+	Limit         *int32                 `protobuf:"varint,2,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -486,6 +487,13 @@ func (x *MediaFilteredRequest) GetFilter() FilterBy {
 		return x.Filter
 	}
 	return FilterBy_fav
+}
+
+func (x *MediaFilteredRequest) GetLimit() int32 {
+	if x != nil && x.Limit != nil {
+		return *x.Limit
+	}
+	return 0
 }
 
 type MediaResponse struct {
@@ -603,14 +611,17 @@ const file_data_handler_proto_rawDesc = "" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x14\n" +
 	"\x05image\x18\x06 \x01(\tR\x05image\x12\x10\n" +
 	"\x03fav\x18\a \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\b \x01(\bR\x06viewed\"W\n" +
+	"\x06viewed\x18\b \x01(\bR\x06viewed\"f\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
-	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\x1e\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\x12\x19\n" +
+	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01B\b\n" +
+	"\x06_limit\"\x1e\n" +
 	"\fMediaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"F\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"k\n" +
 	"\x14MediaFilteredRequest\x12.\n" +
-	"\x06filter\x18\x01 \x01(\x0e2\x16.data_handler.FilterByR\x06filter\":\n" +
+	"\x06filter\x18\x01 \x01(\x0e2\x16.data_handler.FilterByR\x06filter\x12\x19\n" +
+	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01B\b\n" +
+	"\x06_limit\":\n" +
 	"\rMediaResponse\x12)\n" +
 	"\x05media\x18\x01 \x01(\v2\x13.data_handler.MediaR\x05media\"L\n" +
 	"\x11MediaListResponse\x127\n" +
@@ -676,6 +687,8 @@ func file_data_handler_proto_init() {
 	if File_data_handler_proto != nil {
 		return
 	}
+	file_data_handler_proto_msgTypes[2].OneofWrappers = []any{}
+	file_data_handler_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
