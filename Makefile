@@ -35,5 +35,13 @@ data-build:
 data-run: data-build
 	@./bin/${data-service}-linux_64
 
+
+arm-data-build:
+	@GOOS=linux GOARCH=arm64 go build -o ./bin/${data-service}-linux_arm64 ./services/data_handler/cmd/main.go
+
+arm-data-run: arm-data-build
+	@./bin/${data-service}-linux_arm64
+
 kill-services:
 	@lsof -t -i:5000 | xargs -r kill
+	@lsof -t -i:5100 | xargs -r kill
