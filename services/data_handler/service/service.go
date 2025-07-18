@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/store"
@@ -9,11 +10,27 @@ import (
 
 type DataService struct {
 	// Injections
-	store store.Store
+	store           store.Store
+	dFetcher        *dataFetcher
+	nextUpdateTimer *time.Timer
 }
 
 func NewDataService(s store.Store) *DataService {
-	return &DataService{store: s}
+	dt := &DataService{
+		store:           s,
+		dFetcher:        newDataFetcher(),
+		nextUpdateTimer: time.NewTimer(time.Minute),
+	}
+
+	// FIX: borrar después de testear
+	dt.updateData()
+
+	return dt
+}
+
+// TODO:
+func (s *DataService) updateData() {
+	s.dFetcher.GetLastUpdates()
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context, limit int32) (*pb.MediaListResponse, error) {
