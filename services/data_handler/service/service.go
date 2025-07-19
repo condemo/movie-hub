@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"time"
 
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
@@ -28,9 +30,16 @@ func NewDataService(s store.Store) *DataService {
 	return dt
 }
 
-// TODO:
+// TODO: gestionar errores
 func (s *DataService) updateData() {
-	s.dFetcher.GetLastUpdates()
+	data, err := s.dFetcher.GetLastUpdates()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for i, m := range data.getShowList() {
+		fmt.Println(i, "-", m.Title)
+	}
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context, limit int32) (*pb.MediaListResponse, error) {

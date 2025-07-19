@@ -3,12 +3,10 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"log"
+	"maps"
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/condemo/movie-hub/services/common/types"
 )
@@ -32,7 +30,9 @@ type media struct {
 }
 
 type fetchedData struct {
-	Shows map[string]media `json:"shows"`
+	Shows      map[string]media `json:"shows"`
+	HasMore    bool             `json:"hasMore"`
+	NextCursor string           `json:"nextCursor"`
 }
 
 func (fd fetchedData) getShowList() []types.Media {
@@ -77,15 +77,14 @@ func newDataFetcher() *dataFetcher {
 }
 
 // TODO:
-func (f *dataFetcher) GetLastUpdates() {
-	ctx, cancel := context.WithTimeout(context.TODO(), time.Second*15)
-	defer cancel()
-
+func (f *dataFetcher) fetch(nextCursor *string) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(
-		ctx, http.MethodGet, "https://streaming-availability.p.rapidapi.com/changes", nil)
+		context.Background(),
+		http.MethodGet,
+		"https://streaming-availability.p.rapidapi.com/changes", nil,
+	)
 	if err != nil {
-		// FIX: gestionar apropiadamente
-		log.Fatal(err)
+		return nil, err
 	}
 
 	req.Header.Add("x-rapidapi-key", os.Getenv("RAPID_API_KEY"))
@@ -97,30 +96,56 @@ func (f *dataFetcher) GetLastUpdates() {
 	q.Add("item_type", "show")
 	q.Add("output_language", "es")
 	q.Add("order_direction", "asc")
+	q.Add("catalogs", "prime.subscription")
+	if nextCursor != nil {
+		q.Add("cursor", *nextCursor)
+	}
 	// TODO: añadir un q param que indique la última fecha de la que se pidió info
 	// ej: 	q.Add("from", "[unix-time-stamp]")
-	q.Add("catalogs", "prime.subscription")
 	req.URL.RawQuery = q.Encode()
 
 	res, err := f.httpClient.Do(req)
 	if err != nil {
-		// FIX: gestionar apropiadamente
-		log.Fatal(err)
+		return nil, err
+	}
+	return res, nil
+}
+
+// PERF: muchas conversiones de data res.body -> fetchedData -> types.Media -> realoc en `m`
+func (f *dataFetcher) GetLastUpdates() (*fetchedData, error) {
+	var fd fetchedData
+
+	res, err := f.fetch(nil)
+	if err != nil {
+		return nil, err
 	}
 	defer res.Body.Close()
 
-	var data fetchedData
-	err = json.NewDecoder(res.Body).Decode(&data)
+	err = json.NewDecoder(res.Body).Decode(&fd)
 	if err != nil {
-		// FIX: gestionar apropiadamente
-		log.Fatal(err)
+		return nil, err
 	}
 
-	// TODO: borrar y devolver data parseada
-	for _, d := range data.getShowList() {
-		fmt.Println(d.Title, "-", d.Genres, "-", d.Seasons, d.Caps)
+fetchfor:
+	for {
+		var data fetchedData
+		res, err := f.fetch(&fd.NextCursor)
+		if err != nil {
+			return nil, err
+		}
+		defer res.Body.Close()
+		err = json.NewDecoder(res.Body).Decode(&data)
+		if err != nil {
+			return nil, err
+		}
+
+		maps.Copy(fd.Shows, data.Shows)
+		fd.NextCursor = data.NextCursor
+
+		if data.HasMore == false {
+			break fetchfor
+		}
 	}
+
+	return &fd, nil
 }
-
-// TODO:
-func (f *dataFetcher) GetLastUpdatesWithCursor() {}
