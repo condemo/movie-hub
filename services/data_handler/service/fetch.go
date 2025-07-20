@@ -30,9 +30,12 @@ type media struct {
 }
 
 type fetchedData struct {
-	Shows      map[string]media `json:"shows"`
-	HasMore    bool             `json:"hasMore"`
-	NextCursor string           `json:"nextCursor"`
+	Shows   map[string]media `json:"shows"`
+	Changes []struct {
+		TimeStamp int64 `json:"timestamp"`
+	} `json:"changes"`
+	HasMore    bool   `json:"hasMore"`
+	NextCursor string `json:"nextCursor"`
 }
 
 func (fd fetchedData) getShowList() []types.Media {
@@ -47,7 +50,6 @@ func (fd fetchedData) getShowList() []types.Media {
 		m.Rating = d.Rating
 		m.Image = d.Images.Vertical.Poster
 
-		// TODO: genres
 		gl := make([]string, len(d.Genres))
 		for i, g := range d.Genres {
 			gl[i] = g.Name
@@ -114,6 +116,7 @@ func (f *dataFetcher) fetch(nextCursor *string) (*http.Response, error) {
 // PERF: muchas conversiones de data res.body -> fetchedData -> types.Media -> realoc en `m`
 func (f *dataFetcher) GetLastUpdates() (*fetchedData, error) {
 	var fd fetchedData
+	var err error
 
 	res, err := f.fetch(nil)
 	if err != nil {
@@ -129,22 +132,31 @@ func (f *dataFetcher) GetLastUpdates() (*fetchedData, error) {
 fetchfor:
 	for {
 		var data fetchedData
-		res, err := f.fetch(&fd.NextCursor)
-		if err != nil {
-			return nil, err
-		}
-		defer res.Body.Close()
-		err = json.NewDecoder(res.Body).Decode(&data)
-		if err != nil {
-			return nil, err
-		}
+
+		err = func() error {
+			res, err := f.fetch(&fd.NextCursor)
+			if err != nil {
+				return err
+			}
+			defer res.Body.Close()
+			err = json.NewDecoder(res.Body).Decode(&data)
+			if err != nil {
+				return err
+			}
+			return nil
+		}()
 
 		maps.Copy(fd.Shows, data.Shows)
 		fd.NextCursor = data.NextCursor
+		fd.Changes = data.Changes
 
 		if data.HasMore == false {
 			break fetchfor
 		}
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &fd, nil

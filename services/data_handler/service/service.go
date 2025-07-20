@@ -40,6 +40,9 @@ func (s *DataService) updateData() {
 	for i, m := range data.getShowList() {
 		fmt.Println(i, "-", m.Title)
 	}
+
+	date := time.Unix(data.Changes[len(data.Changes)-1].TimeStamp, 0)
+	fmt.Println("last update", date.String())
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context, limit int32) (*pb.MediaListResponse, error) {
