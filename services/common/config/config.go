@@ -1,7 +1,9 @@
 package config
 
 import (
+	"log"
 	"os"
+	"path"
 
 	"github.com/joho/godotenv"
 )
@@ -33,4 +35,40 @@ func newEnvConfig() *envConfig {
 			Pass: os.Getenv("POSTGRES_PASS"),
 		},
 	}
+}
+
+var DefaultPaths = newPathConf()
+
+type pathConf struct {
+	ConfigFile string
+	DataFile   string
+}
+
+func newPathConf() *pathConf {
+	pc := &pathConf{}
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dataFolder := path.Join(homeDir, ".local/share/movie-hub")
+	configFolder := path.Join(homeDir, ".config/movie-hub")
+
+	if _, err := os.Stat(dataFolder); os.IsNotExist(err) {
+		err = os.Mkdir(dataFolder, os.FileMode(0o744))
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	if _, err := os.Stat(configFolder); os.IsNotExist(err) {
+		err = os.Mkdir(configFolder, os.FileMode(0o744))
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	pc.DataFile = path.Join(dataFolder, "data.json")
+	pc.ConfigFile = path.Join(configFolder, "config.toml")
+
+	return pc
 }
