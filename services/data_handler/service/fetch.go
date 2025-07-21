@@ -134,6 +134,7 @@ func (f *dataFetcher) GetLastUpdates(lastUnixDate *int64) (*fetchedData, error) 
 	// FIX: descomentar cuando se guarden los datos en la db para evitar
 	// hacer tantas peticiones a la API
 
+	// if fd.HasMore {
 	// fetchfor:
 	// 	for {
 	// 		var data fetchedData
@@ -163,6 +164,7 @@ func (f *dataFetcher) GetLastUpdates(lastUnixDate *int64) (*fetchedData, error) 
 	// 	if err != nil {
 	// 		return nil, err
 	// 	}
+	// }
 
 	return &fd, nil
 }
