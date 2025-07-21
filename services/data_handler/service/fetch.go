@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"maps"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/condemo/movie-hub/services/common/types"
@@ -79,7 +79,7 @@ func newDataFetcher() *dataFetcher {
 }
 
 // TODO:
-func (f *dataFetcher) fetch(nextCursor *string) (*http.Response, error) {
+func (f *dataFetcher) fetch(nextCursor *string, lastUnixDate *int64) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(
 		context.Background(),
 		http.MethodGet,
@@ -102,8 +102,10 @@ func (f *dataFetcher) fetch(nextCursor *string) (*http.Response, error) {
 	if nextCursor != nil {
 		q.Add("cursor", *nextCursor)
 	}
-	// TODO: añadir un q param que indique la última fecha de la que se pidió info
-	// ej: 	q.Add("from", "[unix-time-stamp]")
+	if lastUnixDate != nil {
+		d := strconv.FormatInt(*lastUnixDate, 10)
+		q.Add("from", d)
+	}
 	req.URL.RawQuery = q.Encode()
 
 	res, err := f.httpClient.Do(req)
@@ -114,11 +116,11 @@ func (f *dataFetcher) fetch(nextCursor *string) (*http.Response, error) {
 }
 
 // PERF: muchas conversiones de data res.body -> fetchedData -> types.Media -> realoc en `m`
-func (f *dataFetcher) GetLastUpdates() (*fetchedData, error) {
+func (f *dataFetcher) GetLastUpdates(lastUnixDate *int64) (*fetchedData, error) {
 	var fd fetchedData
 	var err error
 
-	res, err := f.fetch(nil)
+	res, err := f.fetch(nil, lastUnixDate)
 	if err != nil {
 		return nil, err
 	}
@@ -129,35 +131,38 @@ func (f *dataFetcher) GetLastUpdates() (*fetchedData, error) {
 		return nil, err
 	}
 
-fetchfor:
-	for {
-		var data fetchedData
+	// FIX: descomentar cuando se guarden los datos en la db para evitar
+	// hacer tantas peticiones a la API
 
-		err = func() error {
-			res, err := f.fetch(&fd.NextCursor)
-			if err != nil {
-				return err
-			}
-			defer res.Body.Close()
-			err = json.NewDecoder(res.Body).Decode(&data)
-			if err != nil {
-				return err
-			}
-			return nil
-		}()
-
-		maps.Copy(fd.Shows, data.Shows)
-		fd.NextCursor = data.NextCursor
-		fd.Changes = data.Changes
-
-		if data.HasMore == false {
-			break fetchfor
-		}
-	}
-
-	if err != nil {
-		return nil, err
-	}
+	// fetchfor:
+	// 	for {
+	// 		var data fetchedData
+	//
+	// 		err = func() error {
+	// 			res, err := f.fetch(&fd.NextCursor)
+	// 			if err != nil {
+	// 				return err
+	// 			}
+	// 			defer res.Body.Close()
+	// 			err = json.NewDecoder(res.Body).Decode(&data)
+	// 			if err != nil {
+	// 				return err
+	// 			}
+	// 			return nil
+	// 		}()
+	//
+	// 		maps.Copy(fd.Shows, data.Shows)
+	// 		fd.NextCursor = data.NextCursor
+	// 		fd.Changes = data.Changes
+	//
+	// 		if data.HasMore == false {
+	// 			break fetchfor
+	// 		}
+	// 	}
+	//
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
 
 	return &fd, nil
 }

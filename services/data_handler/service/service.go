@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/condemo/movie-hub/services/common/persistant"
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/store"
 )
@@ -24,7 +25,7 @@ func NewDataService(s store.Store) *DataService {
 		nextUpdateTimer: time.NewTimer(time.Minute),
 	}
 
-	// FIX: borrar después de testear
+	// FIX: borrar después de testear; llamar a este método cada vez que finalice el timer
 	dt.updateData()
 
 	return dt
@@ -32,7 +33,7 @@ func NewDataService(s store.Store) *DataService {
 
 // TODO: gestionar errores
 func (s *DataService) updateData() {
-	data, err := s.dFetcher.GetLastUpdates()
+	data, err := s.dFetcher.GetLastUpdates(persistant.RequestData.LastMediaDate)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,8 +42,12 @@ func (s *DataService) updateData() {
 		fmt.Println(i, "-", m.Title)
 	}
 
-	date := time.Unix(data.Changes[len(data.Changes)-1].TimeStamp, 0)
-	fmt.Println("last update", date.String())
+	date := data.Changes[len(data.Changes)-1].TimeStamp
+	persistant.RequestData.LastMediaDate = &date
+	err = persistant.RequestData.Save()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context, limit int32) (*pb.MediaListResponse, error) {
