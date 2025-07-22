@@ -36,7 +36,7 @@ func (m Media) GetProtoData() *pb.Media {
 
 type MediaResume struct {
 	Id          int64  `db:"id"`
-	Type        string `db:"type"`
+	Type        string `db:"media_type"`
 	Title       string `db:"title"`
 	Genres      string `db:"genres"`
 	Description string `db:"description"`
