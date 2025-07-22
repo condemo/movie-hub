@@ -73,7 +73,7 @@ func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 		genres, seasons, caps, description, rating, image, fav, viewed)
 		VALUES (:media_type, :title, :release_year,:genres, :seasons,:caps,:description,:rating,
 		:image,:fav,:viewed)
-		RETURNING * ON CONFLICT (title) DO NOTHING`, m)
+		 ON CONFLICT (title) DO NOTHING RETURNING *`, m)
 	if err != nil {
 		return err
 	}
