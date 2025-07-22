@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -25,21 +24,22 @@ func NewDataService(s store.Store) *DataService {
 		nextUpdateTimer: time.NewTimer(time.Minute),
 	}
 
-	// FIX: borrar después de testear; llamar a este método cada vez que finalice el timer
+	// FIX: llamar al acabar el timer
 	dt.updateData()
 
 	return dt
 }
 
-// TODO: gestionar errores
+// FIX: gestionar errores
 func (s *DataService) updateData() {
 	data, err := s.dFetcher.GetLastUpdates(persistant.RequestData.LastMediaDate)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for i, m := range data.getShowList() {
-		fmt.Println(i, "-", m.Title)
+	err = s.store.InsertBulkMedia(context.Background(), data.getShowList())
+	if err != nil {
+		log.Fatal("DB ERROR ->", err)
 	}
 
 	date := data.Changes[len(data.Changes)-1].TimeStamp

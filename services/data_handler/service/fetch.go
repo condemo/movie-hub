@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"maps"
 	"net/http"
 	"os"
 	"strconv"
@@ -78,7 +79,6 @@ func newDataFetcher() *dataFetcher {
 	}
 }
 
-// TODO:
 func (f *dataFetcher) fetch(nextCursor *string, lastUnixDate *int64) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(
 		context.Background(),
@@ -131,40 +131,37 @@ func (f *dataFetcher) GetLastUpdates(lastUnixDate *int64) (*fetchedData, error) 
 		return nil, err
 	}
 
-	// FIX: descomentar cuando se guarden los datos en la db para evitar
-	// hacer tantas peticiones a la API
+	if fd.HasMore {
+	fetchfor:
+		for {
+			var data fetchedData
 
-	// if fd.HasMore {
-	// fetchfor:
-	// 	for {
-	// 		var data fetchedData
-	//
-	// 		err = func() error {
-	// 			res, err := f.fetch(&fd.NextCursor)
-	// 			if err != nil {
-	// 				return err
-	// 			}
-	// 			defer res.Body.Close()
-	// 			err = json.NewDecoder(res.Body).Decode(&data)
-	// 			if err != nil {
-	// 				return err
-	// 			}
-	// 			return nil
-	// 		}()
-	//
-	// 		maps.Copy(fd.Shows, data.Shows)
-	// 		fd.NextCursor = data.NextCursor
-	// 		fd.Changes = data.Changes
-	//
-	// 		if data.HasMore == false {
-	// 			break fetchfor
-	// 		}
-	// 	}
-	//
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// }
+			err = func() error {
+				res, err := f.fetch(&fd.NextCursor, lastUnixDate)
+				if err != nil {
+					return err
+				}
+				defer res.Body.Close()
+
+				err = json.NewDecoder(res.Body).Decode(&data)
+				if err != nil {
+					return err
+				}
+				return nil
+			}()
+			if err != nil {
+				return nil, err
+			}
+
+			maps.Copy(fd.Shows, data.Shows)
+			fd.NextCursor = data.NextCursor
+			fd.Changes = data.Changes
+
+			if data.HasMore == false {
+				break fetchfor
+			}
+		}
+	}
 
 	return &fd, nil
 }
