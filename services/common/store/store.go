@@ -92,7 +92,6 @@ func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 }
 
 func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
-	// TODO: recibir las rows de `NamedQuery`
 	_, err := s.db.NamedExecContext(ctx, `INSERT INTO media (media_type, title, release_year,
 		genres, seasons, caps, description, rating, image, fav, viewed)
 		VALUES (:media_type, :title, :release_year, :genres, :seasons, :caps, :description, :rating,
