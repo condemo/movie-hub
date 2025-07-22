@@ -1,20 +1,20 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS media (
-	id SERIAL PRIMARY KEY,
-	type varchar(15) NOT NULL,
-	title varchar(30) NOT NULL,
-	year smallint NOT NULL,
-	genres text NOT NULL,
-	seasons smallint NULL,
-	caps smallint NULL,
-	description text NOT NULL,
-	rating smallint NOT NULL,
-	image text,
-	fav boolean DEFAULT false,
-	viewed boolean DEFAULT false,
-	UNIQUE(title)
-	);
+    id SERIAL PRIMARY KEY,
+    media_type VARCHAR(15) NOT NULL,
+    title VARCHAR(80) NOT NULL,
+    release_year SMALLINT NOT NULL,
+    genres TEXT NOT NULL,
+    seasons SMALLINT NULL,
+    caps SMALLINT NULL,
+    description TEXT NOT NULL,
+    rating SMALLINT NOT NULL,
+    image TEXT,
+    fav BOOLEAN DEFAULT false,
+    viewed BOOLEAN DEFAULT false,
+    UNIQUE (title)
+);
 -- +goose StatementEnd
 
 -- +goose Down

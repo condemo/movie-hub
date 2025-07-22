@@ -4,9 +4,9 @@ import "github.com/condemo/movie-hub/services/common/protogen/pb"
 
 type Media struct {
 	Id          int64  `db:"id"`
-	Type        string `db:"type"`
+	Type        string `db:"media_type"`
 	Title       string `db:"title"`
-	Year        int32  `db:"year"`
+	Year        int32  `db:"release_year"`
 	Genres      string `db:"genres"`
 	Seasons     int32  `db:"seasons"`
 	Caps        int32  `db:"caps"`
