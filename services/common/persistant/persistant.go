@@ -28,7 +28,6 @@ func newReqData() reqData {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 	} else {
 		f, err := os.Open(config.DefaultPaths.DataFile)
 		if err != nil {

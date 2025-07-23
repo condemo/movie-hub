@@ -96,7 +96,6 @@ func newGeneralConf() *generalConf {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 	} else {
 		f, err := os.Open(DefaultPaths.ConfigFile)
 		if err != nil {
@@ -109,5 +108,6 @@ func newGeneralConf() *generalConf {
 			log.Fatal(err)
 		}
 	}
+
 	return gc
 }
