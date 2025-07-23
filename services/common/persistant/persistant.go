@@ -24,7 +24,10 @@ func newReqData() reqData {
 		defer f.Close()
 
 		rd.LastMediaDate = nil
-		json.NewEncoder(f).Encode(&rd)
+		err = json.NewEncoder(f).Encode(&rd)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 	} else {
 		f, err := os.Open(config.DefaultPaths.DataFile)
