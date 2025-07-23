@@ -29,8 +29,9 @@ func (s *grpcServer) Run() {
 		log.Fatal(err)
 	}
 
-	//SERVICE
+	// SERVICE
 	dt := service.NewDataService(s.store)
+	dt.Init()
 
 	// GRPC
 	gServer := grpc.NewServer()
