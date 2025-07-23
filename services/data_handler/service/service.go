@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -14,20 +15,29 @@ type DataService struct {
 	// Injections
 	store           store.Store
 	dFetcher        *dataFetcher
-	nextUpdateTimer *time.Timer
+	nextUpdateTimer *time.Ticker
 }
 
 func NewDataService(s store.Store) *DataService {
 	dt := &DataService{
-		store:           s,
-		dFetcher:        newDataFetcher(),
-		nextUpdateTimer: time.NewTimer(time.Minute),
+		store:    s,
+		dFetcher: newDataFetcher(),
 	}
 
-	// FIX: llamar al acabar el timer
-	dt.updateData()
-
 	return dt
+}
+
+func (s *DataService) Init() {
+	// TODO: Load duration from config
+	s.nextUpdateTimer = time.NewTicker(time.Minute)
+
+	s.updateData()
+	go func() {
+		for {
+			<-s.nextUpdateTimer.C
+			s.updateData()
+		}
+	}()
 }
 
 // FIX: gestionar errores
@@ -48,6 +58,7 @@ func (s *DataService) updateData() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("DATA UPDATED")
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context, limit int32) (*pb.MediaListResponse, error) {
