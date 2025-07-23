@@ -1,9 +1,11 @@
 package config
 
 import (
+	"encoding/json"
 	"log"
 	"os"
 	"path"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -68,7 +70,44 @@ func newPathConf() *pathConf {
 	}
 
 	pc.DataFile = path.Join(dataFolder, "data.json")
-	pc.ConfigFile = path.Join(configFolder, "config.toml")
+	pc.ConfigFile = path.Join(configFolder, "config.json")
 
 	return pc
+}
+
+var General = newGeneralConf()
+
+type generalConf struct {
+	UpdateTimeInterval time.Duration
+}
+
+func newGeneralConf() *generalConf {
+	gc := &generalConf{}
+	if _, err := os.Stat(DefaultPaths.ConfigFile); os.IsNotExist(err) {
+		f, err := os.Create(DefaultPaths.ConfigFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
+
+		gc.UpdateTimeInterval = time.Duration(time.Hour * 24 * 3)
+
+		err = json.NewEncoder(f).Encode(gc)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+	} else {
+		f, err := os.Open(DefaultPaths.ConfigFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
+
+		err = json.NewDecoder(f).Decode(gc)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	return gc
 }
