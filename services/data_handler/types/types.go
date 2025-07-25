@@ -7,7 +7,9 @@ import (
 )
 
 type ServiceDataHandler interface {
-	GetLastUpdates(ctx context.Context, limit int32) (*pb.MediaListResponse, error)
-	GetOneMedia(ctx context.Context, id int64) (*pb.Media, error)
-	GetMediaFiltered(ctx context.Context, fb *pb.MediaFilteredRequest) (*pb.MediaListResponse, error)
+	GetLastUpdates(context.Context, int32) (*pb.MediaListResponse, error)
+	GetOneMedia(context.Context, int64) (*pb.Media, error)
+	GetMediaFiltered(context.Context, *pb.MediaFilteredRequest) (*pb.MediaListResponse, error)
+	DeleteMedia(context.Context, int64) error
+	UpdateMedia(context.Context, *pb.Media) (*pb.Media, error)
 }

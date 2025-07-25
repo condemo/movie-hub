@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -22,6 +23,7 @@ const (
 	DataHandler_GetLastUpdates_FullMethodName   = "/data_handler.DataHandler/GetLastUpdates"
 	DataHandler_GetOneMedia_FullMethodName      = "/data_handler.DataHandler/GetOneMedia"
 	DataHandler_GetMediaFiltered_FullMethodName = "/data_handler.DataHandler/GetMediaFiltered"
+	DataHandler_DeleteMedia_FullMethodName      = "/data_handler.DataHandler/DeleteMedia"
 )
 
 // DataHandlerClient is the client API for DataHandler service.
@@ -31,6 +33,7 @@ type DataHandlerClient interface {
 	GetLastUpdates(ctx context.Context, in *LastUpdatesRequest, opts ...grpc.CallOption) (*MediaListResponse, error)
 	GetOneMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*Media, error)
 	GetMediaFiltered(ctx context.Context, in *MediaFilteredRequest, opts ...grpc.CallOption) (*MediaListResponse, error)
+	DeleteMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type dataHandlerClient struct {
@@ -71,6 +74,16 @@ func (c *dataHandlerClient) GetMediaFiltered(ctx context.Context, in *MediaFilte
 	return out, nil
 }
 
+func (c *dataHandlerClient) DeleteMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, DataHandler_DeleteMedia_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DataHandlerServer is the server API for DataHandler service.
 // All implementations must embed UnimplementedDataHandlerServer
 // for forward compatibility.
@@ -78,6 +91,7 @@ type DataHandlerServer interface {
 	GetLastUpdates(context.Context, *LastUpdatesRequest) (*MediaListResponse, error)
 	GetOneMedia(context.Context, *MediaRequest) (*Media, error)
 	GetMediaFiltered(context.Context, *MediaFilteredRequest) (*MediaListResponse, error)
+	DeleteMedia(context.Context, *MediaRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedDataHandlerServer()
 }
 
@@ -96,6 +110,9 @@ func (UnimplementedDataHandlerServer) GetOneMedia(context.Context, *MediaRequest
 }
 func (UnimplementedDataHandlerServer) GetMediaFiltered(context.Context, *MediaFilteredRequest) (*MediaListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMediaFiltered not implemented")
+}
+func (UnimplementedDataHandlerServer) DeleteMedia(context.Context, *MediaRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMedia not implemented")
 }
 func (UnimplementedDataHandlerServer) mustEmbedUnimplementedDataHandlerServer() {}
 func (UnimplementedDataHandlerServer) testEmbeddedByValue()                     {}
@@ -172,6 +189,24 @@ func _DataHandler_GetMediaFiltered_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DataHandler_DeleteMedia_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MediaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataHandlerServer).DeleteMedia(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataHandler_DeleteMedia_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataHandlerServer).DeleteMedia(ctx, req.(*MediaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DataHandler_ServiceDesc is the grpc.ServiceDesc for DataHandler service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -190,6 +225,10 @@ var DataHandler_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMediaFiltered",
 			Handler:    _DataHandler_GetMediaFiltered_Handler,
+		},
+		{
+			MethodName: "DeleteMedia",
+			Handler:    _DataHandler_DeleteMedia_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

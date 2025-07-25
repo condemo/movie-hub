@@ -26,12 +26,14 @@ func NewMediaHandler(dataConn *grpc.ClientConn) *MediaHandler {
 
 func (h *MediaHandler) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
-	r.Get("/", MakeHandler(h.GetLastUpdates))
-	r.Get("/{id}", MakeHandler(h.GetOneMedia))
+	r.Get("/", MakeHandler(h.getLastUpdates))
+	r.Get("/{id}", MakeHandler(h.getOneMedia))
+	r.Put("/", MakeHandler(h.updateMedia))
+	r.Delete("/{id}", MakeHandler(h.deleteMedia))
 	return r
 }
 
-func (h *MediaHandler) GetLastUpdates(w http.ResponseWriter, r *http.Request) error {
+func (h *MediaHandler) getLastUpdates(w http.ResponseWriter, r *http.Request) error {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*10)
 	defer cancel()
 
@@ -73,7 +75,7 @@ func (h *MediaHandler) GetLastUpdates(w http.ResponseWriter, r *http.Request) er
 	return nil
 }
 
-func (h *MediaHandler) GetOneMedia(w http.ResponseWriter, r *http.Request) error {
+func (h *MediaHandler) getOneMedia(w http.ResponseWriter, r *http.Request) error {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*10)
 	defer cancel()
 
@@ -89,5 +91,15 @@ func (h *MediaHandler) GetOneMedia(w http.ResponseWriter, r *http.Request) error
 
 	JsonResponse(w, http.StatusOK, res)
 
+	return nil
+}
+
+func (h *MediaHandler) updateMedia(w http.ResponseWriter, r *http.Request) error {
+	// TODO:
+	return nil
+}
+
+func (h *MediaHandler) deleteMedia(w http.ResponseWriter, r *http.Request) error {
+	// TODO:
 	return nil
 }

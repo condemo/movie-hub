@@ -9,6 +9,7 @@ package pb
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -596,7 +597,7 @@ var File_data_handler_proto protoreflect.FileDescriptor
 
 const file_data_handler_proto_rawDesc = "" +
 	"\n" +
-	"\x12data_handler.proto\x12\fdata_handler\"\xb1\x02\n" +
+	"\x12data_handler.proto\x12\fdata_handler\x1a\x1bgoogle/protobuf/empty.proto\"\xb1\x02\n" +
 	"\x05Media\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
@@ -642,11 +643,12 @@ const file_data_handler_proto_rawDesc = "" +
 	"\bFilterBy\x12\a\n" +
 	"\x03fav\x10\x00\x12\n" +
 	"\n" +
-	"\x06viewed\x10\x012\x81\x02\n" +
+	"\x06viewed\x10\x012\xc6\x02\n" +
 	"\vDataHandler\x12U\n" +
 	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12@\n" +
 	"\vGetOneMedia\x12\x1a.data_handler.MediaRequest\x1a\x13.data_handler.Media\"\x00\x12Y\n" +
-	"\x10GetMediaFiltered\x12\".data_handler.MediaFilteredRequest\x1a\x1f.data_handler.MediaListResponse\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
+	"\x10GetMediaFiltered\x12\".data_handler.MediaFilteredRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12C\n" +
+	"\vDeleteMedia\x12\x1a.data_handler.MediaRequest\x1a\x16.google.protobuf.Empty\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
 
 var (
 	file_data_handler_proto_rawDescOnce sync.Once
@@ -672,6 +674,7 @@ var file_data_handler_proto_goTypes = []any{
 	(*MediaFilteredRequest)(nil), // 6: data_handler.MediaFilteredRequest
 	(*MediaResponse)(nil),        // 7: data_handler.MediaResponse
 	(*MediaListResponse)(nil),    // 8: data_handler.MediaListResponse
+	(*emptypb.Empty)(nil),        // 9: google.protobuf.Empty
 }
 var file_data_handler_proto_depIdxs = []int32{
 	0, // 0: data_handler.LastUpdatesRequest.type:type_name -> data_handler.MediaType
@@ -681,11 +684,13 @@ var file_data_handler_proto_depIdxs = []int32{
 	4, // 4: data_handler.DataHandler.GetLastUpdates:input_type -> data_handler.LastUpdatesRequest
 	5, // 5: data_handler.DataHandler.GetOneMedia:input_type -> data_handler.MediaRequest
 	6, // 6: data_handler.DataHandler.GetMediaFiltered:input_type -> data_handler.MediaFilteredRequest
-	8, // 7: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
-	2, // 8: data_handler.DataHandler.GetOneMedia:output_type -> data_handler.Media
-	8, // 9: data_handler.DataHandler.GetMediaFiltered:output_type -> data_handler.MediaListResponse
-	7, // [7:10] is the sub-list for method output_type
-	4, // [4:7] is the sub-list for method input_type
+	5, // 7: data_handler.DataHandler.DeleteMedia:input_type -> data_handler.MediaRequest
+	8, // 8: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
+	2, // 9: data_handler.DataHandler.GetOneMedia:output_type -> data_handler.Media
+	8, // 10: data_handler.DataHandler.GetMediaFiltered:output_type -> data_handler.MediaListResponse
+	9, // 11: data_handler.DataHandler.DeleteMedia:output_type -> google.protobuf.Empty
+	8, // [8:12] is the sub-list for method output_type
+	4, // [4:8] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
 	4, // [4:4] is the sub-list for extension extendee
 	0, // [0:4] is the sub-list for field type_name

@@ -8,6 +8,7 @@ import (
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/data_handler/types"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type DataHandler struct {
@@ -44,4 +45,12 @@ func (h *DataHandler) GetMediaFiltered(ctx context.Context, mr *pb.MediaFiltered
 	}
 
 	return res, nil
+}
+
+func (h *DataHandler) DeleteMedia(ctx context.Context, mr *pb.MediaRequest) (*emptypb.Empty, error) {
+	err := h.dataService.DeleteMedia(ctx, mr.GetId())
+	if err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
 }

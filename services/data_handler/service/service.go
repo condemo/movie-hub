@@ -101,3 +101,13 @@ func (s *DataService) GetMediaFiltered(ctx context.Context, fb *pb.MediaFiltered
 
 	return &pb.MediaListResponse{MediaList: res}, nil
 }
+
+func (s *DataService) DeleteMedia(ctx context.Context, id int64) error {
+	err := s.store.DeleteMedia(ctx, id)
+	return err
+}
+
+func (s *DataService) UpdateMedia(ctx context.Context, m *pb.Media) (*pb.Media, error) {
+	// TODO:
+	return nil, nil
+}

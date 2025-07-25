@@ -1,4 +1,6 @@
 syntax="proto3";
+
+import "google/protobuf/empty.proto";
 package data_handler;
 option go_package = "github.com/condemo/movie-hub/common/services/pb";
 
@@ -6,6 +8,7 @@ service DataHandler {
   rpc GetLastUpdates(LastUpdatesRequest) returns (MediaListResponse) {}
   rpc GetOneMedia(MediaRequest) returns (Media) {}
   rpc GetMediaFiltered(MediaFilteredRequest) returns (MediaListResponse) {}
+  rpc DeleteMedia(MediaRequest) returns (google.protobuf.Empty) {}
 }
 
 enum MediaType {
