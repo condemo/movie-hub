@@ -79,6 +79,7 @@ var General = newGeneralConf()
 
 type generalConf struct {
 	UpdateTimeInterval time.Duration
+	DefaultDataLimit   int32
 }
 
 func newGeneralConf() *generalConf {
@@ -91,6 +92,7 @@ func newGeneralConf() *generalConf {
 		defer f.Close()
 
 		gc.UpdateTimeInterval = time.Duration(time.Hour * 24 * 3)
+		gc.DefaultDataLimit = 50
 
 		err = json.NewEncoder(f).Encode(gc)
 		if err != nil {
@@ -111,3 +113,5 @@ func newGeneralConf() *generalConf {
 
 	return gc
 }
+
+// TODO: implementar un el método `Save` para guardar la config en un archivo

@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/condemo/movie-hub/services/common/config"
 	"github.com/condemo/movie-hub/services/common/errs"
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/go-chi/chi/v5"
@@ -38,6 +39,8 @@ func (h *MediaHandler) GetLastUpdates(w http.ResponseWriter, r *http.Request) er
 	l, err := strconv.ParseInt(r.URL.Query().Get("limit"), 10, 32)
 	if err == nil {
 		*limit = int32(l)
+	} else {
+		*limit = config.General.DefaultDataLimit
 	}
 
 	filter := r.URL.Query().Get("filter")
