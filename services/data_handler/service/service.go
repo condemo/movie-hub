@@ -86,7 +86,6 @@ func (s *DataService) GetOneMedia(ctx context.Context, id int64) (*pb.Media, err
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("%+v\n", media)
 
 	return media.GetProtoData(), nil
 }
