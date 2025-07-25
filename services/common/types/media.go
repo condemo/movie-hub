@@ -22,7 +22,7 @@ func (m Media) GetProtoData() *pb.Media {
 	return &pb.Media{
 		Id:          m.Id,
 		Type:        m.Type,
-		Title:       m.Type,
+		Title:       m.Title,
 		Year:        m.Year,
 		Genres:      m.Genres,
 		FirstAir:    m.FirstAir,
