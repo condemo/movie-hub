@@ -122,14 +122,15 @@ type Media struct {
 	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
 	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
 	Year          int32                  `protobuf:"varint,4,opt,name=year,proto3" json:"year,omitempty"`
-	Genres        string                 `protobuf:"bytes,5,opt,name=genres,proto3" json:"genres,omitempty"`
-	Seasons       int32                  `protobuf:"varint,6,opt,name=seasons,proto3" json:"seasons,omitempty"`
-	Caps          int32                  `protobuf:"varint,7,opt,name=caps,proto3" json:"caps,omitempty"`
-	Description   string                 `protobuf:"bytes,8,opt,name=description,proto3" json:"description,omitempty"`
-	Rating        int32                  `protobuf:"varint,9,opt,name=rating,proto3" json:"rating,omitempty"`
-	Image         string                 `protobuf:"bytes,10,opt,name=image,proto3" json:"image,omitempty"`
-	Fav           bool                   `protobuf:"varint,11,opt,name=fav,proto3" json:"fav,omitempty"`
-	Viewed        bool                   `protobuf:"varint,12,opt,name=viewed,proto3" json:"viewed,omitempty"`
+	FirstAir      int32                  `protobuf:"varint,5,opt,name=firstAir,proto3" json:"firstAir,omitempty"`
+	Genres        string                 `protobuf:"bytes,6,opt,name=genres,proto3" json:"genres,omitempty"`
+	Seasons       int32                  `protobuf:"varint,7,opt,name=seasons,proto3" json:"seasons,omitempty"`
+	Caps          int32                  `protobuf:"varint,8,opt,name=caps,proto3" json:"caps,omitempty"`
+	Description   string                 `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
+	Rating        int32                  `protobuf:"varint,10,opt,name=rating,proto3" json:"rating,omitempty"`
+	Image         string                 `protobuf:"bytes,11,opt,name=image,proto3" json:"image,omitempty"`
+	Fav           bool                   `protobuf:"varint,12,opt,name=fav,proto3" json:"fav,omitempty"`
+	Viewed        bool                   `protobuf:"varint,13,opt,name=viewed,proto3" json:"viewed,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -188,6 +189,13 @@ func (x *Media) GetTitle() string {
 func (x *Media) GetYear() int32 {
 	if x != nil {
 		return x.Year
+	}
+	return 0
+}
+
+func (x *Media) GetFirstAir() int32 {
+	if x != nil {
+		return x.FirstAir
 	}
 	return 0
 }
@@ -588,21 +596,22 @@ var File_data_handler_proto protoreflect.FileDescriptor
 
 const file_data_handler_proto_rawDesc = "" +
 	"\n" +
-	"\x12data_handler.proto\x12\fdata_handler\"\x95\x02\n" +
+	"\x12data_handler.proto\x12\fdata_handler\"\xb1\x02\n" +
 	"\x05Media\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
 	"\x05title\x18\x03 \x01(\tR\x05title\x12\x12\n" +
-	"\x04year\x18\x04 \x01(\x05R\x04year\x12\x16\n" +
-	"\x06genres\x18\x05 \x01(\tR\x06genres\x12\x18\n" +
-	"\aseasons\x18\x06 \x01(\x05R\aseasons\x12\x12\n" +
-	"\x04caps\x18\a \x01(\x05R\x04caps\x12 \n" +
-	"\vdescription\x18\b \x01(\tR\vdescription\x12\x16\n" +
-	"\x06rating\x18\t \x01(\x05R\x06rating\x12\x14\n" +
-	"\x05image\x18\n" +
-	" \x01(\tR\x05image\x12\x10\n" +
-	"\x03fav\x18\v \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\f \x01(\bR\x06viewed\"\xc1\x01\n" +
+	"\x04year\x18\x04 \x01(\x05R\x04year\x12\x1a\n" +
+	"\bfirstAir\x18\x05 \x01(\x05R\bfirstAir\x12\x16\n" +
+	"\x06genres\x18\x06 \x01(\tR\x06genres\x12\x18\n" +
+	"\aseasons\x18\a \x01(\x05R\aseasons\x12\x12\n" +
+	"\x04caps\x18\b \x01(\x05R\x04caps\x12 \n" +
+	"\vdescription\x18\t \x01(\tR\vdescription\x12\x16\n" +
+	"\x06rating\x18\n" +
+	" \x01(\x05R\x06rating\x12\x14\n" +
+	"\x05image\x18\v \x01(\tR\x05image\x12\x10\n" +
+	"\x03fav\x18\f \x01(\bR\x03fav\x12\x16\n" +
+	"\x06viewed\x18\r \x01(\bR\x06viewed\"\xc1\x01\n" +
 	"\vMediaResume\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +

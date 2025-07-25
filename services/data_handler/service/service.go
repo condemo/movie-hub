@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/condemo/movie-hub/services/common/config"
 	"github.com/condemo/movie-hub/services/common/persistant"
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/store"
@@ -29,9 +30,11 @@ func NewDataService(s store.Store) *DataService {
 
 func (s *DataService) Init() {
 	// TODO: Load duration from config
-	s.nextUpdateTimer = time.NewTicker(time.Minute)
+	s.nextUpdateTimer = time.NewTicker(config.General.UpdateTimeInterval)
 
-	s.updateData()
+	// FIX: descomentar cuando el servicio sea autosuficiente
+	// s.updateData()
+
 	go func() {
 		for {
 			<-s.nextUpdateTimer.C

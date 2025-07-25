@@ -24,14 +24,15 @@ message Media {
   string type = 2;
   string title = 3;
   int32 year = 4;
-  string genres = 5;
-  int32 seasons = 6;
-  int32 caps = 7;
-  string description = 8;
-  int32 rating = 9;
-  string image = 10;
-  bool fav = 11;
-  bool viewed = 12;
+  int32 firstAir = 5;
+  string genres = 6;
+  int32 seasons = 7;
+  int32 caps = 8;
+  string description = 9;
+  int32 rating = 10;
+  string image = 11;
+  bool fav = 12;
+  bool viewed = 13;
 }
 
 message MediaResume {

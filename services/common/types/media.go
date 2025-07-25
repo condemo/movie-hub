@@ -7,6 +7,7 @@ type Media struct {
 	Type        string `db:"media_type"`
 	Title       string `db:"title"`
 	Year        int32  `db:"release_year"`
+	FirstAir    int32  `db:"first_air"`
 	Genres      string `db:"genres"`
 	Seasons     int32  `db:"seasons"`
 	Caps        int32  `db:"caps"`
@@ -24,6 +25,7 @@ func (m Media) GetProtoData() *pb.Media {
 		Title:       m.Type,
 		Year:        m.Year,
 		Genres:      m.Genres,
+		FirstAir:    m.FirstAir,
 		Seasons:     m.Seasons,
 		Caps:        m.Caps,
 		Description: m.Description,

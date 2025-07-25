@@ -31,7 +31,7 @@ func NewStorage(db *sqlx.DB) *Storage {
 func (s *Storage) GetLastUpdates(ctx context.Context, limit int32) ([]*types.MediaResume, error) {
 	mr := []*types.MediaResume{}
 	err := s.db.SelectContext(ctx, &mr, `SELECT 
-		id, media_type, title, genres, description, image, fav, viewed
+		id, media_type, title, genres, description, image, fav, viewed, first_air
 		FROM media ORDER BY id DESC LIMIT $1`, limit)
 	if err != nil {
 		return nil, err
@@ -69,9 +69,10 @@ func (s *Storage) GetMediaFiltered(ctx context.Context, fb *pb.MediaFilteredRequ
 
 func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 	rows, err := s.db.NamedQueryContext(ctx, `INSERT INTO media
-		(media_type, title, release_year,
+		(media_type, title, release_year, first_air,
 		genres, seasons, caps, description, rating, image, fav, viewed)
-		VALUES (:media_type, :title, :release_year,:genres, :seasons,:caps,:description,:rating,
+		VALUES (:media_type, :title, :release_year, :first_air,
+		:genres, :seasons, :caps, :description, :rating,
 		:image,:fav,:viewed)
 		 ON CONFLICT (title) DO NOTHING RETURNING *`, m)
 	if err != nil {
@@ -93,9 +94,9 @@ func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 
 func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
 	_, err := s.db.NamedExecContext(ctx, `INSERT INTO media (media_type, title, release_year,
-		genres, seasons, caps, description, rating, image, fav, viewed)
-		VALUES (:media_type, :title, :release_year, :genres, :seasons, :caps, :description, :rating,
-		:image, :fav, :viewed)
+		first_air, genres, seasons, caps, description, rating, image, fav, viewed)
+		VALUES (:media_type, :title, :release_year, :first_air, :genres,
+		:seasons, :caps, :description, :rating, :image, :fav, :viewed)
 		ON CONFLICT (title) DO NOTHING`, m)
 	if err != nil {
 		return err
@@ -106,7 +107,8 @@ func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
 
 func (s *Storage) UpdateMedia(ctx context.Context, m *types.Media) error {
 	rows, err := s.db.NamedQueryContext(ctx, `UPDATE media SET 
-		media_type=:media_type, title=:title, release_year=:release_year, genres=:genres, seasons=:seasons,
+		media_type=:media_type, title=:title, release_year=:release_year,
+		first_air=:first_air, genres=:genres, seasons=:seasons,
 		caps=:caps, description=:description, rating=:rating, image=:image,
 		fav=:fav, viewed=:viewed WHERE id=:id RETURNING *`, m)
 	if err != nil {

@@ -20,8 +20,9 @@ type media struct {
 	Genres []struct {
 		Name string `json:"name"`
 	} `json:"genres"`
-	Rating int32 `json:"rating"`
-	Images struct {
+	Rating   int32 `json:"rating"`
+	FirstAir int32 `json:"firstAirYear"`
+	Images   struct {
 		Vertical struct {
 			Poster string `json:"w720"`
 		} `json:"verticalPoster"`
@@ -50,6 +51,7 @@ func (fd fetchedData) getShowList() []types.Media {
 		m.Description = d.Desc
 		m.Rating = d.Rating
 		m.Image = d.Images.Vertical.Poster
+		m.FirstAir = d.FirstAir
 
 		gl := make([]string, len(d.Genres))
 		for i, g := range d.Genres {
