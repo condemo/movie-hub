@@ -31,7 +31,7 @@ func NewStorage(db *sqlx.DB) *Storage {
 func (s *Storage) GetLastUpdates(ctx context.Context, limit int32) ([]*types.MediaResume, error) {
 	mr := []*types.MediaResume{}
 	err := s.db.SelectContext(ctx, &mr, `SELECT 
-		id, media_type, title, genres, description, image, fav, viewed, first_air
+		id, media_type, title, genres, description, image, fav, viewed
 		FROM media ORDER BY id DESC LIMIT $1`, limit)
 	if err != nil {
 		return nil, err
