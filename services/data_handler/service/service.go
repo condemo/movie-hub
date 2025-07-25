@@ -10,6 +10,7 @@ import (
 	"github.com/condemo/movie-hub/services/common/persistant"
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/condemo/movie-hub/services/common/store"
+	"github.com/condemo/movie-hub/services/common/utils"
 )
 
 type DataService struct {
@@ -85,6 +86,7 @@ func (s *DataService) GetOneMedia(ctx context.Context, id int64) (*pb.Media, err
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("%+v\n", media)
 
 	return media.GetProtoData(), nil
 }
@@ -108,6 +110,10 @@ func (s *DataService) DeleteMedia(ctx context.Context, id int64) error {
 }
 
 func (s *DataService) UpdateMedia(ctx context.Context, m *pb.Media) (*pb.Media, error) {
-	// TODO:
-	return nil, nil
+	media := utils.FromPBMediaToTypeMedia(m)
+	err := s.store.UpdateMedia(ctx, media)
+	if err != nil {
+		return nil, err
+	}
+	return media.GetProtoData(), nil
 }

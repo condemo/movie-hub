@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"time"
@@ -95,11 +96,37 @@ func (h *MediaHandler) getOneMedia(w http.ResponseWriter, r *http.Request) error
 }
 
 func (h *MediaHandler) updateMedia(w http.ResponseWriter, r *http.Request) error {
-	// TODO:
+	var media *pb.Media
+	ctx, cancel := context.WithTimeout(r.Context(), time.Second*8)
+	defer cancel()
+
+	err := json.NewDecoder(r.Body).Decode(media)
+	if err != nil {
+		return err
+	}
+
+	res, err := h.dataConn.UpdateMedia(ctx, &pb.UpdateMediaReq{
+		Media: media,
+	})
+	if err != nil {
+		return err
+	}
+
+	JsonResponse(w, http.StatusOK, res.GetMedia())
+
 	return nil
 }
 
 func (h *MediaHandler) deleteMedia(w http.ResponseWriter, r *http.Request) error {
-	// TODO:
+	ctx, cancel := context.WithTimeout(r.Context(), time.Second*5)
+	defer cancel()
+
+	_, err := h.dataConn.DeleteMedia(ctx, &pb.MediaRequest{})
+	if err != nil {
+		return err
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+
 	return nil
 }

@@ -54,3 +54,11 @@ func (h *DataHandler) DeleteMedia(ctx context.Context, mr *pb.MediaRequest) (*em
 	}
 	return &emptypb.Empty{}, nil
 }
+
+func (h *DataHandler) UpdateMedia(ctx context.Context, ur *pb.UpdateMediaReq) (*pb.MediaResponse, error) {
+	res, err := h.dataService.UpdateMedia(ctx, ur.GetMedia())
+	if err != nil {
+		return nil, err
+	}
+	return &pb.MediaResponse{Media: res}, nil
+}

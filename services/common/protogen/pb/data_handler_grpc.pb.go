@@ -24,6 +24,7 @@ const (
 	DataHandler_GetOneMedia_FullMethodName      = "/data_handler.DataHandler/GetOneMedia"
 	DataHandler_GetMediaFiltered_FullMethodName = "/data_handler.DataHandler/GetMediaFiltered"
 	DataHandler_DeleteMedia_FullMethodName      = "/data_handler.DataHandler/DeleteMedia"
+	DataHandler_UpdateMedia_FullMethodName      = "/data_handler.DataHandler/UpdateMedia"
 )
 
 // DataHandlerClient is the client API for DataHandler service.
@@ -34,6 +35,7 @@ type DataHandlerClient interface {
 	GetOneMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*Media, error)
 	GetMediaFiltered(ctx context.Context, in *MediaFilteredRequest, opts ...grpc.CallOption) (*MediaListResponse, error)
 	DeleteMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateMedia(ctx context.Context, in *UpdateMediaReq, opts ...grpc.CallOption) (*MediaResponse, error)
 }
 
 type dataHandlerClient struct {
@@ -84,6 +86,16 @@ func (c *dataHandlerClient) DeleteMedia(ctx context.Context, in *MediaRequest, o
 	return out, nil
 }
 
+func (c *dataHandlerClient) UpdateMedia(ctx context.Context, in *UpdateMediaReq, opts ...grpc.CallOption) (*MediaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MediaResponse)
+	err := c.cc.Invoke(ctx, DataHandler_UpdateMedia_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DataHandlerServer is the server API for DataHandler service.
 // All implementations must embed UnimplementedDataHandlerServer
 // for forward compatibility.
@@ -92,6 +104,7 @@ type DataHandlerServer interface {
 	GetOneMedia(context.Context, *MediaRequest) (*Media, error)
 	GetMediaFiltered(context.Context, *MediaFilteredRequest) (*MediaListResponse, error)
 	DeleteMedia(context.Context, *MediaRequest) (*emptypb.Empty, error)
+	UpdateMedia(context.Context, *UpdateMediaReq) (*MediaResponse, error)
 	mustEmbedUnimplementedDataHandlerServer()
 }
 
@@ -113,6 +126,9 @@ func (UnimplementedDataHandlerServer) GetMediaFiltered(context.Context, *MediaFi
 }
 func (UnimplementedDataHandlerServer) DeleteMedia(context.Context, *MediaRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMedia not implemented")
+}
+func (UnimplementedDataHandlerServer) UpdateMedia(context.Context, *UpdateMediaReq) (*MediaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMedia not implemented")
 }
 func (UnimplementedDataHandlerServer) mustEmbedUnimplementedDataHandlerServer() {}
 func (UnimplementedDataHandlerServer) testEmbeddedByValue()                     {}
@@ -207,6 +223,24 @@ func _DataHandler_DeleteMedia_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DataHandler_UpdateMedia_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMediaReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataHandlerServer).UpdateMedia(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataHandler_UpdateMedia_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataHandlerServer).UpdateMedia(ctx, req.(*UpdateMediaReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DataHandler_ServiceDesc is the grpc.ServiceDesc for DataHandler service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -229,6 +263,10 @@ var DataHandler_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteMedia",
 			Handler:    _DataHandler_DeleteMedia_Handler,
+		},
+		{
+			MethodName: "UpdateMedia",
+			Handler:    _DataHandler_UpdateMedia_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
