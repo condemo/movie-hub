@@ -129,9 +129,10 @@ type Media struct {
 	Caps          int32                  `protobuf:"varint,8,opt,name=caps,proto3" json:"caps,omitempty"`
 	Description   string                 `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
 	Rating        int32                  `protobuf:"varint,10,opt,name=rating,proto3" json:"rating,omitempty"`
-	Image         string                 `protobuf:"bytes,11,opt,name=image,proto3" json:"image,omitempty"`
-	Fav           bool                   `protobuf:"varint,12,opt,name=fav,proto3" json:"fav,omitempty"`
-	Viewed        bool                   `protobuf:"varint,13,opt,name=viewed,proto3" json:"viewed,omitempty"`
+	Runtime       int32                  `protobuf:"varint,11,opt,name=runtime,proto3" json:"runtime,omitempty"`
+	Image         string                 `protobuf:"bytes,12,opt,name=image,proto3" json:"image,omitempty"`
+	Fav           bool                   `protobuf:"varint,13,opt,name=fav,proto3" json:"fav,omitempty"`
+	Viewed        bool                   `protobuf:"varint,14,opt,name=viewed,proto3" json:"viewed,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -232,6 +233,13 @@ func (x *Media) GetDescription() string {
 func (x *Media) GetRating() int32 {
 	if x != nil {
 		return x.Rating
+	}
+	return 0
+}
+
+func (x *Media) GetRuntime() int32 {
+	if x != nil {
+		return x.Runtime
 	}
 	return 0
 }
@@ -641,7 +649,7 @@ var File_data_handler_proto protoreflect.FileDescriptor
 
 const file_data_handler_proto_rawDesc = "" +
 	"\n" +
-	"\x12data_handler.proto\x12\fdata_handler\x1a\x1bgoogle/protobuf/empty.proto\"\xb1\x02\n" +
+	"\x12data_handler.proto\x12\fdata_handler\x1a\x1bgoogle/protobuf/empty.proto\"\xcb\x02\n" +
 	"\x05Media\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
@@ -653,10 +661,11 @@ const file_data_handler_proto_rawDesc = "" +
 	"\x04caps\x18\b \x01(\x05R\x04caps\x12 \n" +
 	"\vdescription\x18\t \x01(\tR\vdescription\x12\x16\n" +
 	"\x06rating\x18\n" +
-	" \x01(\x05R\x06rating\x12\x14\n" +
-	"\x05image\x18\v \x01(\tR\x05image\x12\x10\n" +
-	"\x03fav\x18\f \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\r \x01(\bR\x06viewed\"\xc1\x01\n" +
+	" \x01(\x05R\x06rating\x12\x18\n" +
+	"\aruntime\x18\v \x01(\x05R\aruntime\x12\x14\n" +
+	"\x05image\x18\f \x01(\tR\x05image\x12\x10\n" +
+	"\x03fav\x18\r \x01(\bR\x03fav\x12\x16\n" +
+	"\x06viewed\x18\x0e \x01(\bR\x06viewed\"\xc1\x01\n" +
 	"\vMediaResume\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +

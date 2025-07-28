@@ -70,9 +70,9 @@ func (s *Storage) GetMediaFiltered(ctx context.Context, fb *pb.MediaFilteredRequ
 func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 	rows, err := s.db.NamedQueryContext(ctx, `INSERT INTO media
 		(media_type, title, release_year, first_air,
-		genres, seasons, caps, description, rating, image, fav, viewed)
+		genres, seasons, caps, description, rating, runtime, image, fav, viewed)
 		VALUES (:media_type, :title, :release_year, :first_air,
-		:genres, :seasons, :caps, :description, :rating,
+		:genres, :seasons, :caps, :description, :rating, :runtime,
 		:image,:fav,:viewed)
 		 ON CONFLICT (title) DO NOTHING RETURNING *`, m)
 	if err != nil {
@@ -93,10 +93,11 @@ func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 }
 
 func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
-	_, err := s.db.NamedExecContext(ctx, `INSERT INTO media (media_type, title, release_year,
-		first_air, genres, seasons, caps, description, rating, image, fav, viewed)
+	_, err := s.db.NamedExecContext(ctx, `INSERT INTO media (media_type, title,
+		release_year,	first_air, genres, seasons, caps, description,
+		rating, runtime, image, fav, viewed)
 		VALUES (:media_type, :title, :release_year, :first_air, :genres,
-		:seasons, :caps, :description, :rating, :image, :fav, :viewed)
+		:seasons, :caps, :description, :rating, :runtime, :image, :fav, :viewed)
 		ON CONFLICT (title) DO NOTHING`, m)
 	if err != nil {
 		return err
@@ -109,8 +110,8 @@ func (s *Storage) UpdateMedia(ctx context.Context, m *types.Media) error {
 	rows, err := s.db.NamedQueryContext(ctx, `UPDATE media SET 
 		media_type=:media_type, title=:title, release_year=:release_year,
 		first_air=:first_air, genres=:genres, seasons=:seasons,
-		caps=:caps, description=:description, rating=:rating, image=:image,
-		fav=:fav, viewed=:viewed WHERE id=:id RETURNING *`, m)
+		caps=:caps, description=:description, rating=:rating, runtime=:runtime,
+		image=:image, fav=:fav, viewed=:viewed WHERE id=:id RETURNING *`, m)
 	if err != nil {
 		return err
 	}

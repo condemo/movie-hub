@@ -34,9 +34,10 @@ message Media {
   int32 caps = 8;
   string description = 9;
   int32 rating = 10;
-  string image = 11;
-  bool fav = 12;
-  bool viewed = 13;
+  int32 runtime = 11;
+  string image = 12;
+  bool fav = 13;
+  bool viewed = 14;
 }
 
 message MediaResume {

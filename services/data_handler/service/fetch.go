@@ -29,6 +29,7 @@ type media struct {
 	} `json:"imageSet"`
 	Seasons int32 `json:"seasonCount"`
 	Caps    int32 `json:"episodeCount"`
+	Runtime int32 `json:"runtime"`
 }
 
 type fetchedData struct {
@@ -52,6 +53,7 @@ func (fd fetchedData) getShowList() []types.Media {
 		m.Rating = d.Rating
 		m.Image = d.Images.Vertical.Poster
 		m.FirstAir = d.FirstAir
+		m.Runtime = d.Runtime
 
 		gl := make([]string, len(d.Genres))
 		for i, g := range d.Genres {

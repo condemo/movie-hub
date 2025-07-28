@@ -13,6 +13,7 @@ type Media struct {
 	Caps        int32  `db:"caps"`
 	Description string `db:"description"`
 	Rating      int32  `db:"rating"`
+	Runtime     int32  `db:"runtime"`
 	Image       string `db:"image"`
 	Fav         bool   `db:"fav"`
 	Viewed      bool   `db:"viewed"`
@@ -30,6 +31,7 @@ func (m Media) GetProtoData() *pb.Media {
 		Caps:        m.Caps,
 		Description: m.Description,
 		Rating:      m.Rating,
+		Runtime:     m.Runtime,
 		Image:       m.Image,
 		Fav:         m.Fav,
 		Viewed:      m.Viewed,
