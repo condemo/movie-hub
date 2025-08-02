@@ -14,6 +14,7 @@ import (
 	"github.com/condemo/movie-hub/services/rest/api/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 )
 
 type ApiServer struct {
@@ -28,7 +29,13 @@ func NewApiServer(addr string) *ApiServer {
 
 func (s *ApiServer) Run() {
 	r := chi.NewRouter()
-	r.Use(middleware.Logger)
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		// AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}), middleware.Logger)
 
 	server := http.Server{
 		Addr:         s.addr,
