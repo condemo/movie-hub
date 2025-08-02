@@ -92,7 +92,7 @@ func newGeneralConf() *generalConf {
 		defer f.Close()
 
 		gc.UpdateTimeInterval = time.Duration(time.Hour * 24 * 3)
-		gc.DefaultDataLimit = 20
+		gc.DefaultDataLimit = 50
 
 		err = json.NewEncoder(f).Encode(gc)
 		if err != nil {
