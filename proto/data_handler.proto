@@ -38,6 +38,7 @@ message Media {
   string image = 12;
   bool fav = 13;
   bool viewed = 14;
+  string thumbnail = 15;
 }
 
 message MediaResume {
@@ -46,7 +47,7 @@ message MediaResume {
   string title = 3;
   string genres = 4;
   string description = 5;
-  string image = 6;
+  string thumbnail = 6;
   bool fav = 7;
   bool viewed = 8;
   int32 rating = 9;

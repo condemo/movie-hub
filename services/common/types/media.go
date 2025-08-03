@@ -14,6 +14,7 @@ type Media struct {
 	Description string `db:"description"`
 	Rating      int32  `db:"rating"`
 	Runtime     int32  `db:"runtime"`
+	Thumbnail   string `db:"thumbnail"`
 	Image       string `db:"image"`
 	Fav         bool   `db:"fav"`
 	Viewed      bool   `db:"viewed"`
@@ -32,6 +33,7 @@ func (m Media) GetProtoData() *pb.Media {
 		Description: m.Description,
 		Rating:      m.Rating,
 		Runtime:     m.Runtime,
+		Thumbnail:   m.Thumbnail,
 		Image:       m.Image,
 		Fav:         m.Fav,
 		Viewed:      m.Viewed,
@@ -44,7 +46,7 @@ type MediaResume struct {
 	Title       string `db:"title"`
 	Genres      string `db:"genres"`
 	Description string `db:"description"`
-	Image       string `db:"image"`
+	Thumbnail   string `db:"thumbnail"`
 	Rating      int32  `db:"rating"`
 	Fav         bool   `db:"fav"`
 	Viewed      bool   `db:"viewed"`
@@ -57,7 +59,7 @@ func (m MediaResume) GetProtoData() *pb.MediaResume {
 		Title:       m.Title,
 		Genres:      m.Genres,
 		Description: m.Description,
-		Image:       m.Image,
+		Thumbnail:   m.Thumbnail,
 		Rating:      m.Rating,
 		Fav:         m.Fav,
 		Viewed:      m.Viewed,

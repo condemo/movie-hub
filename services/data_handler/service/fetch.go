@@ -23,8 +23,11 @@ type media struct {
 	Rating   int32 `json:"rating"`
 	FirstAir int32 `json:"firstAirYear"`
 	Images   struct {
-		Vertical struct {
+		Horizontal struct {
 			Poster string `json:"w720"`
+		} `json:"horizontalPoster"`
+		Vertical struct {
+			Thumbnail string `json:"w360"`
 		} `json:"verticalPoster"`
 	} `json:"imageSet"`
 	Seasons int32 `json:"seasonCount"`
@@ -51,7 +54,8 @@ func (fd fetchedData) getShowList() []types.Media {
 		m.Year = d.Year
 		m.Description = d.Desc
 		m.Rating = d.Rating
-		m.Image = d.Images.Vertical.Poster
+		m.Image = d.Images.Horizontal.Poster
+		m.Thumbnail = d.Images.Vertical.Thumbnail
 		m.FirstAir = d.FirstAir
 		m.Runtime = d.Runtime
 
