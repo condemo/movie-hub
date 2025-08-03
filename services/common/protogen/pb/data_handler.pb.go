@@ -275,6 +275,7 @@ type MediaResume struct {
 	Image         string                 `protobuf:"bytes,6,opt,name=image,proto3" json:"image,omitempty"`
 	Fav           bool                   `protobuf:"varint,7,opt,name=fav,proto3" json:"fav,omitempty"`
 	Viewed        bool                   `protobuf:"varint,8,opt,name=viewed,proto3" json:"viewed,omitempty"`
+	Rating        int32                  `protobuf:"varint,9,opt,name=rating,proto3" json:"rating,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -363,6 +364,13 @@ func (x *MediaResume) GetViewed() bool {
 		return x.Viewed
 	}
 	return false
+}
+
+func (x *MediaResume) GetRating() int32 {
+	if x != nil {
+		return x.Rating
+	}
+	return 0
 }
 
 type LastUpdatesRequest struct {
@@ -665,7 +673,7 @@ const file_data_handler_proto_rawDesc = "" +
 	"\aruntime\x18\v \x01(\x05R\aruntime\x12\x14\n" +
 	"\x05image\x18\f \x01(\tR\x05image\x12\x10\n" +
 	"\x03fav\x18\r \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\x0e \x01(\bR\x06viewed\"\xc1\x01\n" +
+	"\x06viewed\x18\x0e \x01(\bR\x06viewed\"\xd9\x01\n" +
 	"\vMediaResume\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
@@ -674,7 +682,8 @@ const file_data_handler_proto_rawDesc = "" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x14\n" +
 	"\x05image\x18\x06 \x01(\tR\x05image\x12\x10\n" +
 	"\x03fav\x18\a \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\b \x01(\bR\x06viewed\"f\n" +
+	"\x06viewed\x18\b \x01(\bR\x06viewed\x12\x16\n" +
+	"\x06rating\x18\t \x01(\x05R\x06rating\"f\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\x12\x19\n" +
 	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01B\b\n" +

@@ -45,6 +45,7 @@ type MediaResume struct {
 	Genres      string `db:"genres"`
 	Description string `db:"description"`
 	Image       string `db:"image"`
+	Rating      int32  `db:"rating"`
 	Fav         bool   `db:"fav"`
 	Viewed      bool   `db:"viewed"`
 }
@@ -57,6 +58,7 @@ func (m MediaResume) GetProtoData() *pb.MediaResume {
 		Genres:      m.Genres,
 		Description: m.Description,
 		Image:       m.Image,
+		Rating:      m.Rating,
 		Fav:         m.Fav,
 		Viewed:      m.Viewed,
 	}

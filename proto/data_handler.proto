@@ -49,6 +49,7 @@ message MediaResume {
   string image = 6;
   bool fav = 7;
   bool viewed = 8;
+  int32 rating = 9;
 }
 
 message LastUpdatesRequest {
