@@ -14,8 +14,6 @@ import (
 
 var mockupDB *Storage
 
-const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 var mockupMovie types.Media = types.Media{
 	Type:        "movie",
 	Title:       "Test Movie",
@@ -25,20 +23,8 @@ var mockupMovie types.Media = types.Media{
 	Caps:        0,
 	Description: "Some desc",
 	Rating:      78,
-	Image:       "image.jpg",
-	Fav:         true,
-	Viewed:      false,
-}
-
-var mockupMovie2 types.Media = types.Media{
-	Type:        "movie",
-	Title:       "Test Movie 2",
-	Year:        1955,
-	Genres:      "acción,fantasía",
-	Seasons:     0,
-	Caps:        0,
-	Description: "Some desc",
-	Rating:      90,
+	Runtime:     147,
+	Thumbnail:   "thumbnail.jpg",
 	Image:       "image.jpg",
 	Fav:         true,
 	Viewed:      false,
@@ -47,25 +33,16 @@ var mockupMovie2 types.Media = types.Media{
 var mockupSerie types.Media = types.Media{
 	Type:        "serie",
 	Title:       "Test Serie",
-	Year:        1993,
 	Genres:      "acción,fantasía",
 	Seasons:     2,
 	Caps:        21,
+	FirstAir:    1992,
 	Description: "Some desc",
 	Rating:      91,
+	Thumbnail:   "image",
 	Image:       "image.jpg",
 	Fav:         false,
 	Viewed:      true,
-}
-
-var mockupResume types.MediaResume = types.MediaResume{
-	Type:        "movie",
-	Title:       "Fake Movie",
-	Genres:      "acción,fantasía",
-	Description: "Some desc",
-	Image:       "image.jpg",
-	Fav:         true,
-	Viewed:      false,
 }
 
 func TestMain(m *testing.M) {
