@@ -96,7 +96,7 @@ func (h *MediaHandler) getOneMedia(w http.ResponseWriter, r *http.Request) error
 }
 
 func (h *MediaHandler) updateMedia(w http.ResponseWriter, r *http.Request) error {
-	var media *pb.Media
+	media := new(pb.Media)
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*8)
 	defer cancel()
 

@@ -30,6 +30,8 @@ func FromPBMediaToTypeMedia(pb *pb.Media) *types.Media {
 		Caps:        pb.GetCaps(),
 		Description: pb.GetDescription(),
 		Rating:      pb.GetRating(),
+		Runtime:     pb.GetRuntime(),
+		Thumbnail:   pb.GetThumbnail(),
 		Image:       pb.GetImage(),
 		Fav:         pb.GetFav(),
 		Viewed:      pb.GetViewed(),
