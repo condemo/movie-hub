@@ -30,6 +30,7 @@ func (h *MediaHandler) RegisterRoutes() http.Handler {
 	r.Get("/", MakeHandler(h.getLastUpdates))
 	r.Get("/{id}", MakeHandler(h.getOneMedia))
 	r.Put("/", MakeHandler(h.updateMedia))
+	r.Put("/resume", MakeHandler(h.updateByMediaResume))
 	r.Delete("/{id}", MakeHandler(h.deleteMedia))
 	return r
 }
@@ -127,6 +128,26 @@ func (h *MediaHandler) deleteMedia(w http.ResponseWriter, r *http.Request) error
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+
+	return nil
+}
+
+func (h *MediaHandler) updateByMediaResume(w http.ResponseWriter, r *http.Request) error {
+	mc := pb.MediaUpdateBool{}
+	ctx, cancel := context.WithTimeout(r.Context(), time.Second*5)
+	defer cancel()
+
+	err := json.NewDecoder(r.Body).Decode(&mc)
+	if err != nil {
+		return err
+	}
+
+	res, err := h.dataConn.UpdateMediaBooleans(ctx, &mc)
+	if err != nil {
+		return err
+	}
+
+	JsonResponse(w, http.StatusOK, res)
 
 	return nil
 }

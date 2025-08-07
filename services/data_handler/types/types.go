@@ -12,4 +12,5 @@ type ServiceDataHandler interface {
 	GetMediaFiltered(context.Context, *pb.MediaFilteredRequest) (*pb.MediaListResponse, error)
 	DeleteMedia(context.Context, int64) error
 	UpdateMedia(context.Context, *pb.Media) (*pb.Media, error)
+	UpdateMediaBooleans(context.Context, *pb.MediaUpdateBool) (*pb.MediaResume, error)
 }

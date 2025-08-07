@@ -72,6 +72,31 @@ func TestUpdateMedia(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestUpdateMediaBooleans(t *testing.T) {
+	mb := pb.MediaUpdateBool{
+		Id:     mockupMovie.Id,
+		Viewed: true,
+		Fav:    true,
+	}
+
+	expected := &types.MediaResume{
+		Id:          mockupMovie.Id,
+		Type:        mockupMovie.Type,
+		Title:       mockupMovie.Title,
+		Genres:      mockupMovie.Genres,
+		Description: mockupMovie.Description,
+		Thumbnail:   mockupMovie.Thumbnail,
+		Rating:      mockupMovie.Rating,
+		Fav:         mb.GetFav(),
+		Viewed:      mb.GetViewed(),
+	}
+
+	data, err := mockupDB.UpdateMediaBooleans(context.Background(), &mb)
+
+	require.NoError(t, err)
+	assert.Equal(t, expected, data)
+}
+
 func TestMediaFiltered(t *testing.T) {
 	media, err := mockupDB.GetMediaFiltered(context.Background(), &pb.MediaFilteredRequest{
 		Filter: pb.FilterBy_fav,

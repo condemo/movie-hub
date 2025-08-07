@@ -116,3 +116,12 @@ func (s *DataService) UpdateMedia(ctx context.Context, m *pb.Media) (*pb.Media, 
 	}
 	return media.GetProtoData(), nil
 }
+
+func (s *DataService) UpdateMediaBooleans(ctx context.Context, mb *pb.MediaUpdateBool) (*pb.MediaResume, error) {
+	data, err := s.store.UpdateMediaBooleans(ctx, mb)
+	if err != nil {
+		return nil, err
+	}
+
+	return data.GetProtoData(), nil
+}

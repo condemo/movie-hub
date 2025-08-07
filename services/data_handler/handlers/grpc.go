@@ -62,3 +62,12 @@ func (h *DataHandler) UpdateMedia(ctx context.Context, ur *pb.UpdateMediaReq) (*
 	}
 	return &pb.MediaResponse{Media: res}, nil
 }
+
+func (h *DataHandler) UpdateMediaBooleans(ctx context.Context, mb *pb.MediaUpdateBool) (*pb.MediaResume, error) {
+	res, err := h.dataService.UpdateMediaBooleans(ctx, mb)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}

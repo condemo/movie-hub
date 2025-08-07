@@ -18,6 +18,7 @@ type Store interface {
 	InsertBulkMedia(context.Context, []types.Media) error
 	DeleteMedia(context.Context, int64) error
 	UpdateMedia(context.Context, *types.Media) error
+	UpdateMediaBooleans(context.Context, *pb.MediaUpdateBool) (*types.MediaResume, error)
 }
 
 type Storage struct {
@@ -121,6 +122,24 @@ func (s *Storage) UpdateMedia(ctx context.Context, m *types.Media) error {
 	}
 
 	return nil
+}
+
+func (s Storage) UpdateMediaBooleans(ctx context.Context, mb *pb.MediaUpdateBool) (*types.MediaResume, error) {
+	rows, err := s.db.NamedQueryContext(ctx, `UPDATE media SET
+		fav=:fav, viewed=:viewed WHERE id=:id
+		RETURNING id, media_type, title, genres, description, thumbnail, rating, fav, viewed`, mb)
+	if err != nil {
+		return nil, err
+	}
+
+	var mr types.MediaResume
+	for rows.Next() {
+		err := rows.StructScan(&mr)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return &mr, nil
 }
 
 func (s *Storage) DeleteMedia(ctx context.Context, id int64) error {
