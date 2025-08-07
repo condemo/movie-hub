@@ -10,6 +10,7 @@ service DataHandler {
   rpc GetMediaFiltered(MediaFilteredRequest) returns (MediaListResponse) {}
   rpc DeleteMedia(MediaRequest) returns (google.protobuf.Empty) {}
   rpc UpdateMedia(UpdateMediaReq) returns (MediaResponse) {}
+  rpc UpdateMediaBooleans(MediaUpdateBool) returns (MediaResume) {}
 }
 
 enum MediaType {
@@ -51,6 +52,12 @@ message MediaResume {
   bool fav = 7;
   bool viewed = 8;
   int32 rating = 9;
+}
+
+message MediaUpdateBool {
+  int64 id = 1;
+  bool viewed = 2;
+  bool fav = 3;
 }
 
 message LastUpdatesRequest {
