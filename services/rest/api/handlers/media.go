@@ -30,7 +30,7 @@ func (h *MediaHandler) RegisterRoutes() http.Handler {
 	r.Get("/", MakeHandler(h.getLastUpdates))
 	r.Get("/{id}", MakeHandler(h.getOneMedia))
 	r.Put("/", MakeHandler(h.updateMedia))
-	r.Put("/resume", MakeHandler(h.updateByMediaResume))
+	r.Put("/resume", MakeHandler(h.updateMediaBooleans))
 	r.Delete("/{id}", MakeHandler(h.deleteMedia))
 	return r
 }
@@ -132,7 +132,7 @@ func (h *MediaHandler) deleteMedia(w http.ResponseWriter, r *http.Request) error
 	return nil
 }
 
-func (h *MediaHandler) updateByMediaResume(w http.ResponseWriter, r *http.Request) error {
+func (h *MediaHandler) updateMediaBooleans(w http.ResponseWriter, r *http.Request) error {
 	mc := pb.MediaUpdateBool{}
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*5)
 	defer cancel()
