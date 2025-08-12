@@ -47,6 +47,14 @@ func (h *MediaHandler) getLastUpdates(w http.ResponseWriter, r *http.Request) er
 		*limit = config.General.DefaultDataLimit
 	}
 
+	offset := new(int32)
+	of, err := strconv.ParseInt(r.URL.Query().Get("offset"), 10, 32)
+	if err == nil {
+		*offset = int32(of)
+	} else {
+		*offset = 0
+	}
+
 	filter := r.URL.Query().Get("filter")
 	if filter != "" {
 		media, err := h.dataConn.GetMediaFiltered(ctx, &pb.MediaFilteredRequest{
@@ -65,8 +73,9 @@ func (h *MediaHandler) getLastUpdates(w http.ResponseWriter, r *http.Request) er
 	}
 
 	data, err := h.dataConn.GetLastUpdates(ctx, &pb.LastUpdatesRequest{
-		Type:  pb.MediaType_Both,
-		Limit: limit,
+		Type:   pb.MediaType_Both,
+		Limit:  limit,
+		Offset: offset,
 	})
 	if err != nil {
 		return err

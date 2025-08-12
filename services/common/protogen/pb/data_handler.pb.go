@@ -445,6 +445,7 @@ type LastUpdatesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Type          MediaType              `protobuf:"varint,1,opt,name=type,proto3,enum=data_handler.MediaType" json:"type,omitempty"`
 	Limit         *int32                 `protobuf:"varint,2,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
+	Offset        *int32                 `protobuf:"varint,3,opt,name=offset,proto3,oneof" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -489,6 +490,13 @@ func (x *LastUpdatesRequest) GetType() MediaType {
 func (x *LastUpdatesRequest) GetLimit() int32 {
 	if x != nil && x.Limit != nil {
 		return *x.Limit
+	}
+	return 0
+}
+
+func (x *LastUpdatesRequest) GetOffset() int32 {
+	if x != nil && x.Offset != nil {
+		return *x.Offset
 	}
 	return 0
 }
@@ -756,11 +764,13 @@ const file_data_handler_proto_rawDesc = "" +
 	"\x0fMediaUpdateBool\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
 	"\x06viewed\x18\x02 \x01(\bR\x06viewed\x12\x10\n" +
-	"\x03fav\x18\x03 \x01(\bR\x03fav\"f\n" +
+	"\x03fav\x18\x03 \x01(\bR\x03fav\"\x8e\x01\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\x12\x19\n" +
-	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01B\b\n" +
-	"\x06_limit\"\x1e\n" +
+	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01\x12\x1b\n" +
+	"\x06offset\x18\x03 \x01(\x05H\x01R\x06offset\x88\x01\x01B\b\n" +
+	"\x06_limitB\t\n" +
+	"\a_offset\"\x1e\n" +
 	"\fMediaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\";\n" +
 	"\x0eUpdateMediaReq\x12)\n" +
