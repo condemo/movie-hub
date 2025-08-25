@@ -55,6 +55,11 @@ func (h *MediaHandler) getLastUpdates(w http.ResponseWriter, r *http.Request) er
 		*offset = 0
 	}
 
+	order := r.URL.Query().Get("order")
+	if order == "" {
+		order = "id"
+	}
+
 	filter := r.URL.Query().Get("filter")
 	if filter != "" {
 		media, err := h.dataConn.GetMediaFiltered(ctx, &pb.MediaFilteredRequest{
@@ -76,6 +81,7 @@ func (h *MediaHandler) getLastUpdates(w http.ResponseWriter, r *http.Request) er
 		Type:   pb.MediaType_Both,
 		Limit:  limit,
 		Offset: offset,
+		Order:  order,
 	})
 	if err != nil {
 		return err

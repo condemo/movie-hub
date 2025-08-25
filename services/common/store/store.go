@@ -11,7 +11,7 @@ import (
 )
 
 type Store interface {
-	GetLastUpdates(context.Context, int32, int32) ([]*types.MediaResume, error)
+	GetLastUpdates(context.Context, *pb.LastUpdatesRequest) ([]*types.MediaResume, error)
 	GetOneMedia(context.Context, int64) (*types.Media, error)
 	GetMediaFiltered(context.Context, *pb.MediaFilteredRequest) ([]*types.MediaResume, error)
 	InsertMedia(context.Context, *types.Media) error
@@ -29,11 +29,12 @@ func NewStorage(db *sqlx.DB) *Storage {
 	return &Storage{db: db}
 }
 
-func (s *Storage) GetLastUpdates(ctx context.Context, limit int32, offset int32) ([]*types.MediaResume, error) {
+func (s *Storage) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest) ([]*types.MediaResume, error) {
 	mr := []*types.MediaResume{}
-	err := s.db.SelectContext(ctx, &mr, `SELECT 
+	q := fmt.Sprintf(`SELECT 
 		id, media_type, title, genres, description, thumbnail, fav, viewed, rating
-		FROM media ORDER BY id DESC LIMIT $1 OFFSET $2`, limit, offset)
+		FROM media ORDER BY %s DESC LIMIT $1 OFFSET $2`, lu.Order)
+	err := s.db.SelectContext(ctx, &mr, q, lu.GetLimit(), lu.GetOffset())
 	if err != nil {
 		return nil, err
 	}

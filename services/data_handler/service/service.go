@@ -66,7 +66,7 @@ func (s *DataService) updateData() {
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context, ml *pb.LastUpdatesRequest) (*pb.MediaListResponse, error) {
-	data, err := s.store.GetLastUpdates(ctx, ml.GetLimit(), ml.GetOffset())
+	data, err := s.store.GetLastUpdates(ctx, ml)
 	if err != nil {
 		return nil, err
 	}

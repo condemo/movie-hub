@@ -64,6 +64,7 @@ message LastUpdatesRequest {
   MediaType type = 1;
   optional int32 limit = 2;
   optional int32 offset = 3;
+  string order = 4;
 }
 
 
