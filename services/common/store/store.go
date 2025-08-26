@@ -45,7 +45,6 @@ func (s *Storage) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest)
 	q := fmt.Sprintf(`SELECT 
 		id, media_type, title, genres, description, thumbnail, fav, viewed, rating
 		FROM media %s ORDER BY %s DESC LIMIT $1 OFFSET $2`, whereString, lu.Order)
-	fmt.Println(q)
 	err := s.db.SelectContext(ctx, &mr, q, lu.GetLimit(), lu.GetOffset())
 	if err != nil {
 		return nil, err
