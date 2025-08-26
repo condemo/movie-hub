@@ -31,9 +31,20 @@ func NewStorage(db *sqlx.DB) *Storage {
 
 func (s *Storage) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest) ([]*types.MediaResume, error) {
 	mr := []*types.MediaResume{}
+
+	var whereString string
+	switch lu.GetType() {
+	case pb.MediaType_Movie:
+		whereString = "WHERE media_type='movie'"
+	case pb.MediaType_Serie:
+		whereString = "WHERE media_type='series'"
+	default:
+		whereString = ""
+	}
+
 	q := fmt.Sprintf(`SELECT 
 		id, media_type, title, genres, description, thumbnail, fav, viewed, rating
-		FROM media ORDER BY %s DESC LIMIT $1 OFFSET $2`, lu.Order)
+		FROM media %s ORDER BY %s DESC LIMIT $1 OFFSET $2`, whereString, lu.Order)
 	err := s.db.SelectContext(ctx, &mr, q, lu.GetLimit(), lu.GetOffset())
 	if err != nil {
 		return nil, err
