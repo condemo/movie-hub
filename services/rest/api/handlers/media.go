@@ -77,8 +77,13 @@ func (h *MediaHandler) getLastUpdates(w http.ResponseWriter, r *http.Request) er
 		return nil
 	}
 
+	mediaType := r.URL.Query().Get("type")
+	if mediaType == "" {
+		mediaType = "Both"
+	}
+
 	data, err := h.dataConn.GetLastUpdates(ctx, &pb.LastUpdatesRequest{
-		Type:   pb.MediaType_Both,
+		Type:   pb.MediaType(pb.MediaType_value[mediaType]),
 		Limit:  limit,
 		Offset: offset,
 		Order:  order,
