@@ -91,7 +91,8 @@ func newGeneralConf() *generalConf {
 		}
 		defer f.Close()
 
-		gc.UpdateTimeInterval = time.Duration(time.Hour * 24 * 3)
+		// 1 Week
+		gc.UpdateTimeInterval = time.Duration(time.Hour * 24 * 7)
 		gc.DefaultDataLimit = 50
 
 		err = json.NewEncoder(f).Encode(gc)

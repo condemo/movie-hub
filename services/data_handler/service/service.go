@@ -34,7 +34,7 @@ func (s *DataService) Init() {
 	s.nextUpdateTimer = time.NewTicker(config.General.UpdateTimeInterval)
 
 	// FIX: descomentar cuando el servicio sea autosuficiente
-	// s.updateData()
+	s.updateData()
 
 	go func() {
 		for {
