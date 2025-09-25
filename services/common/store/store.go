@@ -107,7 +107,7 @@ func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 
 func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
 	_, err := s.db.NamedExecContext(ctx, `INSERT INTO media (media_type, title,
-		release_year,	first_air, genres, seasons, caps, description,
+		release_year, first_air, genres, seasons, caps, description,
 		rating, runtime,thumbnail , image, fav, viewed)
 		VALUES (:media_type, :title, :release_year, :first_air, :genres,
 		:seasons, :caps, :description, :rating, :runtime, :thumbnail, :image, :fav, :viewed)

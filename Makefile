@@ -1,5 +1,5 @@
 binary-name=movie-hub
-data-service=data-service
+data-service=movie-data
 
 build:
 	@GOOS=windows GOARCH=amd64 go build -o ./bin/${binary-name}-win.exe ./cmd/main.go
@@ -10,10 +10,15 @@ run: build
 	@./bin/${binary-name}-linux
 
 arm-build:
-	@GOOS=linux GOARCH=arm64 go build -o ./bin/${binary-name}-arm64 ./cmd/main.go
+	@GOOS=linux GOARCH=arm64 go build -o ./bin/${binary-name}-arm64 ./services/rest/cmd/main.go
+	@GOOS=linux GOARCH=arm64 go build -o ./bin/${data-service}-arm64 ./services/data_handler/cmd/main.go
 
 arm-run: arm-build
 	@./bin/${binary-name}-arm64
+
+arm-install: arm-build
+	@cp -f ./bin/${binary-name}-arm64 ~/services/movie-hub/${binary-name}
+	@cp -f ./bin/${data-service}-arm64 ~/services/movie-hub/${data-service}
 
 protogen:
 	@protoc \
