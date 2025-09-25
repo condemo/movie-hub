@@ -51,18 +51,19 @@ func (s *DataService) updateData() {
 		log.Fatal(err)
 	}
 
-	err = s.store.InsertBulkMedia(context.Background(), data.getShowList())
-	if err != nil {
-		log.Fatal("DB ERROR ->", err)
+	if len(data.getShowList()) > 0 {
+		err = s.store.InsertBulkMedia(context.Background(), data.getShowList())
+		if err != nil {
+			log.Fatal("DB ERROR -> ", err)
+		}
+		date := data.Changes[len(data.Changes)-1].TimeStamp
+		persistant.RequestData.LastMediaDate = &date
+		err = persistant.RequestData.Save()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("DATA UPDATED")
 	}
-
-	date := data.Changes[len(data.Changes)-1].TimeStamp
-	persistant.RequestData.LastMediaDate = &date
-	err = persistant.RequestData.Save()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("DATA UPDATED")
 }
 
 func (s *DataService) GetLastUpdates(ctx context.Context, ml *pb.LastUpdatesRequest) (*pb.MediaListResponse, error) {
