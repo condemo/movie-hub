@@ -19,6 +19,8 @@ arm-run: arm-build
 arm-install: arm-build
 	@cp -f ./bin/${binary-name}-arm64 ~/services/movie-hub/${binary-name}
 	@cp -f ./bin/${data-service}-arm64 ~/services/movie-hub/${data-service}
+	@systemctl --user restart movie-hub-data.service
+	@systemctl --user restart movie-hub.service
 
 protogen:
 	@protoc \
