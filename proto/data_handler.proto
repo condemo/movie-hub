@@ -11,6 +11,7 @@ service DataHandler {
   rpc DeleteMedia(MediaRequest) returns (google.protobuf.Empty) {}
   rpc UpdateMedia(UpdateMediaReq) returns (MediaResponse) {}
   rpc UpdateMediaBooleans(MediaUpdateBool) returns (MediaResume) {}
+  rpc GetMediaCount(EmptyMsg) returns (MediaCount) {}
 }
 
 enum MediaType {
@@ -87,4 +88,10 @@ message MediaResponse {
 
 message MediaListResponse {
   repeated MediaResume mediaList = 1;
+}
+
+message EmptyMsg {}
+
+message MediaCount {
+  int64 count = 1;
 }

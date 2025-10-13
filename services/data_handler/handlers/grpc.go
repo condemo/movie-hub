@@ -71,3 +71,11 @@ func (h *DataHandler) UpdateMediaBooleans(ctx context.Context, mb *pb.MediaUpdat
 
 	return res, nil
 }
+
+func (h *DataHandler) GetMediaCount(ctx context.Context, em *pb.EmptyMsg) (*pb.MediaCount, error) {
+	res, err := h.dataService.GetMediaCount(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

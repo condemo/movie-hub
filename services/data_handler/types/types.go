@@ -13,4 +13,5 @@ type ServiceDataHandler interface {
 	DeleteMedia(context.Context, int64) error
 	UpdateMedia(context.Context, *pb.Media) (*pb.Media, error)
 	UpdateMediaBooleans(context.Context, *pb.MediaUpdateBool) (*pb.MediaResume, error)
+	GetMediaCount(context.Context) (*pb.MediaCount, error)
 }

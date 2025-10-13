@@ -29,6 +29,7 @@ func (h *MediaHandler) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
 	r.Get("/", MakeHandler(h.getLastUpdates))
 	r.Get("/{id}", MakeHandler(h.getOneMedia))
+	r.Get("/count", MakeHandler(h.getMediaCount))
 	r.Put("/", MakeHandler(h.updateMedia))
 	r.Put("/resume", MakeHandler(h.updateMediaBooleans))
 	r.Delete("/{id}", MakeHandler(h.deleteMedia))
@@ -163,6 +164,20 @@ func (h *MediaHandler) updateMediaBooleans(w http.ResponseWriter, r *http.Reques
 	}
 
 	res, err := h.dataConn.UpdateMediaBooleans(ctx, &mc)
+	if err != nil {
+		return err
+	}
+
+	JsonResponse(w, http.StatusOK, res)
+
+	return nil
+}
+
+func (h *MediaHandler) getMediaCount(w http.ResponseWriter, r *http.Request) error {
+	ctx, cancel := context.WithTimeout(r.Context(), time.Second*5)
+	defer cancel()
+
+	res, err := h.dataConn.GetMediaCount(ctx, &pb.EmptyMsg{})
 	if err != nil {
 		return err
 	}

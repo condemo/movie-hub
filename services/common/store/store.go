@@ -19,6 +19,7 @@ type Store interface {
 	DeleteMedia(context.Context, int64) error
 	UpdateMedia(context.Context, *types.Media) error
 	UpdateMediaBooleans(context.Context, *pb.MediaUpdateBool) (*types.MediaResume, error)
+	GetMediaCount(context.Context) (int, error)
 }
 
 type Storage struct {
@@ -161,4 +162,13 @@ func (s *Storage) DeleteMedia(ctx context.Context, id int64) error {
 	}
 
 	return nil
+}
+
+func (s *Storage) GetMediaCount(ctx context.Context) (int, error) {
+	var count int
+	err := s.db.GetContext(ctx, &count, `SELECT count(title) from media`)
+	if err != nil {
+		return count, err
+	}
+	return count, nil
 }

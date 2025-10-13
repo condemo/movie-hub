@@ -737,6 +737,86 @@ func (x *MediaListResponse) GetMediaList() []*MediaResume {
 	return nil
 }
 
+type EmptyMsg struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmptyMsg) Reset() {
+	*x = EmptyMsg{}
+	mi := &file_data_handler_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmptyMsg) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmptyMsg) ProtoMessage() {}
+
+func (x *EmptyMsg) ProtoReflect() protoreflect.Message {
+	mi := &file_data_handler_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmptyMsg.ProtoReflect.Descriptor instead.
+func (*EmptyMsg) Descriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{9}
+}
+
+type MediaCount struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Count         int64                  `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MediaCount) Reset() {
+	*x = MediaCount{}
+	mi := &file_data_handler_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MediaCount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MediaCount) ProtoMessage() {}
+
+func (x *MediaCount) ProtoReflect() protoreflect.Message {
+	mi := &file_data_handler_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MediaCount.ProtoReflect.Descriptor instead.
+func (*MediaCount) Descriptor() ([]byte, []int) {
+	return file_data_handler_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *MediaCount) GetCount() int64 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
 var File_data_handler_proto protoreflect.FileDescriptor
 
 const file_data_handler_proto_rawDesc = "" +
@@ -791,7 +871,12 @@ const file_data_handler_proto_rawDesc = "" +
 	"\rMediaResponse\x12)\n" +
 	"\x05media\x18\x01 \x01(\v2\x13.data_handler.MediaR\x05media\"L\n" +
 	"\x11MediaListResponse\x127\n" +
-	"\tmediaList\x18\x01 \x03(\v2\x19.data_handler.MediaResumeR\tmediaList*+\n" +
+	"\tmediaList\x18\x01 \x03(\v2\x19.data_handler.MediaResumeR\tmediaList\"\n" +
+	"\n" +
+	"\bEmptyMsg\"\"\n" +
+	"\n" +
+	"MediaCount\x12\x14\n" +
+	"\x05count\x18\x01 \x01(\x03R\x05count*+\n" +
 	"\tMediaType\x12\t\n" +
 	"\x05Movie\x10\x00\x12\t\n" +
 	"\x05Serie\x10\x01\x12\b\n" +
@@ -799,14 +884,15 @@ const file_data_handler_proto_rawDesc = "" +
 	"\bFilterBy\x12\a\n" +
 	"\x03fav\x10\x00\x12\n" +
 	"\n" +
-	"\x06viewed\x10\x012\xe5\x03\n" +
+	"\x06viewed\x10\x012\xaa\x04\n" +
 	"\vDataHandler\x12U\n" +
 	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12@\n" +
 	"\vGetOneMedia\x12\x1a.data_handler.MediaRequest\x1a\x13.data_handler.Media\"\x00\x12Y\n" +
 	"\x10GetMediaFiltered\x12\".data_handler.MediaFilteredRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12C\n" +
 	"\vDeleteMedia\x12\x1a.data_handler.MediaRequest\x1a\x16.google.protobuf.Empty\"\x00\x12J\n" +
 	"\vUpdateMedia\x12\x1c.data_handler.UpdateMediaReq\x1a\x1b.data_handler.MediaResponse\"\x00\x12Q\n" +
-	"\x13UpdateMediaBooleans\x12\x1d.data_handler.MediaUpdateBool\x1a\x19.data_handler.MediaResume\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
+	"\x13UpdateMediaBooleans\x12\x1d.data_handler.MediaUpdateBool\x1a\x19.data_handler.MediaResume\"\x00\x12C\n" +
+	"\rGetMediaCount\x12\x16.data_handler.EmptyMsg\x1a\x18.data_handler.MediaCount\"\x00B1Z/github.com/condemo/movie-hub/common/services/pbb\x06proto3"
 
 var (
 	file_data_handler_proto_rawDescOnce sync.Once
@@ -821,7 +907,7 @@ func file_data_handler_proto_rawDescGZIP() []byte {
 }
 
 var file_data_handler_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_data_handler_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_data_handler_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_data_handler_proto_goTypes = []any{
 	(MediaType)(0),               // 0: data_handler.MediaType
 	(FilterBy)(0),                // 1: data_handler.FilterBy
@@ -834,7 +920,9 @@ var file_data_handler_proto_goTypes = []any{
 	(*MediaFilteredRequest)(nil), // 8: data_handler.MediaFilteredRequest
 	(*MediaResponse)(nil),        // 9: data_handler.MediaResponse
 	(*MediaListResponse)(nil),    // 10: data_handler.MediaListResponse
-	(*emptypb.Empty)(nil),        // 11: google.protobuf.Empty
+	(*EmptyMsg)(nil),             // 11: data_handler.EmptyMsg
+	(*MediaCount)(nil),           // 12: data_handler.MediaCount
+	(*emptypb.Empty)(nil),        // 13: google.protobuf.Empty
 }
 var file_data_handler_proto_depIdxs = []int32{
 	0,  // 0: data_handler.LastUpdatesRequest.type:type_name -> data_handler.MediaType
@@ -848,14 +936,16 @@ var file_data_handler_proto_depIdxs = []int32{
 	6,  // 8: data_handler.DataHandler.DeleteMedia:input_type -> data_handler.MediaRequest
 	7,  // 9: data_handler.DataHandler.UpdateMedia:input_type -> data_handler.UpdateMediaReq
 	4,  // 10: data_handler.DataHandler.UpdateMediaBooleans:input_type -> data_handler.MediaUpdateBool
-	10, // 11: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
-	2,  // 12: data_handler.DataHandler.GetOneMedia:output_type -> data_handler.Media
-	10, // 13: data_handler.DataHandler.GetMediaFiltered:output_type -> data_handler.MediaListResponse
-	11, // 14: data_handler.DataHandler.DeleteMedia:output_type -> google.protobuf.Empty
-	9,  // 15: data_handler.DataHandler.UpdateMedia:output_type -> data_handler.MediaResponse
-	3,  // 16: data_handler.DataHandler.UpdateMediaBooleans:output_type -> data_handler.MediaResume
-	11, // [11:17] is the sub-list for method output_type
-	5,  // [5:11] is the sub-list for method input_type
+	11, // 11: data_handler.DataHandler.GetMediaCount:input_type -> data_handler.EmptyMsg
+	10, // 12: data_handler.DataHandler.GetLastUpdates:output_type -> data_handler.MediaListResponse
+	2,  // 13: data_handler.DataHandler.GetOneMedia:output_type -> data_handler.Media
+	10, // 14: data_handler.DataHandler.GetMediaFiltered:output_type -> data_handler.MediaListResponse
+	13, // 15: data_handler.DataHandler.DeleteMedia:output_type -> google.protobuf.Empty
+	9,  // 16: data_handler.DataHandler.UpdateMedia:output_type -> data_handler.MediaResponse
+	3,  // 17: data_handler.DataHandler.UpdateMediaBooleans:output_type -> data_handler.MediaResume
+	12, // 18: data_handler.DataHandler.GetMediaCount:output_type -> data_handler.MediaCount
+	12, // [12:19] is the sub-list for method output_type
+	5,  // [5:12] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -874,7 +964,7 @@ func file_data_handler_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_data_handler_proto_rawDesc), len(file_data_handler_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   9,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

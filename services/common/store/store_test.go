@@ -118,3 +118,8 @@ func TestDeleteMedia(t *testing.T) {
 	err = mockupDB.DeleteMedia(context.Background(), mockupSerie.Id)
 	require.NoError(t, err)
 }
+
+func TestGetMediaCount(t *testing.T) {
+	_, err := mockupDB.GetMediaCount(context.Background())
+	require.NoError(t, err)
+}

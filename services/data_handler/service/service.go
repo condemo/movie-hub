@@ -126,3 +126,11 @@ func (s *DataService) UpdateMediaBooleans(ctx context.Context, mb *pb.MediaUpdat
 
 	return data.GetProtoData(), nil
 }
+
+func (s *DataService) GetMediaCount(ctx context.Context) (*pb.MediaCount, error) {
+	count, err := s.store.GetMediaCount(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.MediaCount{Count: int64(count)}, nil
+}

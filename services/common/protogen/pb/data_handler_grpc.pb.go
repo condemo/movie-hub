@@ -26,6 +26,7 @@ const (
 	DataHandler_DeleteMedia_FullMethodName         = "/data_handler.DataHandler/DeleteMedia"
 	DataHandler_UpdateMedia_FullMethodName         = "/data_handler.DataHandler/UpdateMedia"
 	DataHandler_UpdateMediaBooleans_FullMethodName = "/data_handler.DataHandler/UpdateMediaBooleans"
+	DataHandler_GetMediaCount_FullMethodName       = "/data_handler.DataHandler/GetMediaCount"
 )
 
 // DataHandlerClient is the client API for DataHandler service.
@@ -38,6 +39,7 @@ type DataHandlerClient interface {
 	DeleteMedia(ctx context.Context, in *MediaRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateMedia(ctx context.Context, in *UpdateMediaReq, opts ...grpc.CallOption) (*MediaResponse, error)
 	UpdateMediaBooleans(ctx context.Context, in *MediaUpdateBool, opts ...grpc.CallOption) (*MediaResume, error)
+	GetMediaCount(ctx context.Context, in *EmptyMsg, opts ...grpc.CallOption) (*MediaCount, error)
 }
 
 type dataHandlerClient struct {
@@ -108,6 +110,16 @@ func (c *dataHandlerClient) UpdateMediaBooleans(ctx context.Context, in *MediaUp
 	return out, nil
 }
 
+func (c *dataHandlerClient) GetMediaCount(ctx context.Context, in *EmptyMsg, opts ...grpc.CallOption) (*MediaCount, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MediaCount)
+	err := c.cc.Invoke(ctx, DataHandler_GetMediaCount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DataHandlerServer is the server API for DataHandler service.
 // All implementations must embed UnimplementedDataHandlerServer
 // for forward compatibility.
@@ -118,6 +130,7 @@ type DataHandlerServer interface {
 	DeleteMedia(context.Context, *MediaRequest) (*emptypb.Empty, error)
 	UpdateMedia(context.Context, *UpdateMediaReq) (*MediaResponse, error)
 	UpdateMediaBooleans(context.Context, *MediaUpdateBool) (*MediaResume, error)
+	GetMediaCount(context.Context, *EmptyMsg) (*MediaCount, error)
 	mustEmbedUnimplementedDataHandlerServer()
 }
 
@@ -145,6 +158,9 @@ func (UnimplementedDataHandlerServer) UpdateMedia(context.Context, *UpdateMediaR
 }
 func (UnimplementedDataHandlerServer) UpdateMediaBooleans(context.Context, *MediaUpdateBool) (*MediaResume, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMediaBooleans not implemented")
+}
+func (UnimplementedDataHandlerServer) GetMediaCount(context.Context, *EmptyMsg) (*MediaCount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMediaCount not implemented")
 }
 func (UnimplementedDataHandlerServer) mustEmbedUnimplementedDataHandlerServer() {}
 func (UnimplementedDataHandlerServer) testEmbeddedByValue()                     {}
@@ -275,6 +291,24 @@ func _DataHandler_UpdateMediaBooleans_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DataHandler_GetMediaCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyMsg)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataHandlerServer).GetMediaCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataHandler_GetMediaCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataHandlerServer).GetMediaCount(ctx, req.(*EmptyMsg))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DataHandler_ServiceDesc is the grpc.ServiceDesc for DataHandler service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -305,6 +339,10 @@ var DataHandler_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateMediaBooleans",
 			Handler:    _DataHandler_UpdateMediaBooleans_Handler,
+		},
+		{
+			MethodName: "GetMediaCount",
+			Handler:    _DataHandler_GetMediaCount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
