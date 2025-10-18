@@ -133,7 +133,8 @@ type Media struct {
 	Image         string                 `protobuf:"bytes,12,opt,name=image,proto3" json:"image,omitempty"`
 	Fav           bool                   `protobuf:"varint,13,opt,name=fav,proto3" json:"fav,omitempty"`
 	Viewed        bool                   `protobuf:"varint,14,opt,name=viewed,proto3" json:"viewed,omitempty"`
-	Thumbnail     string                 `protobuf:"bytes,15,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
+	Recomended    bool                   `protobuf:"varint,15,opt,name=recomended,proto3" json:"recomended,omitempty"`
+	Thumbnail     string                 `protobuf:"bytes,16,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -266,6 +267,13 @@ func (x *Media) GetViewed() bool {
 	return false
 }
 
+func (x *Media) GetRecomended() bool {
+	if x != nil {
+		return x.Recomended
+	}
+	return false
+}
+
 func (x *Media) GetThumbnail() string {
 	if x != nil {
 		return x.Thumbnail
@@ -283,7 +291,8 @@ type MediaResume struct {
 	Thumbnail     string                 `protobuf:"bytes,6,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
 	Fav           bool                   `protobuf:"varint,7,opt,name=fav,proto3" json:"fav,omitempty"`
 	Viewed        bool                   `protobuf:"varint,8,opt,name=viewed,proto3" json:"viewed,omitempty"`
-	Rating        int32                  `protobuf:"varint,9,opt,name=rating,proto3" json:"rating,omitempty"`
+	Recomended    bool                   `protobuf:"varint,9,opt,name=recomended,proto3" json:"recomended,omitempty"`
+	Rating        int32                  `protobuf:"varint,10,opt,name=rating,proto3" json:"rating,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -374,6 +383,13 @@ func (x *MediaResume) GetViewed() bool {
 	return false
 }
 
+func (x *MediaResume) GetRecomended() bool {
+	if x != nil {
+		return x.Recomended
+	}
+	return false
+}
+
 func (x *MediaResume) GetRating() int32 {
 	if x != nil {
 		return x.Rating
@@ -386,6 +402,7 @@ type MediaUpdateBool struct {
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Viewed        bool                   `protobuf:"varint,2,opt,name=viewed,proto3" json:"viewed,omitempty"`
 	Fav           bool                   `protobuf:"varint,3,opt,name=fav,proto3" json:"fav,omitempty"`
+	Recomended    bool                   `protobuf:"varint,4,opt,name=recomended,proto3" json:"recomended,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -437,6 +454,13 @@ func (x *MediaUpdateBool) GetViewed() bool {
 func (x *MediaUpdateBool) GetFav() bool {
 	if x != nil {
 		return x.Fav
+	}
+	return false
+}
+
+func (x *MediaUpdateBool) GetRecomended() bool {
+	if x != nil {
+		return x.Recomended
 	}
 	return false
 }
@@ -821,7 +845,7 @@ var File_data_handler_proto protoreflect.FileDescriptor
 
 const file_data_handler_proto_rawDesc = "" +
 	"\n" +
-	"\x12data_handler.proto\x12\fdata_handler\x1a\x1bgoogle/protobuf/empty.proto\"\xe9\x02\n" +
+	"\x12data_handler.proto\x12\fdata_handler\x1a\x1bgoogle/protobuf/empty.proto\"\x89\x03\n" +
 	"\x05Media\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
@@ -837,8 +861,11 @@ const file_data_handler_proto_rawDesc = "" +
 	"\aruntime\x18\v \x01(\x05R\aruntime\x12\x14\n" +
 	"\x05image\x18\f \x01(\tR\x05image\x12\x10\n" +
 	"\x03fav\x18\r \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\x0e \x01(\bR\x06viewed\x12\x1c\n" +
-	"\tthumbnail\x18\x0f \x01(\tR\tthumbnail\"\xe1\x01\n" +
+	"\x06viewed\x18\x0e \x01(\bR\x06viewed\x12\x1e\n" +
+	"\n" +
+	"recomended\x18\x0f \x01(\bR\n" +
+	"recomended\x12\x1c\n" +
+	"\tthumbnail\x18\x10 \x01(\tR\tthumbnail\"\x81\x02\n" +
 	"\vMediaResume\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x14\n" +
@@ -847,12 +874,19 @@ const file_data_handler_proto_rawDesc = "" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x1c\n" +
 	"\tthumbnail\x18\x06 \x01(\tR\tthumbnail\x12\x10\n" +
 	"\x03fav\x18\a \x01(\bR\x03fav\x12\x16\n" +
-	"\x06viewed\x18\b \x01(\bR\x06viewed\x12\x16\n" +
-	"\x06rating\x18\t \x01(\x05R\x06rating\"K\n" +
+	"\x06viewed\x18\b \x01(\bR\x06viewed\x12\x1e\n" +
+	"\n" +
+	"recomended\x18\t \x01(\bR\n" +
+	"recomended\x12\x16\n" +
+	"\x06rating\x18\n" +
+	" \x01(\x05R\x06rating\"k\n" +
 	"\x0fMediaUpdateBool\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
 	"\x06viewed\x18\x02 \x01(\bR\x06viewed\x12\x10\n" +
-	"\x03fav\x18\x03 \x01(\bR\x03fav\"\xa4\x01\n" +
+	"\x03fav\x18\x03 \x01(\bR\x03fav\x12\x1e\n" +
+	"\n" +
+	"recomended\x18\x04 \x01(\bR\n" +
+	"recomended\"\xa4\x01\n" +
 	"\x12LastUpdatesRequest\x12+\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x17.data_handler.MediaTypeR\x04type\x12\x19\n" +
 	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01\x12\x1b\n" +

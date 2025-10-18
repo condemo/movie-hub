@@ -18,6 +18,7 @@ type Media struct {
 	Image       string `db:"image"`
 	Fav         bool   `db:"fav"`
 	Viewed      bool   `db:"viewed"`
+	Recomended  bool   `db:"recomended"`
 }
 
 func (m Media) GetProtoData() *pb.Media {
@@ -37,6 +38,7 @@ func (m Media) GetProtoData() *pb.Media {
 		Image:       m.Image,
 		Fav:         m.Fav,
 		Viewed:      m.Viewed,
+		Recomended:  m.Recomended,
 	}
 }
 
@@ -50,6 +52,7 @@ type MediaResume struct {
 	Rating      int32  `db:"rating"`
 	Fav         bool   `db:"fav"`
 	Viewed      bool   `db:"viewed"`
+	Recomended  bool   `db:"recomended"`
 }
 
 func (m MediaResume) GetProtoData() *pb.MediaResume {
@@ -63,5 +66,6 @@ func (m MediaResume) GetProtoData() *pb.MediaResume {
 		Rating:      m.Rating,
 		Fav:         m.Fav,
 		Viewed:      m.Viewed,
+		Recomended:  m.Recomended,
 	}
 }

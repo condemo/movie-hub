@@ -44,7 +44,7 @@ func (s *Storage) GetLastUpdates(ctx context.Context, lu *pb.LastUpdatesRequest)
 	}
 
 	q := fmt.Sprintf(`SELECT 
-		id, media_type, title, genres, description, thumbnail, fav, viewed, rating
+		id, media_type, title, genres, description, thumbnail, fav, viewed, recomended, rating
 		FROM media %s ORDER BY %s DESC LIMIT $1 OFFSET $2`, whereString, lu.Order)
 	err := s.db.SelectContext(ctx, &mr, q, lu.GetLimit(), lu.GetOffset())
 	if err != nil {
@@ -69,7 +69,7 @@ func (s *Storage) GetMediaFiltered(ctx context.Context, fb *pb.MediaFilteredRequ
 	mr := []*types.MediaResume{}
 	sb.WriteString(fmt.Sprintf(`SELECT
 		id, media_type, title, genres, description, thumbnail, fav, rating,
-		viewed FROM media WHERE %s=true`, fb.GetFilter().String()))
+		viewed, recomended FROM media WHERE %s=true`, fb.GetFilter().String()))
 	if fb.GetLimit() > 0 {
 		sb.WriteString(fmt.Sprintf(" LIMIT %d", fb.GetLimit()))
 	}
@@ -84,10 +84,10 @@ func (s *Storage) GetMediaFiltered(ctx context.Context, fb *pb.MediaFilteredRequ
 func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 	rows, err := s.db.NamedQueryContext(ctx, `INSERT INTO media
 		(media_type, title, release_year, first_air,
-		genres, seasons, caps, description, rating, runtime, thumbnail ,image, fav, viewed)
+		genres, seasons, caps, description, rating, runtime, thumbnail ,image, fav, viewed, recomended)
 		VALUES (:media_type, :title, :release_year, :first_air,
 		:genres, :seasons, :caps, :description, :rating, :runtime,
-		:thumbnail, :image, :fav, :viewed)
+		:thumbnail, :image, :fav, :viewed, :recomended)
 		 ON CONFLICT (title) DO NOTHING RETURNING *`, m)
 	if err != nil {
 		return err
@@ -109,9 +109,9 @@ func (s *Storage) InsertMedia(ctx context.Context, m *types.Media) error {
 func (s *Storage) InsertBulkMedia(ctx context.Context, m []types.Media) error {
 	_, err := s.db.NamedExecContext(ctx, `INSERT INTO media (media_type, title,
 		release_year, first_air, genres, seasons, caps, description,
-		rating, runtime,thumbnail , image, fav, viewed)
+		rating, runtime,thumbnail , image, fav, viewed, recomended)
 		VALUES (:media_type, :title, :release_year, :first_air, :genres,
-		:seasons, :caps, :description, :rating, :runtime, :thumbnail, :image, :fav, :viewed)
+		:seasons, :caps, :description, :rating, :runtime, :thumbnail, :image, :fav, :viewed, :recomended)
 		ON CONFLICT (title) DO NOTHING`, m)
 	if err != nil {
 		return err
@@ -125,7 +125,8 @@ func (s *Storage) UpdateMedia(ctx context.Context, m *types.Media) error {
 		media_type=:media_type, title=:title, release_year=:release_year,
 		first_air=:first_air, genres=:genres, seasons=:seasons,
 		caps=:caps, description=:description, rating=:rating, runtime=:runtime,
-		thumbnail=:thumbnail, image=:image, fav=:fav, viewed=:viewed WHERE id=:id RETURNING *`, m)
+		thumbnail=:thumbnail, image=:image, fav=:fav, viewed=:viewed, recomended=:recomended
+		WHERE id=:id RETURNING *`, m)
 	if err != nil {
 		return err
 	}
@@ -139,8 +140,9 @@ func (s *Storage) UpdateMedia(ctx context.Context, m *types.Media) error {
 
 func (s Storage) UpdateMediaBooleans(ctx context.Context, mb *pb.MediaUpdateBool) (*types.MediaResume, error) {
 	rows, err := s.db.NamedQueryContext(ctx, `UPDATE media SET
-		fav=:fav, viewed=:viewed WHERE id=:id
-		RETURNING id, media_type, title, genres, description, thumbnail, rating, fav, viewed`, mb)
+		fav=:fav, viewed=:viewed, recomended=:recomended WHERE id=:id
+		RETURNING id, media_type, title, genres, description, thumbnail, rating,
+		fav, viewed, recomended`, mb)
 	if err != nil {
 		return nil, err
 	}

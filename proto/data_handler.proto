@@ -40,7 +40,8 @@ message Media {
   string image = 12;
   bool fav = 13;
   bool viewed = 14;
-  string thumbnail = 15;
+  bool recomended = 15;
+  string thumbnail = 16;
 }
 
 message MediaResume {
@@ -52,13 +53,15 @@ message MediaResume {
   string thumbnail = 6;
   bool fav = 7;
   bool viewed = 8;
-  int32 rating = 9;
+  bool recomended = 9;
+  int32 rating = 10;
 }
 
 message MediaUpdateBool {
   int64 id = 1;
   bool viewed = 2;
   bool fav = 3;
+  bool recomended = 4;
 }
 
 message LastUpdatesRequest {
