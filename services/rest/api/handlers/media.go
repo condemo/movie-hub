@@ -9,6 +9,7 @@ import (
 
 	"github.com/condemo/movie-hub/services/common/config"
 	"github.com/condemo/movie-hub/services/common/errs"
+	"github.com/condemo/movie-hub/services/common/persistant"
 	"github.com/condemo/movie-hub/services/common/protogen/pb"
 	"github.com/go-chi/chi/v5"
 	"google.golang.org/grpc"
@@ -30,6 +31,7 @@ func (h *MediaHandler) RegisterRoutes() http.Handler {
 	r.Get("/", MakeHandler(h.getLastUpdates))
 	r.Get("/{id}", MakeHandler(h.getOneMedia))
 	r.Get("/count", MakeHandler(h.getMediaCount))
+	r.Get("/last-update-date", MakeHandler(h.getLastUpdateDate))
 	r.Put("/", MakeHandler(h.updateMedia))
 	r.Put("/resume", MakeHandler(h.updateMediaBooleans))
 	r.Delete("/{id}", MakeHandler(h.deleteMedia))
@@ -184,5 +186,13 @@ func (h *MediaHandler) getMediaCount(w http.ResponseWriter, r *http.Request) err
 
 	JsonResponse(w, http.StatusOK, res)
 
+	return nil
+}
+
+func (h *MediaHandler) getLastUpdateDate(w http.ResponseWriter, r *http.Request) error {
+	lu := persistant.RequestData.LastMediaDate
+	date := time.Unix(*lu, 0).Format("02-01-2006")
+
+	JsonResponse(w, http.StatusOK, map[string]string{"lastUpdate": date})
 	return nil
 }
