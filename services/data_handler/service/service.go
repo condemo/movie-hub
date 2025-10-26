@@ -33,7 +33,6 @@ func (s *DataService) Init() {
 	// TODO: Load duration from config
 	s.nextUpdateTimer = time.NewTicker(config.General.UpdateTimeInterval)
 
-	// FIX: descomentar cuando el servicio sea autosuficiente
 	s.updateData()
 
 	go func() {
@@ -51,18 +50,22 @@ func (s *DataService) updateData() {
 		log.Fatal(err)
 	}
 
+	var date int64
 	if len(data.getShowList()) > 0 {
 		err = s.store.InsertBulkMedia(context.Background(), data.getShowList())
 		if err != nil {
 			log.Fatal("DB ERROR -> ", err)
 		}
-		date := data.Changes[len(data.Changes)-1].TimeStamp
-		persistant.RequestData.LastMediaDate = &date
-		err = persistant.RequestData.Save()
-		if err != nil {
-			log.Fatal(err)
-		}
+		date = data.Changes[len(data.Changes)-1].TimeStamp
 		fmt.Println("DATA UPDATED")
+	} else {
+		date = time.Now().Unix()
+	}
+
+	persistant.RequestData.LastMediaDate = &date
+	err = persistant.RequestData.Save()
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
