@@ -191,8 +191,7 @@ func (h *MediaHandler) getMediaCount(w http.ResponseWriter, r *http.Request) err
 
 func (h *MediaHandler) getLastUpdateDate(w http.ResponseWriter, r *http.Request) error {
 	lu := persistant.RequestData.LastMediaDate
-	date := time.Unix(*lu, 0).Format("02-01-2006")
 
-	JsonResponse(w, http.StatusOK, map[string]string{"lastUpdate": date})
+	JsonResponse(w, http.StatusOK, map[string]int64{"lastUpdate": *lu})
 	return nil
 }
