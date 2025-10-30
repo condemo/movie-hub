@@ -23,6 +23,7 @@ enum MediaType {
 enum FilterBy {
   fav = 0;
   viewed = 1;
+  recomended = 2;
 }
 
 message Media {
@@ -70,7 +71,6 @@ message LastUpdatesRequest {
   optional int32 offset = 3;
   string order = 4;
 }
-
 
 message MediaRequest {
   int64 id = 1;

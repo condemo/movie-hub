@@ -74,8 +74,9 @@ func (MediaType) EnumDescriptor() ([]byte, []int) {
 type FilterBy int32
 
 const (
-	FilterBy_fav    FilterBy = 0
-	FilterBy_viewed FilterBy = 1
+	FilterBy_fav        FilterBy = 0
+	FilterBy_viewed     FilterBy = 1
+	FilterBy_recomended FilterBy = 2
 )
 
 // Enum value maps for FilterBy.
@@ -83,10 +84,12 @@ var (
 	FilterBy_name = map[int32]string{
 		0: "fav",
 		1: "viewed",
+		2: "recomended",
 	}
 	FilterBy_value = map[string]int32{
-		"fav":    0,
-		"viewed": 1,
+		"fav":        0,
+		"viewed":     1,
+		"recomended": 2,
 	}
 )
 
@@ -914,11 +917,13 @@ const file_data_handler_proto_rawDesc = "" +
 	"\tMediaType\x12\t\n" +
 	"\x05Movie\x10\x00\x12\t\n" +
 	"\x05Serie\x10\x01\x12\b\n" +
-	"\x04Both\x10\x02*\x1f\n" +
+	"\x04Both\x10\x02*/\n" +
 	"\bFilterBy\x12\a\n" +
 	"\x03fav\x10\x00\x12\n" +
 	"\n" +
-	"\x06viewed\x10\x012\xaa\x04\n" +
+	"\x06viewed\x10\x01\x12\x0e\n" +
+	"\n" +
+	"recomended\x10\x022\xaa\x04\n" +
 	"\vDataHandler\x12U\n" +
 	"\x0eGetLastUpdates\x12 .data_handler.LastUpdatesRequest\x1a\x1f.data_handler.MediaListResponse\"\x00\x12@\n" +
 	"\vGetOneMedia\x12\x1a.data_handler.MediaRequest\x1a\x13.data_handler.Media\"\x00\x12Y\n" +
