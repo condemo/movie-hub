@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"time"
@@ -30,10 +31,12 @@ func NewDataService(s store.Store) *DataService {
 }
 
 func (s *DataService) Init() {
-	// TODO: Load duration from config
 	s.nextUpdateTimer = time.NewTicker(config.General.UpdateTimeInterval)
 
-	s.updateData()
+	updateOnStartup := flag.Bool("update-on-statup", false, "if true updates the media DB on application launch")
+	if *updateOnStartup {
+		s.updateData()
+	}
 
 	go func() {
 		for {
