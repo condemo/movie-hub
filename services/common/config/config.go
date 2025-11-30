@@ -26,7 +26,9 @@ type envConfig struct {
 }
 
 func newEnvConfig() *envConfig {
-	godotenv.Load()
+	if err := godotenv.Load(); err != nil {
+		log.Fatal(err)
+	}
 	return &envConfig{
 		DataGrpcPort: os.Getenv("DATA_GRPC_PORT"),
 		DB: db{
