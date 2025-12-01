@@ -3,8 +3,8 @@ testdata_dir = "testdata"
 tmp_dir = "tmp"
 
 [build]
-args_bin = []
-bin = "./tmp/main -addr=:5200"
+args_bin = ["-addr=:5200"]
+bin = "./tmp/main"
 cmd = "go build -o ./tmp/main ./services/rest/cmd/main.go"
 delay = 1000
 exclude_dir = ["assets", "tmp", "vendor", "testdata"]

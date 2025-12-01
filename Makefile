@@ -1,5 +1,6 @@
 binary-name=movie-hub
 data-service=movie-data
+dev-data-port=:6100
 
 build:
 	@GOOS=windows GOARCH=amd64 go build -o ./bin/${binary-name}-win.exe ./cmd/main.go
@@ -42,13 +43,13 @@ data-build:
 data-run: data-build
 	@./bin/${data-service}-linux_64
 
-
 arm-data-build:
 	@GOOS=linux GOARCH=arm64 go build -o ./bin/${data-service}-linux_arm64 ./services/data_handler/cmd/main.go
 
 arm-data-run: arm-data-build
-	@./bin/${data-service}-linux_arm64 -addr=:6100
+	@./bin/${data-service}-linux_arm64
 
 kill-services:
 	@lsof -t -i:5200 | xargs -r kill
 	@lsof -t -i:5300 | xargs -r kill
+	@lsof -t -i:${dev-data-port} | xargs -r kill
