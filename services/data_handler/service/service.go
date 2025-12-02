@@ -33,7 +33,7 @@ func NewDataService(s store.Store) *DataService {
 func (s *DataService) Init() {
 	s.nextUpdateTimer = time.NewTicker(config.General.UpdateTimeInterval)
 
-	updateOnStartup := flag.Bool("update-on-statup", false, "if true updates the media DB on application launch")
+	updateOnStartup := flag.Bool("u", false, "if true updates the media DB on application launch")
 	flag.Parse()
 
 	if *updateOnStartup {

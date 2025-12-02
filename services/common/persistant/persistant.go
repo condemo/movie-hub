@@ -21,7 +21,11 @@ func newReqData() reqData {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer f.Close()
+		defer func() {
+			if err = f.Close(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		rd.LastMediaDate = nil
 		err = json.NewEncoder(f).Encode(&rd)
@@ -33,7 +37,11 @@ func newReqData() reqData {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer f.Close()
+		defer func() {
+			if err = f.Close(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		err = json.NewDecoder(f).Decode(&rd)
 		if err != nil {
@@ -49,7 +57,11 @@ func (rd reqData) Save() error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() {
+		if err = f.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	err = json.NewEncoder(f).Encode(rd)
 	if err != nil {

@@ -27,5 +27,7 @@ func MakeHandler(f customHandler) http.HandlerFunc {
 func JsonResponse(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(v)
+	if err := json.NewEncoder(w).Encode(v); err != nil {
+		JsonResponse(w, http.StatusInternalServerError, errs.InternalServerError)
+	}
 }

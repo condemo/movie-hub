@@ -91,7 +91,11 @@ func newGeneralConf() *generalConf {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer f.Close()
+		defer func() {
+			if err = f.Close(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		// 1 Week
 		gc.UpdateTimeInterval = time.Duration(time.Hour * 24 * 7)
@@ -106,7 +110,11 @@ func newGeneralConf() *generalConf {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer f.Close()
+		defer func() {
+			if err = f.Close(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		err = json.NewDecoder(f).Decode(gc)
 		if err != nil {

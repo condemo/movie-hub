@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"maps"
 	"net/http"
 	"os"
@@ -132,7 +133,12 @@ func (f *dataFetcher) GetLastUpdates(lastUnixDate *int64) (*fetchedData, error) 
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
+
+	defer func() {
+		if err = res.Body.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	err = json.NewDecoder(res.Body).Decode(&fd)
 	if err != nil {
@@ -149,8 +155,11 @@ func (f *dataFetcher) GetLastUpdates(lastUnixDate *int64) (*fetchedData, error) 
 				if err != nil {
 					return err
 				}
-				defer res.Body.Close()
-
+				defer func() {
+					if err = res.Body.Close(); err != nil {
+						log.Fatal(err)
+					}
+				}()
 				err = json.NewDecoder(res.Body).Decode(&data)
 				if err != nil {
 					return err
@@ -165,7 +174,7 @@ func (f *dataFetcher) GetLastUpdates(lastUnixDate *int64) (*fetchedData, error) 
 			fd.NextCursor = data.NextCursor
 			fd.Changes = data.Changes
 
-			if data.HasMore == false {
+			if !data.HasMore {
 				break fetchfor
 			}
 		}

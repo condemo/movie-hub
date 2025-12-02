@@ -64,5 +64,7 @@ func (s *ApiServer) Run() {
 
 	// server.Shutdown ends the execution of the program
 	// after waiting for all active connections to finish or 30 seconds to pass
-	server.Shutdown(ctx)
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatal("Bad Shutdown ->", err)
+	}
 }
