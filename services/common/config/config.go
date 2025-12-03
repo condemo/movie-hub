@@ -26,7 +26,12 @@ type envConfig struct {
 }
 
 func newEnvConfig() *envConfig {
-	if err := godotenv.Load(); err != nil {
+	workingDir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := godotenv.Load(path.Join(workingDir, ".env")); err != nil {
 		log.Fatal(err)
 	}
 	return &envConfig{
